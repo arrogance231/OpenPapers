@@ -18,17 +18,23 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add per-provider rate limiting, Retry-After handling, exponential backoff, request deduplication, and structured observability.
 - Add year/author/venue/topic filtering and query transparency.
 
-### Phase 3 — Scholarly metadata and citation graph
-- Add Semantic Scholar and OpenAlex adapters.
-- Add DOI/arXiv/publication-lineage reconciliation and version-aware metadata merging.
-- Add references, citations, related works, foundational/follow-up relationships, and author resolution.
+### Phase 3 — OpenAlex and ecosystem discovery
+- Add OpenAlex scholarly metadata and author/topic enrichment.
+- Add static GitHub adapter with official/community implementation classification and commit SHAs.
+- Add Hugging Face models, datasets, cards, revisions, and paper links.
+- Add revision-pinned repository config extraction without executing repository code.
 
-### Phase 4 — Structured paper ingestion
+### Phase 4 — Semantic Scholar and citation graph
+- Add Semantic Scholar after API-key approval, with paper lookup, references, citations, related works, author resolution, and caching.
+- Combine Semantic Scholar/OpenAlex graph data with DOI/arXiv/publication-lineage reconciliation.
+- Add foundational/follow-up relationships and conflict-aware graph provenance.
+
+### Phase 5 — Structured paper ingestion
 - Add bounded PDF/HTML acquisition with SSRF, size, timeout, decompression, and path protections.
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references.
 - Add `read_paper` and `search_within_paper` with chunk-level provenance.
 
-### Phase 5 — Evidence-backed extraction
+### Phase 6 — Evidence-backed extraction
 - Add deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
 - Add claim/evidence persistence and conflict detection.
 - Add optional provider-independent LLM extractor interface.
