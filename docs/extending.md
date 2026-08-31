@@ -26,6 +26,8 @@ Every tool should:
 - pass research claims through citation-integrity validation;
 - be safe when upstream services return 429, 5xx, malformed data, or no results.
 
+For `get_repository_config`, structured extraction is intentionally conservative: the current parser handles scalar YAML/TOML assignments and top-level JSON scalar fields. Nested objects, arrays, malformed values, and unsupported syntax are omitted with warnings rather than flattened or guessed. Raw line-numbered content remains available for later specialized extractors.
+
 For larger contributions, extract shared response and provenance helpers instead of expanding a handler into a god function. Tool names and input fields are public API: document intentional changes and add a compatibility note.
 
 ## Pull requests
