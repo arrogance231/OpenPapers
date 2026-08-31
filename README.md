@@ -4,7 +4,7 @@ A provenance-first Model Context Protocol server for turning ML literature into 
 
 ## Status
 
-Phase 1–4 vertical slice: current MCP v2 SDK (spec `2026-07-28`), stdio + stateless Streamable HTTP, SQLite/FTS5 persistence, arXiv and Crossref adapters, canonicalization, citation-safe search, paper lookup, BibTeX, and refusal-safe training recipe output. Full-text PDF extraction, citation graph providers, GitHub/Hugging Face adapters, library/collections, and report synthesis are intentionally next phases—not silently simulated.
+Phase 1–3 vertical slice: current MCP v2 SDK (spec `2026-07-28`), stdio + stateless Streamable HTTP, SQLite/FTS5 persistence, arXiv/Crossref/OpenAlex/Semantic Scholar metadata adapters, GitHub and Hugging Face discovery, canonicalization, citation-safe search, paper lookup, BibTeX, and refusal-safe training recipe output. Full-text extraction, citation graphs, verified paper-to-repository linkage, config extraction, library/collections, and report synthesis remain later phases—not silently simulated.
 
 ## Run
 
@@ -22,7 +22,10 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 
 ## MCP tools
 
-- `search_papers({query, limit})`: parallel arXiv + Crossref retrieval, expansion, canonical deduplication, ranking rationale, evidence.
+- `search_papers({query, limit})`: parallel arXiv, Crossref, OpenAlex, and best-effort Semantic Scholar retrieval with expansion, canonical deduplication, ranking rationale, provider failure transparency, and evidence.
+- `find_implementations({method, limit})`: static GitHub repository discovery; official status remains `UNKNOWN` until linkage is verified.
+- `find_models({query, limit})`: Hugging Face model discovery with revisions and metadata.
+- `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions and metadata.
 - `get_paper({paper_id})`: canonical metadata by paper ID, DOI, or arXiv ID.
 - `extract_training_recipe({paper_id})`: typed reproducibility fields; unknowns are `NOT_REPORTED`, never guessed.
 - `get_bibtex({paper_id})`: generated canonical BibTeX from known fields only.
@@ -38,7 +41,7 @@ Remote paper, README, model-card, and repository content is untrusted data. The 
 
 ## Architecture
 
-`MCP tools → ResearchService → providers (arXiv/Crossref) → canonicalization/ranking → SQLite FTS5 → citation objects`
+`MCP tools → tool modules → ResearchService/providers → canonicalization/ranking → SQLite FTS5 → citation objects`
 
 Provider adapters are dependency-injected and can be replaced with Semantic Scholar, OpenAlex, Hugging Face, and GitHub implementations without changing MCP handlers. SQLite is deliberately behind `ResearchDb`; PostgreSQL/vector retrieval can be added behind the same service boundary.
 

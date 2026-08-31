@@ -39,11 +39,6 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add claim/evidence persistence and conflict detection.
 - Add optional provider-independent LLM extractor interface.
 
-### Phase 6 — Code and model ecosystem discovery
-- Add static GitHub adapter with official/community implementation classification and commit SHAs.
-- Add Hugging Face models, datasets, cards, configs, revisions, and paper links.
-- Add revision-pinned repository config extraction without executing repository code.
-
 ### Phase 7 — Research tools
 - Add `get_references`, `get_citations`, `get_related_papers`, `research_method`, `find_implementations`, `get_repository_config`, `find_datasets`, and `find_models`.
 - Add `compare_papers`, `compare_methods`, `verify_claim`, and benchmark comparability flags.
