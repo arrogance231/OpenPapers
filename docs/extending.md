@@ -28,7 +28,7 @@ Every tool should:
 
 Card links are reported metadata. `find_models` and `find_datasets` additionally return separate `linkedPaperLinks` records with `VERIFIED` or `UNVERIFIED` status based only on the local scholarly resolver; a card link alone is never promoted to verified evidence.
 
-Attribution labels are conservative: `OFFICIAL` requires explicit README language plus a matching verified paper identifier; `AUTHOR_MAINTAINED` requires repository-owner overlap with a paper author; `COMMUNITY_REPRODUCTION` requires explicit community/reimplementation language; otherwise the result is `UNKNOWN`. These labels are evidence classifications, not permission to claim code correctness or execution results.
+Attribution labels are conservative: `OFFICIAL` requires explicit README language plus a matching verified paper identifier; `AUTHOR_MAINTAINED` requires repository-owner overlap with a paper author; `COMMUNITY_REPRODUCTION` requires explicit community/reimplementation language; contradictory official and community claims resolve to `UNKNOWN`; otherwise the result is `UNKNOWN`. These labels are evidence classifications, not permission to claim code correctness or execution results.
 
 For `get_repository_config`, structured extraction is intentionally conservative: the current parser handles scalar YAML/TOML assignments and top-level JSON scalar fields. Nested objects, arrays, malformed values, and unsupported syntax are omitted with warnings rather than flattened or guessed. Raw line-numbered content remains available for later specialized extractors.
 
