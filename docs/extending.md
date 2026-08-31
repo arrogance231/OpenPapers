@@ -13,6 +13,8 @@ OpenPapers is designed as an FOSS project with small, replaceable boundaries. Co
 7. Never execute remote repository content.
 8. Add tests under `tests/` for mapping, malformed payloads, authentication headers, and provider failures.
 
+All external providers use `src/reliability/reliability.ts`. GET responses receive bounded in-memory TTL caching and concurrent request deduplication; retryable 429/5xx responses receive bounded backoff, numeric `Retry-After` handling, and process-wide rate limiting. Reliability counters, failures, and terminal request latency are exposed through research transparency. The fetcher remains injectable for deterministic tests.
+
 ## Add MCP tools
 
 MCP tools are grouped into modules under `src/mcp/tool-modules/`. A module should export a `register<Name>Tools(server, dependencies?)` function and own only its schemas, handlers, and provider dependencies. Register the module from `src/mcp/tools.ts`; do not create a second MCP server or duplicate transport code.
@@ -30,7 +32,7 @@ Card links are reported metadata. `find_models` and `find_datasets` additionally
 
 Attribution labels are conservative: `OFFICIAL` requires explicit README language plus a matching verified paper identifier; `ORGANIZATION_OFFICIAL` additionally requires the README to name the repository owner as the official implementation organization; `AUTHOR_MAINTAINED` requires repository-owner overlap with a paper author; `COMMUNITY_REPRODUCTION` requires explicit community/reimplementation language; contradictory official and community claims resolve to `UNKNOWN`; otherwise the result is `UNKNOWN`. These labels are evidence classifications, not permission to claim code correctness or execution results.
 
-For `get_repository_config`, structured extraction is intentionally conservative: the current parser handles scalar YAML/TOML assignments and top-level JSON scalar fields. Nested objects, arrays, malformed values, and unsupported syntax are omitted with warnings rather than flattened or guessed. Raw line-numbered content remains available for later specialized extractors.
+For `get_repository_config`, structured extraction is intentionally conservative: the current parser handles scalar YAML/TOML assignments, explicit one-level YAML sections, explicit TOML sections, and top-level JSON scalar fields. Deeper nested objects, arrays, malformed values, and unsupported syntax are omitted with warnings rather than flattened or guessed. Raw line-numbered content remains available for later specialized extractors.
 
 For larger contributions, extract shared response and provenance helpers instead of expanding a handler into a god function. Tool names and input fields are public API: document intentional changes and add a compatibility note.
 

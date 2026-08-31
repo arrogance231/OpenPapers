@@ -14,8 +14,10 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - No external API keys required; use deterministic fixtures.
 
 ### Phase 2 — Reliable retrieval infrastructure
-- Add provider cache tables for metadata, search results, and graph responses.
-- Add per-provider rate limiting, Retry-After handling, exponential backoff, request deduplication, and structured observability.
+- Add shared in-memory response caching with TTL and concurrent request deduplication.
+- Add process-wide cumulative rate limiting, bounded retries for 429/5xx responses, and `Retry-After` handling.
+- Add provider failure telemetry and expose reliability counters in research transparency.
+- Acceptance: Phase 2 reliability infrastructure is complete for current external providers; durable cache backends and richer per-provider latency histograms remain future optimizations.
 - Add year/author/venue/topic filtering and query transparency.
 
 ### Phase 3 — OpenAlex and ecosystem discovery
