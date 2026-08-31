@@ -23,7 +23,7 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 ## MCP tools
 
 - `search_papers({query, limit})`: parallel arXiv, Crossref, OpenAlex, and best-effort Semantic Scholar retrieval with expansion, canonical deduplication, ranking rationale, provider failure transparency, and evidence.
-- `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; paper-linked searches include README/author-overlap assessments with formal evidence records, commit/blob and line locators when available, while official status remains `UNKNOWN` until stronger evidence is verified.
+- `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; paper-linked searches include README/author-overlap assessments, conservative attribution classification, formal evidence records, commit/blob and line locators when available, while unsupported official claims remain `UNKNOWN`.
 - `find_models({query, limit})`: Hugging Face model discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
 - `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
 - `find_repository_configs({owner, repo, ref})`: discover common root-level training/config files and resolve an optional ref to a commit SHA without recursive crawling.
