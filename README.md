@@ -26,6 +26,7 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 - `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; official status remains `UNKNOWN` until linkage is verified.
 - `find_models({query, limit})`: Hugging Face model discovery with revisions and metadata.
 - `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions and metadata.
+- `find_repository_configs({owner, repo, ref})`: discover common root-level training/config files and resolve an optional ref to a commit SHA without recursive crawling.
 - `get_repository_config({owner, repo, path, ref})`: static, line-numbered GitHub file inspection with blob provenance; never executes content.
 - `get_paper({paper_id})`: canonical metadata by paper ID, DOI, or arXiv ID.
 - `extract_training_recipe({paper_id})`: typed reproducibility fields; unknowns are `NOT_REPORTED`, never guessed.
