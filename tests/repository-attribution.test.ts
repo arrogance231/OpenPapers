@@ -14,6 +14,7 @@ describe('GitHub attribution classification', () => {
   it('classifies author overlap and explicit community reproduction conservatively', () => {
     expect(classifyRepositoryAttribution(repo, paper, 'Training code for the method.').status).toBe('AUTHOR_MAINTAINED');
     expect(classifyRepositoryAttribution({...repo, owner:'bob'}, paper, 'Community reimplementation of the paper.').status).toBe('COMMUNITY_REPRODUCTION');
+    expect(classifyRepositoryAttribution(repo, paper, 'Official implementation by alice for https://arxiv.org/abs/2006.05525').status).toBe('ORGANIZATION_OFFICIAL');
   });
   it('returns UNKNOWN for conflicting official and community claims', () => {
     const result = classifyRepositoryAttribution(repo, paper, 'Official implementation and community reimplementation of https://arxiv.org/abs/2006.05525');
