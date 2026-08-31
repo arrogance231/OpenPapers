@@ -2,7 +2,10 @@ import { z } from 'zod/v4';
 import { McpServer } from '@modelcontextprotocol/server';
 import type { ResearchService } from '../research/service.js';
 
-const result = (data: unknown, summary: string) => ({ content: [{ type: 'text' as const, text: summary }], structuredContent: data as Record<string, unknown> });
+import { validateCitationIntegrity } from '../research/verification.js';
+import type { ResearchResponse } from '../models/research.js';
+
+const result = (data: unknown, summary: string) => { const candidate = data as Partial<ResearchResponse<unknown>>; if (Array.isArray(candidate.evidence) && Array.isArray(candidate.references)) { const integrity = validateCitationIntegrity(candidate as ResearchResponse<unknown>); if (!integrity.valid) return { content: [{ type: 'text' as const, text: `Citation integrity failure: ${integrity.errors.join('; ')}` }], structuredContent: { integrity } as Record<string, unknown>, isError: true }; } return { content: [{ type: 'text' as const, text: summary }], structuredContent: data as Record<string, unknown> }; };
 export function registerTools(server: McpServer, research: ResearchService): void {
   server.registerTool('search_papers', { title: 'Search papers', description: 'Search verified scholarly metadata across arXiv and Crossref. Results include provenance and transparent ranking.', inputSchema: z.object({ query: z.string().min(1), limit: z.number().int().min(1).max(50).default(10), year_from: z.number().int().optional(), year_to: z.number().int().optional() }) }, async ({query, limit}) => { const r = await research.search(query, limit); return result(r, r.summary); });
   server.registerTool('get_paper', { title: 'Get paper', description: 'Retrieve a canonical research work by paper ID, DOI, or arXiv ID.', inputSchema: z.object({ paper_id: z.string().min(1) }) }, async ({paper_id}) => { const p = research.getPaper(paper_id); if (!p) return { content: [{type:'text' as const, text: 'NOT_FOUND: no verified paper exists for this identifier.'}], isError: true }; return result({data: p, evidence: [], references: [p]}, `${p.authors.map(a=>a.name).join(', ')} — ${p.title}`); });

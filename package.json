@@ -1,5 +1,5 @@
 {
-  "name": "llm-research-mcp",
+  "name": "openpapers",
   "version": "0.1.0",
   "private": true,
   "description": "Provenance-first MCP server for reproducible LLM/ML research",

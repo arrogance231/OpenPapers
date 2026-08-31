@@ -1,4 +1,4 @@
-# LLM Research MCP
+# OpenPapers
 
 A provenance-first Model Context Protocol server for turning ML literature into reproducible engineering evidence. It is not an arXiv-only search wrapper: every result contains structured paper metadata, evidence IDs, author attribution, source quality, locators, and retrieval transparency.
 

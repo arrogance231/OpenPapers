@@ -6,7 +6,7 @@ import { ResearchService } from '../research/service.js';
 import { registerTools } from './tools.js';
 
 export function createMcpServer(research = new ResearchService()): McpServer {
-  const server = new McpServer({ name: 'llm-research-mcp', version: '0.1.0' });
+  const server = new McpServer({ name: 'OpenPapers', version: '0.1.0' });
   registerTools(server, research);
   return server;
 }
@@ -29,12 +29,12 @@ async function main(): Promise<void> {
       if (!validateHost(req, res) || !validateOrigin(req, res)) return;
       void nodeHandler(req as any, res);
     });
-    http.listen(port, host, () => console.error(`llm-research-mcp HTTP listening on http://${host}:${port}/mcp`));
+    http.listen(port, host, () => console.error(`OpenPapers HTTP listening on http://${host}:${port}/mcp`));
     const shutdown = async () => { await handler.close(); http.close(); };
     process.once('SIGINT', () => void shutdown()); process.once('SIGTERM', () => void shutdown());
   } else {
     await serveStdio(() => createMcpServer());
-    console.error('llm-research-mcp stdio server running');
+    console.error('OpenPapers stdio server running');
   }
 }
 
