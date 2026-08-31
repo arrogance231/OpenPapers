@@ -23,7 +23,7 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 ## MCP tools
 
 - `search_papers({query, limit})`: parallel arXiv, Crossref, OpenAlex, and best-effort Semantic Scholar retrieval with expansion, canonical deduplication, ranking rationale, provider failure transparency, and evidence.
-- `find_implementations({method, limit})`: static GitHub repository discovery; official status remains `UNKNOWN` until linkage is verified.
+- `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; official status remains `UNKNOWN` until linkage is verified.
 - `find_models({query, limit})`: Hugging Face model discovery with revisions and metadata.
 - `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions and metadata.
 - `get_repository_config({owner, repo, path, ref})`: static, line-numbered GitHub file inspection with blob provenance; never executes content.
