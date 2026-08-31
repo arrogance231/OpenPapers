@@ -28,7 +28,7 @@ Every tool should:
 
 Card links are reported metadata. `find_models` and `find_datasets` additionally return separate `linkedPaperLinks` records with `VERIFIED` or `UNVERIFIED` status based only on the local scholarly resolver; a card link alone is never promoted to verified evidence.
 
-Repository linkage assessments are deliberately evidence-graded: `PAPER_REFERENCED` means the README contains a paper identifier, `AUTHOR_OVERLAP` means the repository owner overlaps a paper author name, and `UNVERIFIED` means neither signal was observed. These signals do not change `implementationStatus`, which remains `UNKNOWN` until stronger verification exists.
+Repository linkage assessments are deliberately evidence-graded: `PAPER_REFERENCED` means the README contains a paper identifier, `AUTHOR_OVERLAP` means the repository owner overlaps a paper author name, and `UNVERIFIED` means neither signal was observed. When GitHub returns metadata, the assessment includes the README URL, blob SHA, resolved commit SHA, and matching line range. Revision or README retrieval failures degrade that repository to an unverified assessment rather than failing the complete search. These signals do not change `implementationStatus`, which remains `UNKNOWN` until stronger verification exists.
 
 For `get_repository_config`, structured extraction is intentionally conservative: the current parser handles scalar YAML/TOML assignments and top-level JSON scalar fields. Nested objects, arrays, malformed values, and unsupported syntax are omitted with warnings rather than flattened or guessed. Raw line-numbered content remains available for later specialized extractors.
 
