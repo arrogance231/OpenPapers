@@ -7,7 +7,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/mcp/server.js",
+    "start": "node --env-file-if-exists=.env dist/mcp/server.js",
     "dev": "tsx src/mcp/server.ts",
     "test": "vitest run",
     "lint": "tsc -p tsconfig.json --noEmit"
