@@ -22,7 +22,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add OpenAlex scholarly metadata and author/topic enrichment.
 - Add static GitHub adapter with official/community implementation classification and commit SHAs.
 - Add Hugging Face models, datasets, cards, revisions, and paper links.
-- Add revision-pinned repository config extraction without executing repository code.
+- Add revision-pinned repository config extraction without executing repository code. (Initial `get_repository_config` slice is complete; paper linkage and structured parameter extraction remain.)
 
 ### Phase 4 — Semantic Scholar and citation graph
 - Add Semantic Scholar after API-key approval, with paper lookup, references, citations, related works, author resolution, and caching.
