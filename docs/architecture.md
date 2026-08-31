@@ -19,10 +19,11 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add year/author/venue/topic filtering and query transparency.
 
 ### Phase 3 — OpenAlex and ecosystem discovery
-- Add OpenAlex scholarly metadata and author/topic enrichment.
-- Add static GitHub adapter with official/community implementation classification and commit SHAs.
-- Add Hugging Face models, datasets, cards, revisions, and paper links. (Initial normalized card-link extraction is complete; verified scholarly reconciliation remains.)
-- Add revision-pinned repository config extraction without executing repository code. (Initial `get_repository_config` slice is complete; paper linkage and structured parameter extraction remain.)
+- Add OpenAlex scholarly metadata, author IDs, and topic enrichment.
+- Add static GitHub adapter with evidence-graded attribution classification and commit SHAs.
+- Add Hugging Face models, datasets, cards, revisions, and paper links with local scholarly reconciliation.
+- Add revision-pinned repository config discovery and conservative scalar/section parameter extraction without executing repository code.
+- Acceptance: Phase 3 ecosystem discovery is complete; deeper paper ingestion, citation graphs, and execution-backed reproducibility remain later phases.
 
 ### Phase 4 — Semantic Scholar and citation graph
 - Add Semantic Scholar after API-key approval, with paper lookup, references, citations, related works, author resolution, and caching.

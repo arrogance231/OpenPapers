@@ -18,6 +18,12 @@ describe('configuration extraction', () => {
     expect(result.fields).toContainEqual({ name: 'precision', value: 'bf16', lineStart: 3, lineEnd: 3 });
   });
 
+  it('extracts explicit YAML and TOML section paths', () => {
+    const yaml = extractConfigFields('training:\n  learning_rate: 0.0001\n  epochs: 3\n', 'config.yaml');
+    expect(yaml.fields).toEqual([{name:'training.learning_rate',value:'0.0001',lineStart:2,lineEnd:2},{name:'training.epochs',value:'3',lineStart:3,lineEnd:3}]);
+    const toml = extractConfigFields('[training]\nlearning_rate = 0.0001\n', 'config.toml');
+    expect(toml.fields[0]).toMatchObject({name:'training.learning_rate',value:'0.0001',lineStart:2,lineEnd:2});
+  });
   it('reports unsupported or malformed syntax without guessing', () => {
     const result = extractConfigFields('learning_rate: [not closed\n', 'config.yaml');
     expect(result.fields).toEqual([]);

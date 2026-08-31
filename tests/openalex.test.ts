@@ -11,4 +11,9 @@ describe('OpenAlex provider mapping', () => {
     expect(work?.citationCount).toBe(42);
     expect(work?.pdfUrl).toContain('.pdf');
   });
+  it('preserves author IDs and deduplicated OpenAlex topics', () => {
+    const work = mapOpenAlexWork({id:'https://openalex.org/W1', title:'Topic paper', authorships:[{author:{id:'https://openalex.org/A1',display_name:'Ada Lovelace'}}], topics:[{display_name:'Representation Learning'},{display_name:'Representation Learning'}]});
+    expect(work?.authorIds).toEqual(['https://openalex.org/A1']);
+    expect(work?.topics).toEqual(['Representation Learning']);
+  });
 });

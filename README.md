@@ -4,7 +4,7 @@ A provenance-first Model Context Protocol server for turning ML literature into 
 
 ## Status
 
-Phase 1–3 vertical slice: current MCP v2 SDK (spec `2026-07-28`), stdio + stateless Streamable HTTP, SQLite/FTS5 persistence, arXiv/Crossref/OpenAlex/Semantic Scholar metadata adapters, GitHub and Hugging Face discovery, canonicalization, citation-safe search, paper lookup, BibTeX, and refusal-safe training recipe output. Full-text extraction, citation graphs, verified paper-to-repository linkage, config extraction, library/collections, and report synthesis remain later phases—not silently simulated.
+Phase 1–3 vertical slice: current MCP v2 SDK (spec `2026-07-28`), stdio + stateless Streamable HTTP, SQLite/FTS5 persistence, arXiv/Crossref/OpenAlex/Semantic Scholar metadata adapters, GitHub and Hugging Face discovery, canonicalization, citation-safe search, paper lookup, BibTeX, and refusal-safe training recipe output. Phase 3 ecosystem discovery is complete: OpenAlex author/topic enrichment, Hugging Face card paper-link reconciliation, revision-pinned repository inspection, structured scalar/section config extraction, evidence-graded GitHub linkage, and conservative attribution classification are implemented. Full-text extraction, citation graphs, library/collections, and report synthesis remain later phases.
 
 ## Run
 
