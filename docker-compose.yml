@@ -1,0 +1,15 @@
+services:
+  research-mcp:
+    build: .
+    environment:
+      MCP_TRANSPORT: http
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 8787
+      RESEARCH_DB_PATH: /app/data/research.sqlite
+    ports:
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - research-data:/app/data
+
+volumes:
+  research-data:
