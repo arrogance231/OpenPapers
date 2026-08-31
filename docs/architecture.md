@@ -52,6 +52,18 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add local library, collections, ResearchPacks, refresh/remove tools, migrations, Postgres adapter, vector-retrieval interface, Docker hardening, and release documentation.
 - Add real-paper integration fixtures and end-to-end Qwen/tool-calling workflow tests.
 
+### Phase 10 — Maintainability, modularity, and contributor audit
+- Review every current subsystem: domain models, provider adapters, rate limiting, caching boundaries, persistence, research orchestration, citation validation, MCP transports, and tool modules.
+- Identify oversized modules, duplicated policy, hidden coupling, unclear public contracts, and provider-specific behavior leaking into shared layers.
+- Define and document stable extension interfaces for providers, fetchers, storage backends, extractors, ranking strategies, provenance validators, and MCP tool modules.
+- Split or refactor modules where doing so improves independent testing, contributor ownership, failure isolation, or future replacement; avoid abstraction without a concrete seam.
+- Add contract tests and fixture conventions for provider and tool-module contributors.
+- Add dependency-direction checks so transports depend on application services, application services depend on domain contracts, and providers do not depend on MCP handlers.
+- Audit public MCP tool schemas for naming consistency, bounded inputs, backward compatibility, structured errors, and provenance completeness.
+- Improve contributor ergonomics: subsystem map, examples, local live-test instructions, debugging guidance, issue templates, and focused contribution tasks.
+- Review CI for deterministic tests, optional credential-free integration tests, lint/build/test gates, and security checks.
+- Produce a maintainability report with prioritized follow-up issues and a documented decision log for intentional non-modular areas.
+- Acceptance criterion: a new provider and a new MCP tool can be added with isolated files, fixtures, and registration changes, without editing unrelated subsystems or transport code.
 ## Phase 1 implementation scope
 
 Phase 1 deliberately does not require external provider credentials. It will establish the invariant that makes later retrieval and extraction safe: no material research assertion leaves the service without resolvable evidence. `CITATIONS.md` is a workspace convention for downstream coding agents; the server’s machine-enforced equivalent is the citation-integrity validator.

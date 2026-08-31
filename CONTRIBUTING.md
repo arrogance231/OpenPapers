@@ -29,7 +29,7 @@ Copy `.env.example` to `.env` only when live provider testing is needed. Never c
 
 ## Adding providers and tools
 
-Read `docs/extending.md` before starting provider or MCP work. New providers must include pure payload mappers, normalized domain output, failure handling, and fixture tests. New MCP capabilities belong in `src/mcp/tool-modules/` and must return both human-readable and machine-readable output.
+Read `docs/extending.md` before starting provider or MCP work. New providers must include pure payload mappers, normalized domain output, failure handling, and fixture tests. New MCP capabilities belong in `src/mcp/tool-modules/` and must return both human-readable and machine-readable output. The Phase 10 maintainability audit will periodically review these seams and may refine them through focused, backward-compatible changes.
 
 ## Pull request checklist
 
