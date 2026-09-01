@@ -68,7 +68,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Completed the optional provider-independent extractor interface; an LLM implementation remains an external integration choice, not a Phase 6 backlog item.
 
 ### Phase 7 — Research tools
-- Add `get_references`, `get_citations`, `get_related_papers`, `research_method`, `find_implementations`, `get_repository_config`, `find_datasets`, and `find_models`.
+- Implemented `get_references`, `get_citations`, `get_related_papers`, `research_method`, `find_implementations`, `get_repository_config`, `find_datasets`, and `find_models`. `research_method` reuses bounded multi-provider search while preserving evidence, conflicts, and provider failures.
 - Add `compare_papers`, `compare_methods`, `verify_claim`, and benchmark comparability flags.
 
 ### Phase 8 — Reproducibility and reports
