@@ -60,6 +60,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented first slice: deterministic section-heading and structured-equation extraction is exposed through `ResearchService.extractPaperFacts` and the bounded `extract_paper_facts` MCP tool. Results are explicitly heuristic and carry URL/section/page locators.
 - Implemented second slice: heuristic facts normalize into stable derived claims; SQLite persists claims and conflict records, and `extract_paper_claims` exposes the reconciled result through MCP.
 - Implemented third slice: explicit training parameter extraction recognizes labeled numeric and optimizer values without inferring unlabeled numbers, and exposes section/page provenance through `extract_training_parameters`.
+- Implemented fourth slice: graph classification accepts explicit provider relation metadata, rejects contradictory metadata, and exposes `relationshipBasis` in graph responses.
 - Add deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
 - Add claim/evidence persistence and conflict detection.
 - Add optional provider-independent LLM extractor interface.

@@ -10,7 +10,8 @@ export interface PaperVersion { versionId: string; sourceId: string; version?: s
 export interface ResearchWork { paperId: string; title: string; authors: Author[]; authorIds?: string[]; topics?: string[]; year?: number; venue?: string; doi?: string; arxivId?: string; semanticScholarId?: string; openAlexId?: string; canonicalUrl?: string; pdfUrl?: string; citationCount?: number; publicationStatus: PublicationStatus; bibtex: string; sourceProviders: string[]; versions: PaperVersion[]; abstract?: string; }
 export type GraphRelation = 'reference' | 'citation' | 'related';
 export type RelationshipClass = 'DIRECT' | 'FOUNDATIONAL_CANDIDATE' | 'FOLLOW_UP_CANDIDATE' | 'UNKNOWN';
-export interface GraphItem { work: ResearchWork; relation: GraphRelation; relationshipClass: RelationshipClass; source: string; evidence: Evidence; }
+export type RelationshipBasis = 'PROVIDER_EXPLICIT' | 'CHRONOLOGY_HEURISTIC' | 'UNKNOWN';
+export interface GraphItem { work: ResearchWork; relation: GraphRelation; relationshipClass: RelationshipClass; relationshipBasis?: RelationshipBasis; source: string; evidence: Evidence; }
 export interface AuthorProfile { authorId: string; name: string; aliases: string[]; paperIds: string[]; source: string; }
 export interface GraphEdge { sourcePaperId: string; targetPaperId: string; relation: GraphRelation; relationshipClass: RelationshipClass; provider: string; evidenceId: string; retrievedAt: string; }
 export interface SourceConflict { field: string; selected: string; alternate: string; selectedSource: string; alternateSource: string; }
