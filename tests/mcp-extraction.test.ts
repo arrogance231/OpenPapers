@@ -22,4 +22,21 @@ describe('MCP extraction evidence boundary', () => {
     expect(response.structuredContent.evidence).toEqual([claim.evidence]);
     expect(response.content[0].text).toContain(claim.evidence.citationText);
   });
+
+  it('returns evidence for heuristic facts and explicit parameters', async () => {
+    const {server, handlers} = capture();
+    const locator = {section:'Training'};
+    registerTools(server as any, {
+      extractPaperClaims:vi.fn(),
+      extractPaperFacts:vi.fn().mockResolvedValue([{kind:'methodology',text:'Uses supervised training.',sourceUrl:'https://example.com/paper',locator,confidence:'heuristic'}]),
+      extractTrainingParameters:vi.fn().mockResolvedValue([{name:'batch_size',value:'32',sourceUrl:'https://example.com/paper',locator,confidence:'explicit'}]),
+      recipeFromPaper:vi.fn()
+    } as any);
+    const facts = await handlers.get('extract_paper_facts')!({url:'https://example.com/paper'});
+    const parameters = await handlers.get('extract_training_parameters')!({url:'https://example.com/paper'});
+    expect(facts.structuredContent.evidence[0].evidence).toBe('Uses supervised training.');
+    expect(facts.content[0].text).toContain('https://example.com/paper#Training');
+    expect(parameters.structuredContent.evidence[0].evidence).toBe('32');
+    expect(parameters.content[0].text).toContain('https://example.com/paper#Training');
+  });
 });
