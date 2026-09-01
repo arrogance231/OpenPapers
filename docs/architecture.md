@@ -81,6 +81,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add citation-integrity enforcement to every generated response.
 - Training recipes now project deterministic methodology, loss/objective, dataset, and explicit parameter facts from one parsed document, preserving derived evidence and leaving absent fields `NOT_REPORTED`.
 - Added bounded `build_research_report` service/MCP support with `literature_review`, `implementation`, and `reproducibility` modes; cited facts, recommendations, and year-sorted paper timelines are separate fields.
+- Added deterministic paper-versus-code reproducibility comparison for explicit numeric recipe fields, preserving paper source URLs and revision-pinned code line locators; absent values remain unavailable rather than conflicts.
 
 ### Phase 9 — Library and release engineering
 - Add local library, collections, ResearchPacks, refresh/remove tools, migrations, Postgres adapter, vector-retrieval interface, Docker hardening, and release documentation.
