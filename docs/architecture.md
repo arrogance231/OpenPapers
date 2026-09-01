@@ -72,6 +72,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented `compare_papers`, `compare_methods`, and `verify_claim` with bounded inputs, direct metadata/search evidence, explicit overlap/difference reporting, conservative claim verification, and `UNKNOWN` benchmark comparability when aligned benchmark evidence is absent. The complete public Phase 7 tool inventory is covered by a registration regression test.
 - Extended ecosystem MCP responses with formal evidence records for GitHub implementation searches, Hugging Face models/datasets, and repository configuration discovery/reads, retaining revision, commit, blob, path, and URL provenance while keeping implementation status conservative.
 - Strengthened `verify_claim` to inspect persisted claim conflicts, return `CONTRADICTED` when applicable, and expose both sides' deduplicated evidence; claims without independent verification remain `UNKNOWN`.
+- Made `compare_methods` provider-independent by matching overlap first on normalized DOI, then arXiv ID, then canonical title/author metadata rather than provider-local paper IDs.
 
 ### Phase 8 — Reproducibility and reports
 - Complete training-recipe extraction and paper-vs-code conflict reporting.
