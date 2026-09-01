@@ -20,4 +20,9 @@ describe('Phase 9 collection MCP boundary',()=>{
     const response=await handlers.get('add_paper_to_collection')!({collection_id:'missing',paper_id:'paper-a'});
     expect(response.isError).toBe(true); expect(response.content[0].text).toContain('NOT_FOUND');
   });
+  it('exports ResearchPacks through the public handler',async()=>{
+    const pack={format:'openpapers.research-pack.v1',collection:{id:'collection-a',name:'papers'},papers:[],evidence:[]}; const {server,handlers}=capture(); registerTools(server as any,{buildResearchPack:vi.fn().mockReturnValue(pack)} as any);
+    const response=await handlers.get('export_research_pack')!({collection_id:'collection-a'});
+    expect(response.structuredContent).toEqual(pack); expect(response.content[0].text).toContain('0 paper(s)');
+  });
 });
