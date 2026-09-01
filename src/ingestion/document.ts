@@ -2,9 +2,9 @@ import type { AcquiredDocument } from './acquisition.js';
 
 export type DocumentFormat = 'html' | 'pdf' | 'unknown';
 export interface DocumentSection { level: number; heading: string; text: string; page?: number; pageId?: string; isAppendix?: boolean; }
-export interface DocumentReference { text: string; href?: string; }
-export interface DocumentFigure { caption: string; }
-export interface DocumentTable { caption: string; text: string; }
+export interface DocumentReference { text: string; href?: string; id?: string; title?: string; authors?: string[]; year?: number; doi?: string; url?: string; }
+export interface DocumentFigure { caption: string; page?: number; pageId?: string; }
+export interface DocumentTable { caption: string; text: string; page?: number; pageId?: string; }
 export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; equations?: string[]; figures?: DocumentFigure[]; tables?: DocumentTable[]; appendices?: DocumentSection[]; }
 
 const decodeEntities = (value: string): string => value.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'");
@@ -87,11 +87,33 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
       else sections.push({level:0,heading:'',text,...(page === undefined ? {} : {page}),...(pageId === undefined ? {} : {pageId})});
     }
   }
+  const pageAt = (position: number): {page?: number; pageId?: string} => {
+    let current: {page?: number; pageId?: string} = {};
+    for (const marker of body.matchAll(/<pb\b([^>]*)\/?\s*>/gi)) {
+      if ((marker.index ?? 0) > position) break;
+      const attrs = marker[1] ?? '';
+      const number = attrs.match(/\bn\s*=\s*["'](\d+)["']/i)?.[1];
+      const identifier = attrs.match(/\b(?:xml:)?id\s*=\s*["']([^"']+)["']/i)?.[1];
+      current = {...(number ? {page:Number(number)} : {}),...(identifier ? {pageId:identifier} : {})};
+    }
+    return current;
+  };
   const equations = [...tei.matchAll(/<(?:formula|equation)\b[^>]*>([\s\S]*?)<\/(?:formula|equation)>/gi)].map(match => textOf(match[1]!)).filter(Boolean);
-  const figures = [...tei.matchAll(/<figure\b[^>]*>[\s\S]*?<figDesc\b[^>]*>([\s\S]*?)<\/figDesc>[\s\S]*?<\/figure>/gi)].map(match => ({caption:textOf(match[1]!)})).filter(figure => figure.caption);
-  const tables = [...tei.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map(match => { const content = match[1]!; const caption = textOf(content.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? ''); return {caption,text:textOf(content)}; }).filter(table => table.caption || table.text);
+  const figures = [...body.matchAll(/<figure\b[^>]*>[\s\S]*?<figDesc\b[^>]*>([\s\S]*?)<\/figDesc>[\s\S]*?<\/figure>/gi)].map(match => ({caption:textOf(match[1]!),...pageAt(match.index ?? 0)})).filter(figure => figure.caption);
+  const tables = [...body.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map(match => { const content = match[1]!; const caption = textOf(content.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? ''); return {caption,text:textOf(content),...pageAt(match.index ?? 0)}; }).filter(table => table.caption || table.text);
   const references: DocumentReference[] = [];
-  for (const match of tei.matchAll(/<biblStruct\b[^>]*>([\s\S]*?)<\/biblStruct>/gi)) { const text = textOf(match[1]!); if (text) references.push({text}); }
+  for (const match of tei.matchAll(/<biblStruct\b([^>]*)>([\s\S]*?)<\/biblStruct>/gi)) {
+    const attrs = match[1] ?? '';
+    const content = match[2]!;
+    const title = content.match(/<analytic\b[^>]*>[\s\S]*?<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? content.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1];
+    const authors = [...content.matchAll(/<surname\b[^>]*>([\s\S]*?)<\/surname>/gi)].map(author => textOf(author[1]!));
+    const yearValue = content.match(/<date\b[^>]*\bwhen\s*=\s*["'](\d{4})["']/i)?.[1];
+    const doiRaw = content.match(/<idno\b[^>]*\btype\s*=\s*["']doi["'][^>]*>([\s\S]*?)<\/idno>/i)?.[1];
+    const url = content.match(/<idno\b[^>]*\btype\s*=\s*["'](?:url|uri)["'][^>]*>([\s\S]*?)<\/idno>/i)?.[1];
+    const id = attrs.match(/\b(?:xml:)?id\s*=\s*["']([^"']+)["']/i)?.[1];
+    const reference: DocumentReference = {text:textOf(title ?? content),...(id ? {id} : {}),...(title ? {title:textOf(title)} : {}),...(authors.length ? {authors} : {}),...(yearValue ? {year:Number(yearValue)} : {}),...(doiRaw ? {doi:textOf(doiRaw)} : {}),...(url ? {url:textOf(url)} : {})};
+    references.push(reference);
+  }
   const appendices = sections.filter(section => section.isAppendix);
   return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[],equations,figures,tables,appendices};
 }
