@@ -12,4 +12,13 @@ describe('provenance-first recipe behavior', () => {
     expect(response.data.missing_information.length).toBeGreaterThan(0);
     expect(response.evidence[0]?.evidenceType).toBe('UNVERIFIED');
   });
+  it('returns evidence-backed Semantic Scholar graph items', async () => {
+    const work: ResearchWork = { paperId:'work_graph', title:'Graph Paper', authors:[], publicationStatus:'preprint', bibtex:'', sourceProviders:['semantic_scholar'], versions:[] };
+    const service = new ResearchService(undefined, undefined, undefined, undefined, { getReferences: async () => [work], getCitations: async () => [], getRelated: async () => [], resolveAuthor: async () => undefined } as never);
+    const result = await service.graph('S2-root', 'reference', 10);
+    expect(result.data[0]?.relation).toBe('reference');
+    expect(result.data[0]?.source).toBe('semantic_scholar');
+    expect(result.data[0]?.evidence.sourceId).toBe(work.paperId);
+    expect(result.references[0]?.paperId).toBe(work.paperId);
+  });
 });

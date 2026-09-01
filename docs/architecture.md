@@ -28,8 +28,9 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add revision-pinned repository config discovery and conservative scalar/section parameter extraction without executing repository code.
 - Acceptance: Phase 3 ecosystem discovery is complete; deeper paper ingestion, citation graphs, and execution-backed reproducibility remain later phases.
 
-### Phase 4 — Semantic Scholar and citation graph
+### Phase 4 — Semantic Scholar and citation graph (in progress)
 - Add Semantic Scholar after API-key approval, with paper lookup, references, citations, related works, author resolution, and caching.
+- Implemented: typed Semantic Scholar references/citations/recommendations/author endpoints, provider mapping, shared reliability integration, service graph responses, MCP graph tools, and deterministic fixture coverage.
 - Combine Semantic Scholar/OpenAlex graph data with DOI/arXiv/publication-lineage reconciliation.
 - Add foundational/follow-up relationships and conflict-aware graph provenance.
 

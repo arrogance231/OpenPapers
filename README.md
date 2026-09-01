@@ -23,6 +23,8 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 ## MCP tools
 
 - `search_papers({query, limit})`: parallel arXiv, Crossref, OpenAlex, and best-effort Semantic Scholar retrieval with expansion, canonical deduplication, ranking rationale, provider failure transparency, and evidence.
+- `get_references({paper_id, limit})`, `get_citations({paper_id, limit})`, and `get_related_papers({paper_id, limit})`: Semantic Scholar graph retrieval with relation labels, source provenance, and evidence-backed works.
+- `resolve_author({author_id})`: Semantic Scholar author resolution with aliases and linked paper IDs.
 - `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; paper-linked searches include README/author-overlap assessments, conservative attribution classification including organization-owner claims, formal evidence records, commit/blob and line locators when available, while unsupported official claims remain `UNKNOWN`.
 - `find_models({query, limit})`: Hugging Face model discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
 - `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
@@ -49,7 +51,7 @@ Provider adapters are dependency-injected and can be replaced with Semantic Scho
 
 ## Configuration
 
-Copy `.env.example` to `.env`. Optional API keys are never logged or committed. Metadata cache directories and provider-specific rate limiting are planned for the next phase; the current service uses parallel bounded requests and does not execute third-party code.
+Copy `.env.example` to `.env`. Optional API keys are never logged or committed. Semantic Scholar graph calls work through the injected provider boundary and remain subject to shared reliability controls; anonymous usage is rate-limited and an API key may be configured for approved higher-volume access. The current service does not execute third-party code.
 
 ## Development
 
