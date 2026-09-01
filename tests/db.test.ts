@@ -39,4 +39,14 @@ describe('research database', () => {
     expect(db.getClaimConflicts()).toEqual([conflict]);
     db.close();
   });
+  it('persists named collections and paper membership', () => {
+    const db = new ResearchDb(':memory:');
+    const collection = db.createCollection('distillation');
+    db.addToCollection(collection.id, 'paper-a');
+    db.addToCollection(collection.id, 'paper-a');
+    db.addToCollection(collection.id, 'paper-b');
+    expect(db.getCollection(collection.id)).toEqual({id:collection.id,name:'distillation',paperIds:['paper-a','paper-b']});
+    expect(db.listCollections()).toEqual([{id:collection.id,name:'distillation',paperIds:['paper-a','paper-b']}]);
+    db.close();
+  });
 });
