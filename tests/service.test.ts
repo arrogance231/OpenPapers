@@ -61,4 +61,11 @@ describe('provenance-first recipe behavior', () => {
     const result=await new ResearchService(db,undefined,undefined,openalex,provider).graphAll('root','reference');
     expect(result.transparency.conflicts?.map(conflict=>conflict.field)).toEqual(expect.arrayContaining(['title','year']));
   });
+  it('dispatches acquired PDFs to the configured PDF parser', async () => {
+    const pdf = new Uint8Array([37,80,68,70,45]);
+    const acquirer = {acquire:async()=>({url:'https://example.com/paper.pdf',contentType:'application/pdf',bytes:pdf.byteLength,body:pdf})} as never;
+    const parser = {process:async()=>({format:'pdf' as const,url:'https://example.com/paper.pdf',sections:[],references:[],warnings:[]})} as never;
+    const document = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer,parser).readPaper('https://example.com/paper.pdf');
+    expect(document.format).toBe('pdf');
+  });
 });

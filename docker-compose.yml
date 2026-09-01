@@ -1,15 +1,25 @@
 services:
-  research-mcp:
+  openpapers:
     build: .
     environment:
-      MCP_TRANSPORT: http
-      HTTP_HOST: 0.0.0.0
-      HTTP_PORT: 8787
+      GROBID_URL: http://grobid:8070
       RESEARCH_DB_PATH: /app/data/research.sqlite
     ports:
-      - "127.0.0.1:8787:8787"
+      - "8787:8787"
+    depends_on:
+      grobid:
+        condition: service_started
     volumes:
-      - research-data:/app/data
+      - openpapers-data:/app/data
+
+  grobid:
+    image: grobid/grobid:0.9.1-full
+    init: true
+    ulimits:
+      core: 0
+    ports:
+      - "8070:8070"
+    restart: unless-stopped
 
 volumes:
-  research-data:
+  openpapers-data:

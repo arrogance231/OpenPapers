@@ -3,7 +3,7 @@ import type { AcquiredDocument } from './acquisition.js';
 export type DocumentFormat = 'html' | 'pdf' | 'unknown';
 export interface DocumentSection { level: number; heading: string; text: string; }
 export interface DocumentReference { text: string; href?: string; }
-export interface ParsedDocument { format: 'html'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; }
+export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; }
 
 const decodeEntities = (value: string): string => value.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'");
 const textOf = (value: string): string => decodeEntities(value.replace(/<!--.*?-->/gs, '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+([.,!?;:])/g, '$1').replace(/\s+/g, ' ').trim());
@@ -42,4 +42,21 @@ export function parseDocument(document: AcquiredDocument): ParsedDocument {
     if (/^references?$/i.test(current.heading) || /^\[\d+\]/.test(text)) references.push({text, ...(href ? {href} : {})});
   }
   return {format:'html',url:document.url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[]};
+}
+
+
+export function parseGrobidTei(url: string, tei: string): ParsedDocument {
+  const titleMatch = tei.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+  const sections: DocumentSection[] = [];
+  for (const match of tei.matchAll(/<div\b[^>]*>[\s\S]*?<head\b[^>]*>([\s\S]*?)<\/head>([\s\S]*?)(?=<div\b|<\/body>)/gi)) {
+    const heading = textOf(match[1]!);
+    const text = textOf(match[2]!);
+    if (heading || text) sections.push({level:1,heading,text});
+  }
+  const references: DocumentReference[] = [];
+  for (const match of tei.matchAll(/<biblStruct\b[^>]*>([\s\S]*?)<\/biblStruct>/gi)) {
+    const text = textOf(match[1]!);
+    if (text) references.push({text});
+  }
+  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[]};
 }
