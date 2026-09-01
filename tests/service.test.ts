@@ -31,4 +31,16 @@ describe('provenance-first recipe behavior', () => {
     await service.graph('root', 'reference');
     expect(service.db.getGraphEdges('root')[0]?.targetPaperId).toBe('canonical_work');
   });
+  it('merges Semantic Scholar and OpenAlex graph candidates when a root has an OpenAlex identity', async () => {
+    const db = new ResearchDb(':memory:');
+    db.upsertWork({paperId:'root',title:'Root',authors:[],openAlexId:'https://openalex.org/W1',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]});
+    const semanticWork: ResearchWork = {paperId:'semantic_child',title:'Semantic Child',authors:[],publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
+    const openAlexWork: ResearchWork = {paperId:'openalex_child',title:'OpenAlex Child',authors:[],openAlexId:'https://openalex.org/W2',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]};
+    const provider={getReferences:async()=>[semanticWork],getCitations:async()=>[],getRelated:async()=>[],resolveAuthor:async()=>undefined} as never;
+    const openalex={getReferences:async()=>[openAlexWork],getCitations:async()=>[],getRelated:async()=>[]} as never;
+    const service=new ResearchService(db,undefined,undefined,openalex,provider);
+    const result=await service.graphAll('root','reference');
+    expect(result.data.map(item=>item.source)).toEqual(['semantic_scholar','openalex']);
+    expect(result.transparency.sourcesSearched).toEqual(['semantic_scholar','openalex']);
+  });
 });

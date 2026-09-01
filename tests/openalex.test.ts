@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mapOpenAlexWork } from '../src/providers/openalex.js';
+import { mapOpenAlexWork, OpenAlexProvider } from '../src/providers/openalex.js';
 
 describe('OpenAlex provider mapping', () => {
   it('maps scholarly metadata and preserves all authors and OA links', () => {
@@ -15,5 +15,14 @@ describe('OpenAlex provider mapping', () => {
     const work = mapOpenAlexWork({id:'https://openalex.org/W1', title:'Topic paper', authorships:[{author:{id:'https://openalex.org/A1',display_name:'Ada Lovelace'}}], topics:[{display_name:'Representation Learning'},{display_name:'Representation Learning'}]});
     expect(work?.authorIds).toEqual(['https://openalex.org/A1']);
     expect(work?.topics).toEqual(['Representation Learning']);
+  });
+});
+
+describe('OpenAlex graph provider', () => {
+  it('retrieves referenced works and works citing a parent', async () => {
+    const child={id:'https://openalex.org/W2',title:'Referenced',publication_year:2024,authorships:[]};
+    const provider=new OpenAlexProvider(async (input) => { const value=String(input); const body=value.includes('filter=cites') ? {results:[child]} : value.includes('W2') ? child : {referenced_works:['https://openalex.org/W2']}; return new Response(JSON.stringify(body),{status:200}); });
+    expect((await provider.getReferences('https://openalex.org/W1',1))[0]?.title).toBe('Referenced');
+    expect((await provider.getCitations('https://openalex.org/W1',1))[0]?.openAlexId).toBe('https://openalex.org/W2');
   });
 });
