@@ -55,17 +55,17 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references (GROBID-backed fields implemented; deeper layout fidelity remains dependent on TEI content).
 - Implemented: bounded `read_paper` MCP acquisition/parsing and `search_within_paper`; matches carry stable URL, section heading/level, page number/ID when supplied by GROBID, chunk ordinal, and chunk ID provenance.
 
-### Phase 6 — Evidence-backed extraction
-- Refine Phase 4 graph relationship candidates using explicit provider lineage metadata where available and add live end-to-end MCP graph verification.
+### Phase 6 — Evidence-backed extraction — COMPLETE
+- Completed graph relationship refinement using explicit provider lineage metadata and live end-to-end HTTP MCP verification. Positive OpenAlex graph results and transparent Semantic Scholar provider failures were both observed.
 - Implemented first slice: deterministic section-heading and structured-equation extraction is exposed through `ResearchService.extractPaperFacts` and the bounded `extract_paper_facts` MCP tool. Results are explicitly heuristic and carry URL/section/page locators.
 - Implemented second slice: heuristic facts normalize into stable derived claims; SQLite persists claims and conflict records, and `extract_paper_claims` exposes the reconciled result through MCP.
 - Implemented third slice: explicit training parameter extraction recognizes labeled numeric and optimizer values without inferring unlabeled numbers, and exposes section/page provenance through `extract_training_parameters`.
 - Implemented fourth slice: graph classification accepts explicit provider relation metadata, rejects contradictory metadata, and exposes `relationshipBasis` in graph responses.
 - Implemented fifth slice: added the provider-independent async `PaperExtractor<T>` contract, deterministic implementation, and injectable service execution seam.
 - Implemented sixth slice: claims now carry full persisted `Evidence` records, explicit parameters project into typed partial recipes, and live HTTP MCP initialization/tool discovery/graph failure transparency were verified.
-- Add deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
-- Add claim/evidence persistence and conflict detection.
-- Add optional provider-independent LLM extractor interface.
+- Completed deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
+- Completed claim/evidence persistence and conflict detection.
+- Completed the optional provider-independent extractor interface; an LLM implementation remains an external integration choice, not a Phase 6 backlog item.
 
 ### Phase 7 — Research tools
 - Add `get_references`, `get_citations`, `get_related_papers`, `research_method`, `find_implementations`, `get_repository_config`, `find_datasets`, and `find_models`.
