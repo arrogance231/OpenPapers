@@ -120,23 +120,30 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[],equations,figures,tables,appendices,citations};
 }
 
-export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; sectionHeading: string; sectionLevel: number; text: string; page?: number; pageId?: string; }
+export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; kind: 'section' | 'equation' | 'figure' | 'table' | 'reference'; sectionHeading: string; sectionLevel: number; text: string; referenceId?: string; page?: number; pageId?: string; }
 
 export function chunkDocument(document: ParsedDocument, maxChars = 2000): DocumentChunk[] {
   if (!Number.isInteger(maxChars) || maxChars < 1) throw new Error('maxChars must be a positive integer');
   const chunks: DocumentChunk[] = [];
+  const push = (kind: DocumentChunk['kind'], text: string, sectionHeading = '', sectionLevel = 0, extra: Partial<DocumentChunk> = {}) => {
+    if (!text) return;
+    chunks.push({chunkId:`${document.url}#${kind}-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,kind,sectionHeading,sectionLevel,text,...extra});
+  };
   for (const [sectionIndex, section] of document.sections.entries()) {
     const words = section.text.split(/\s+/).filter(Boolean);
     let text = '';
-    for (const word of words) {
-      if (text && text.length + word.length + 1 > maxChars) {
-        chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text,...(section.page === undefined ? {} : {page:section.page}),...(section.pageId === undefined ? {} : {pageId:section.pageId})});
-        text = '';
-      }
-      text = text ? `${text} ${word}` : word;
-    }
-    if (text) chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text,...(section.page === undefined ? {} : {page:section.page}),...(section.pageId === undefined ? {} : {pageId:section.pageId})});
+    const save = () => { if (text) { push('section',text,section.heading,section.level,{...(section.page === undefined ? {} : {page:section.page}),...(section.pageId === undefined ? {} : {pageId:section.pageId})}); text=''; } };
+    for (const word of words) { if (text && text.length + word.length + 1 > maxChars) save(); text = text ? `${text} ${word}` : word; }
+    save();
+    void sectionIndex;
   }
+  const location = document.sections.find(section => section.page !== undefined || section.pageId !== undefined);
+  const page = location?.page === undefined ? {} : {page:location.page};
+  const pageId = location?.pageId === undefined ? {} : {pageId:location.pageId};
+  for (const equation of document.equations ?? []) push('equation',equation,'',0,{...page,...pageId});
+  for (const figure of document.figures ?? []) push('figure',figure.caption,'',0,{...(figure.page === undefined ? {} : {page:figure.page}),...(figure.pageId === undefined ? {} : {pageId:figure.pageId})});
+  for (const table of document.tables ?? []) push('table',table.text,table.caption,0,{...(table.page === undefined ? {} : {page:table.page}),...(table.pageId === undefined ? {} : {pageId:table.pageId})});
+  for (const reference of document.references) push('reference',reference.text,'References',0,{...(reference.id ? {referenceId:reference.id} : {})});
   return chunks;
 }
 

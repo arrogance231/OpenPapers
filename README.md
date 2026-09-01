@@ -40,6 +40,7 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 - GROBID TEI extraction also exposes equations, figure captions, table text/captions, and appendix sections as explicit structured fields; unsupported or absent structures remain empty rather than inferred.
 - Bibliographic references now preserve GROBID identifiers, normalized title, author surnames, publication year, DOI, and URL identifiers when present. Figure and table records also carry the latest GROBID page number/ID.
 - GROBID table records include normalized row/cell arrays, while in-text citation links expose their bibliography target, displayed citation text, section heading, and page locator.
+- `search_within_paper` searches typed section, equation, figure, table, and reference chunks; every match reports its element kind and stable source locator.
 - `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; paper-linked searches include README/author-overlap assessments, conservative attribution classification including organization-owner claims, formal evidence records, commit/blob and line locators when available, while unsupported official claims remain `UNKNOWN`.
 - `find_models({query, limit})`: Hugging Face model discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
 - `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.

@@ -16,6 +16,8 @@ describe('structured document parsing', () => {
     expect(parsed.appendices).toEqual([{level:1,heading:'Appendix A',text:'Supplementary details.',page:3,pageId:'page_3',isAppendix:true}]);
     expect(parsed.tables?.[0]?.rows).toEqual([['A','B']]);
     expect(parsed.citations).toEqual([{target:'b1',text:'[1]',sectionHeading:'Introduction',page:3,pageId:'page_3'}]);
+    expect(searchDocument(parsed, 'x = y', 5)).toMatchObject([{kind:'equation',text:'x = y + 1',page:3,pageId:'page_3'}]);
+    expect(searchDocument(parsed, 'Referenced Work', 5)).toMatchObject([{kind:'reference',referenceId:'b1',text:'Referenced Work'}]);
   });
 
   it('posts PDF bytes to GROBID and returns parsed TEI', async () => {
