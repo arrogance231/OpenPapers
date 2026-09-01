@@ -20,6 +20,12 @@ describe('structured document parsing', () => {
     expect(searchDocument(parsed, 'Referenced Work', 5)).toMatchObject([{kind:'reference',referenceId:'b1',text:'Referenced Work'}]);
   });
 
+  it('reports citation targets that have no extracted bibliography record', () => {
+    const parsed = parseGrobidTei('https://example.com/missing.pdf', '<TEI><text><body><div><head>Methods</head><p>See <ref type="bibr" target="#missing">[9]</ref>.</p></div></body><back><listBibl/></back></text></TEI>');
+    expect(parsed.citations).toEqual([{target:'missing',text:'[9]',sectionHeading:'Methods'}]);
+    expect(parsed.warnings).toEqual(['unresolved citation target: missing']);
+  });
+
   it('posts PDF bytes to GROBID and returns parsed TEI', async () => {
     let request: Request | undefined;
     const fetcher = async (input: RequestInfo | URL, init?: RequestInit) => { request = new Request(input, init); return new Response('<TEI><teiHeader><fileDesc><titleStmt><title>Result</title></titleStmt></fileDesc></teiHeader><text><body><div><head>Body</head><p>Content.</p></div></body></text></TEI>', {status:200, headers:{'content-type':'application/xml'}}); };

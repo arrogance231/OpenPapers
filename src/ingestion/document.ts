@@ -117,7 +117,9 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
     references.push(reference);
   }
   const appendices = sections.filter(section => section.isAppendix);
-  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[],equations,figures,tables,appendices,citations};
+  const referenceIds = new Set(references.map(reference => reference.id).filter((id): id is string => Boolean(id)));
+  const warnings = [...new Set(citations.filter(citation => !referenceIds.has(citation.target)).map(citation => `unresolved citation target: ${citation.target}`))];
+  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings,equations,figures,tables,appendices,citations};
 }
 
 export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; kind: 'section' | 'equation' | 'figure' | 'table' | 'reference'; sectionHeading: string; sectionLevel: number; text: string; referenceId?: string; page?: number; pageId?: string; }
