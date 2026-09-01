@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ResearchService, classifyGraphRelationship } from '../src/research/service.js';
 import { ResearchDb } from '../src/database/db.js';
 import type { ResearchWork } from '../src/models/research.js';
+import type { PaperExtractor } from '../src/extraction/extractor.js';
 
 describe('provenance-first recipe behavior', () => {
   it('classifies chronology-supported graph candidates conservatively', () => {
@@ -92,5 +93,12 @@ describe('provenance-first recipe behavior', () => {
     const result = await new ResearchService(db,undefined,undefined,undefined,undefined,acquirer).extractPaperClaims('https://example.com/claims.html');
     expect(result.claims).toMatchObject([{kind:'loss',statement:'Uses KL divergence.',evidenceType:'DERIVED'}]);
     expect(db.getClaims()).toHaveLength(1);
+  });
+  it('runs an injected provider-independent extractor after parsing', async () => {
+    const body = new TextEncoder().encode('<html><body><h1>Method</h1><p>We train a model.</p></body></html>');
+    const acquirer = {acquire:async()=>({url:'https://example.com/custom.html',contentType:'text/html',bytes:body.byteLength,body})} as never;
+    const extractor: PaperExtractor<string> = {name:'test',extract:async document=>document.sections[0]?.heading ?? 'missing'};
+    const value = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer).extractWith('https://example.com/custom.html',extractor);
+    expect(value).toBe('Method');
   });
 });

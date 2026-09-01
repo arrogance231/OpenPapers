@@ -13,6 +13,7 @@ import { PdfParserChain, GrobidClient, createConfiguredPdfFallbacks } from '../i
 import { extractPaperFacts, type PaperFact } from '../extraction/heuristic.js';
 import { extractPaperClaims, reconcileClaims, type PaperClaim, type ClaimConflict } from '../extraction/claims.js';
 import { extractTrainingParameters, type TrainingParameter } from '../extraction/parameters.js';
+import type { PaperExtractor } from '../extraction/extractor.js';
 
 const missing = <T>(): Reported<T> => ({ value: null, status: 'NOT_REPORTED' });
 export interface SearchFilters { yearFrom?: number; yearTo?: number; author?: string; venue?: string; topic?: string; }
@@ -58,6 +59,7 @@ export class ResearchService {
   async extractPaperFacts(url:string): Promise<PaperFact[]> { return extractPaperFacts(await this.readPaper(url)); }
   async extractPaperClaims(url:string): Promise<{claims:PaperClaim[]; conflicts:ClaimConflict[]}> { const claims=extractPaperClaims(await this.extractPaperFacts(url)); const reconciliation=reconcileClaims(this.db.getClaims(),claims); claims.forEach(claim=>this.db.saveClaim(claim)); reconciliation.conflicts.forEach(conflict=>this.db.saveClaimConflict(conflict)); return {claims,conflicts:reconciliation.conflicts}; }
   async extractTrainingParameters(url:string): Promise<TrainingParameter[]> { return extractTrainingParameters(await this.readPaper(url)); }
+  async extractWith<T>(url:string, extractor:PaperExtractor<T>): Promise<T> { return extractor.extract(await this.readPaper(url)); }
   getPaper(id: string): ResearchWork | undefined { return this.db.getWork(id); }
   recipe(work: ResearchWork): ResearchResponse<TrainingRecipe> { const source = makeEvidence(work.paperId, work, 'The paper metadata is verified; training configuration extraction requires an ingested full text or official configuration.', 'UNVERIFIED', 'C'); const recipe: TrainingRecipe = { method: 'unknown', teacher: {}, student: {}, objectives: missing<string[]>(), losses: missing<string[]>(), temperature: missing<number>(), alpha: missing<number>(), optimizer: {}, scheduler: {}, learning_rate: missing<number>(), batch_size: missing<number>(), gradient_accumulation: missing<number>(), sequence_length: missing<number>(), epochs: missing<number>(), training_steps: missing<number>(), warmup: missing<string>(), weight_decay: missing<number>(), precision: missing<string>(), gradient_clipping: missing<number>(), datasets: missing<string[]>(), missing_information: ['Full paper text or official configuration has not been ingested. No parameters were guessed.'], sources: [source] }; return { summary: `No training parameters are asserted for ${work.title}; unavailable fields are explicitly marked NOT_REPORTED. ${source.citationText}`, data: recipe, evidence: [source], references: [work], transparency: { expandedQueries: [], sourcesSearched: ['local database'], candidates: 1, retrievedAt: new Date().toISOString(), rankingRationale: ['provenance-first refusal to infer missing parameters'] } }; }
 }
