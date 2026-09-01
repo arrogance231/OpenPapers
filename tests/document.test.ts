@@ -12,8 +12,10 @@ describe('structured document parsing', () => {
     expect(parsed.references).toMatchObject([{text:'Referenced Work',id:'b1',title:'Referenced Work',authors:['Doe'],year:2024,doi:'10.1234/example'}]);
     expect(parsed.equations).toEqual(['x = y + 1']);
     expect(parsed.figures).toEqual([{caption:'System overview.',page:3,pageId:'page_3'}]);
-    expect(parsed.tables).toEqual([{caption:'Results',text:'Results A B',page:3,pageId:'page_3'}]);
+    expect(parsed.tables).toEqual([{caption:'Results',text:'Results A B',page:3,pageId:'page_3',rows:[['A','B']]}]);
     expect(parsed.appendices).toEqual([{level:1,heading:'Appendix A',text:'Supplementary details.',page:3,pageId:'page_3',isAppendix:true}]);
+    expect(parsed.tables?.[0]?.rows).toEqual([['A','B']]);
+    expect(parsed.citations).toEqual([{target:'b1',text:'[1]',sectionHeading:'Introduction',page:3,pageId:'page_3'}]);
   });
 
   it('posts PDF bytes to GROBID and returns parsed TEI', async () => {

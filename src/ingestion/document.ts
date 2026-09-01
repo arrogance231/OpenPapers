@@ -4,8 +4,9 @@ export type DocumentFormat = 'html' | 'pdf' | 'unknown';
 export interface DocumentSection { level: number; heading: string; text: string; page?: number; pageId?: string; isAppendix?: boolean; }
 export interface DocumentReference { text: string; href?: string; id?: string; title?: string; authors?: string[]; year?: number; doi?: string; url?: string; }
 export interface DocumentFigure { caption: string; page?: number; pageId?: string; }
-export interface DocumentTable { caption: string; text: string; page?: number; pageId?: string; }
-export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; equations?: string[]; figures?: DocumentFigure[]; tables?: DocumentTable[]; appendices?: DocumentSection[]; }
+export interface DocumentTable { caption: string; text: string; rows?: string[][]; page?: number; pageId?: string; }
+export interface DocumentCitation { target: string; text: string; sectionHeading: string; page?: number; pageId?: string; }
+export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; equations?: string[]; figures?: DocumentFigure[]; tables?: DocumentTable[]; appendices?: DocumentSection[]; citations?: DocumentCitation[]; }
 
 const decodeEntities = (value: string): string => value.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'");
 const textOf = (value: string): string => decodeEntities(value.replace(/<!--.*?-->/gs, '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+([.,!?;:])/g, '$1').replace(/\s+/g, ' ').trim());
@@ -100,7 +101,8 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   };
   const equations = [...tei.matchAll(/<(?:formula|equation)\b[^>]*>([\s\S]*?)<\/(?:formula|equation)>/gi)].map(match => textOf(match[1]!)).filter(Boolean);
   const figures = [...body.matchAll(/<figure\b[^>]*>[\s\S]*?<figDesc\b[^>]*>([\s\S]*?)<\/figDesc>[\s\S]*?<\/figure>/gi)].map(match => ({caption:textOf(match[1]!),...pageAt(match.index ?? 0)})).filter(figure => figure.caption);
-  const tables = [...body.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map(match => { const content = match[1]!; const caption = textOf(content.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? ''); return {caption,text:textOf(content),...pageAt(match.index ?? 0)}; }).filter(table => table.caption || table.text);
+  const tables = [...body.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map(match => { const content = match[1]!; const caption = textOf(content.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? ''); const rows = [...content.matchAll(/<row\b[^>]*>([\s\S]*?)<\/row>/gi)].map(row => [...row[1]!.matchAll(/<cell\b[^>]*>([\s\S]*?)<\/cell>/gi)].map(cell => textOf(cell[1]!))); return {caption,text:textOf(content),...(rows.length ? {rows} : {}),...pageAt(match.index ?? 0)}; }).filter(table => table.caption || table.text);
+  const citations = [...body.matchAll(/<ref\b([^>]*)>([\s\S]*?)<\/ref>/gi)].map(match => { const target = match[1]!.match(/\btarget\s*=\s*["']#?([^"']+)["']/i)?.[1]; const text = textOf(match[2]!); const position = match.index ?? 0; const headingMatches = [...body.slice(0, position).matchAll(/<head\b[^>]*>([\s\S]*?)<\/head\s*>/gi)]; return target && text ? {target,text,sectionHeading:headingMatches.length ? textOf(headingMatches.at(-1)![1]!) : '',...pageAt(position)} : undefined; }).filter((citation): citation is NonNullable<typeof citation> => Boolean(citation));
   const references: DocumentReference[] = [];
   for (const match of tei.matchAll(/<biblStruct\b([^>]*)>([\s\S]*?)<\/biblStruct>/gi)) {
     const attrs = match[1] ?? '';
@@ -115,7 +117,7 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
     references.push(reference);
   }
   const appendices = sections.filter(section => section.isAppendix);
-  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[],equations,figures,tables,appendices};
+  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[],equations,figures,tables,appendices,citations};
 }
 
 export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; sectionHeading: string; sectionLevel: number; text: string; page?: number; pageId?: string; }

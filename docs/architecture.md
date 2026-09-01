@@ -46,6 +46,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented fourth slice: the TEI parser tracks page-break number/ID metadata, nested division depth, page-aware sections, and page-aware search chunks.
 - Implemented fifth slice: GROBID TEI extraction preserves equations, figure captions, table captions/content, and appendix sections in typed fields.
 - Implemented sixth slice: bibliography records preserve source identifiers and normalized metadata; figure/table records inherit page locators from the nearest preceding TEI page break.
+- Implemented seventh slice: tables preserve row/cell structure and body `<ref>` elements become explicit citation links to bibliography IDs with section/page provenance.
 - Implemented: bounded PDF/HTML acquisition with SSRF, size, timeout, redirect, and path protections; decompression and archive protections remain parser-hardening work.
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references (GROBID-backed fields implemented; deeper layout fidelity remains dependent on TEI content).
 - Implemented: bounded `read_paper` MCP acquisition/parsing and `search_within_paper`; matches carry stable URL, section heading/level, page number/ID when supplied by GROBID, chunk ordinal, and chunk ID provenance.
