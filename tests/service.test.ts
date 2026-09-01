@@ -20,5 +20,6 @@ describe('provenance-first recipe behavior', () => {
     expect(result.data[0]?.source).toBe('semantic_scholar');
     expect(result.data[0]?.evidence.sourceId).toBe(work.paperId);
     expect(result.references[0]?.paperId).toBe(work.paperId);
+    expect(service.db.getGraphEdges('S2-root')).toEqual([expect.objectContaining({targetPaperId:work.paperId,relation:'reference',provider:'semantic_scholar',evidenceId:result.evidence[0]?.evidenceId})]);
   });
 });

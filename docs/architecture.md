@@ -31,6 +31,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 ### Phase 4 — Semantic Scholar and citation graph (in progress)
 - Add Semantic Scholar after API-key approval, with paper lookup, references, citations, related works, author resolution, and caching.
 - Implemented: typed Semantic Scholar references/citations/recommendations/author endpoints, provider mapping, shared reliability integration, service graph responses, MCP graph tools, and deterministic fixture coverage.
+- Implemented: graph nodes/evidence are persisted through the existing SQLite boundary, graph edges are deduplicated by source/target/relation/provider, and duplicate-work metadata disagreements are exposed as structured transparency conflicts.
 - Combine Semantic Scholar/OpenAlex graph data with DOI/arXiv/publication-lineage reconciliation.
 - Add foundational/follow-up relationships and conflict-aware graph provenance.
 

@@ -13,4 +13,11 @@ describe('research database', () => {
     expect(db.search('teacher', 5)).toHaveLength(1);
     db.close();
   });
+  it('round-trips graph edges and replaces duplicate provider edges', () => {
+    const db = new ResearchDb(':memory:');
+    const edge = {sourcePaperId:'work_a',targetPaperId:'work_b',relation:'reference' as const,provider:'semantic_scholar',evidenceId:'ev_edge',retrievedAt:'2026-09-01T00:00:00.000Z'};
+    db.upsertGraphEdge(edge); db.upsertGraphEdge({...edge,retrievedAt:'2026-09-01T00:01:00.000Z'});
+    expect(db.getGraphEdges('work_a')).toEqual([{...edge,retrievedAt:'2026-09-01T00:01:00.000Z'}]);
+    db.close();
+  });
 });
