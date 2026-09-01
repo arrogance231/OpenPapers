@@ -1,9 +1,11 @@
 import type { AcquiredDocument } from './acquisition.js';
 
 export type DocumentFormat = 'html' | 'pdf' | 'unknown';
-export interface DocumentSection { level: number; heading: string; text: string; page?: number; pageId?: string; }
+export interface DocumentSection { level: number; heading: string; text: string; page?: number; pageId?: string; isAppendix?: boolean; }
 export interface DocumentReference { text: string; href?: string; }
-export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; }
+export interface DocumentFigure { caption: string; }
+export interface DocumentTable { caption: string; text: string; }
+export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; equations?: string[]; figures?: DocumentFigure[]; tables?: DocumentTable[]; appendices?: DocumentSection[]; }
 
 const decodeEntities = (value: string): string => value.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'");
 const textOf = (value: string): string => decodeEntities(value.replace(/<!--.*?-->/gs, '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+([.,!?;:])/g, '$1').replace(/\s+/g, ' ').trim());
@@ -50,6 +52,7 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   const body = tei.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? '';
   const sections: DocumentSection[] = [];
   const sectionByDepth = new Map<number, DocumentSection>();
+  const appendixDepths = new Set<number>();
   let depth = 0;
   let page: number | undefined;
   let pageId: string | undefined;
@@ -62,27 +65,35 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
       const identifier = attrs.match(/\b(?:xml:)?id\s*=\s*["']([^"']+)["']/i)?.[1];
       page = number ? Number(number) : undefined;
       pageId = identifier;
-    } else if (/^<div\b/i.test(token)) depth += 1;
-    else if (/^<\/div/i.test(token)) { sectionByDepth.delete(depth); depth = Math.max(0, depth - 1); }
-    else if (match[2] !== undefined) {
+    } else if (/^<div\b/i.test(token)) {
+      depth += 1;
+      if (/\btype\s*=\s*["'](?:appendix|annex)["']/i.test(token)) appendixDepths.add(depth);
+    } else if (/^<\/div/i.test(token)) {
+      appendixDepths.delete(depth);
+      sectionByDepth.delete(depth);
+      depth = Math.max(0, depth - 1);
+    } else if (match[2] !== undefined) {
       const heading = textOf(match[2]);
-      const section: DocumentSection = {level:Math.max(1,depth),heading,text:'',...(page === undefined ? {} : {page}),...(pageId === undefined ? {} : {pageId})};
+      const level = Math.max(1, depth);
+      const isAppendix = [...appendixDepths].some(value => value <= level);
+      const section: DocumentSection = {level,heading,text:'',...(page === undefined ? {} : {page}),...(pageId === undefined ? {} : {pageId}),...(isAppendix ? {isAppendix:true} : {})};
       sections.push(section);
-      sectionByDepth.set(Math.max(1,depth), section);
+      sectionByDepth.set(level, section);
     } else if (match[3] !== undefined) {
       const text = textOf(match[3]);
       if (!text) continue;
-      const section = sectionByDepth.get(Math.max(1,depth));
+      const section = sectionByDepth.get(Math.max(1, depth));
       if (section) section.text = section.text ? `${section.text} ${text}` : text;
       else sections.push({level:0,heading:'',text,...(page === undefined ? {} : {page}),...(pageId === undefined ? {} : {pageId})});
     }
   }
+  const equations = [...tei.matchAll(/<(?:formula|equation)\b[^>]*>([\s\S]*?)<\/(?:formula|equation)>/gi)].map(match => textOf(match[1]!)).filter(Boolean);
+  const figures = [...tei.matchAll(/<figure\b[^>]*>[\s\S]*?<figDesc\b[^>]*>([\s\S]*?)<\/figDesc>[\s\S]*?<\/figure>/gi)].map(match => ({caption:textOf(match[1]!)})).filter(figure => figure.caption);
+  const tables = [...tei.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map(match => { const content = match[1]!; const caption = textOf(content.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? ''); return {caption,text:textOf(content)}; }).filter(table => table.caption || table.text);
   const references: DocumentReference[] = [];
-  for (const match of tei.matchAll(/<biblStruct\b[^>]*>([\s\S]*?)<\/biblStruct>/gi)) {
-    const text = textOf(match[1]!);
-    if (text) references.push({text});
-  }
-  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[]};
+  for (const match of tei.matchAll(/<biblStruct\b[^>]*>([\s\S]*?)<\/biblStruct>/gi)) { const text = textOf(match[1]!); if (text) references.push({text}); }
+  const appendices = sections.filter(section => section.isAppendix);
+  return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[],equations,figures,tables,appendices};
 }
 
 export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; sectionHeading: string; sectionLevel: number; text: string; page?: number; pageId?: string; }
