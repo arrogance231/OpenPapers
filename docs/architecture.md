@@ -28,7 +28,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Add revision-pinned repository config discovery and conservative scalar/section parameter extraction without executing repository code.
 - Acceptance: Phase 3 ecosystem discovery is complete; deeper paper ingestion, citation graphs, and execution-backed reproducibility remain later phases.
 
-### Phase 4 — Semantic Scholar and citation graph (in progress)
+### Phase 4 — Semantic Scholar and citation graph (complete)
 - Add Semantic Scholar after API-key approval, with paper lookup, references, citations, related works, author resolution, and caching.
 - Implemented: typed Semantic Scholar references/citations/recommendations/author endpoints, provider mapping, shared reliability integration, service graph responses, MCP graph tools, and deterministic fixture coverage.
 - Implemented: graph nodes/evidence are persisted through the existing SQLite boundary, graph edges are deduplicated by source/target/relation/provider, and duplicate-work metadata disagreements are exposed as structured transparency conflicts.
@@ -37,13 +37,16 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented: graph edges persist a conservative relationship class (`FOUNDATIONAL_CANDIDATE`, `FOLLOW_UP_CANDIDATE`, `DIRECT`, or `UNKNOWN`) with a migration for existing SQLite databases; labels are candidates, not unsupported causal claims.
 - Implemented: combine Semantic Scholar/OpenAlex graph data with DOI/arXiv/publication-lineage reconciliation.
 - Implemented: conservative foundational/follow-up candidate labels and edge-level conflict-aware graph provenance.
+- Phase 4 acceptance: live provider smoke checks succeeded with configured credentials; deterministic graph, persistence, provenance, and failure-transparency coverage is complete.
 
 ### Phase 5 — Structured paper ingestion
+- Implemented first slice: `PaperAcquirer` provides bounded byte-preserving HTTP acquisition with HTTP(S)-only validation, private/local host rejection, redirect revalidation and limits, timeout cancellation, declared-size checks, and streamed body limits.
 - Add bounded PDF/HTML acquisition with SSRF, size, timeout, decompression, and path protections.
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references.
 - Add `read_paper` and `search_within_paper` with chunk-level provenance.
 
 ### Phase 6 — Evidence-backed extraction
+- Refine Phase 4 graph relationship candidates using explicit provider lineage metadata where available and add live end-to-end MCP graph verification.
 - Add deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
 - Add claim/evidence persistence and conflict detection.
 - Add optional provider-independent LLM extractor interface.
