@@ -13,7 +13,7 @@ OpenPapers is designed as an FOSS project with small, replaceable boundaries. Co
 7. Never execute remote repository content.
 8. Add tests under `tests/` for mapping, malformed payloads, authentication headers, and provider failures.
 
-All external providers use `src/reliability/reliability.ts`. GET responses receive bounded in-memory TTL caching and concurrent request deduplication; retryable 429/5xx responses receive bounded backoff, numeric `Retry-After` handling, and process-wide rate limiting. Reliability counters, failures, and terminal request latency are exposed through research transparency. The fetcher remains injectable for deterministic tests.
+All external providers use `src/reliability/reliability.ts`. GET responses receive bounded in-memory TTL caching and concurrent request deduplication; requests carrying `Authorization` are never shared or cached, and `private`/`no-store` responses are not stored. Retryable 429/5xx responses and transient thrown network errors receive bounded backoff; both numeric and HTTP-date `Retry-After` values are honored. A FIFO process-wide limiter prevents concurrent bursts. Reliability counters, failures, and terminal request latency are exposed through research transparency. The fetcher remains injectable for deterministic tests.
 
 ## Add MCP tools
 
