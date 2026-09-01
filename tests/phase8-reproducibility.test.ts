@@ -7,5 +7,6 @@ describe('paper versus code reproducibility comparison', () => {
     const result = compareRecipeToConfig(recipe,[{name:'learning_rate',value:'0.0002',lineStart:4,lineEnd:4},{name:'batch_size',value:'32',lineStart:5,lineEnd:5}],{url:'https://github.com/org/repo/blob/abc/config.yaml',commitSha:'abc'});
     expect(result.conflicts).toEqual([expect.objectContaining({field:'learning_rate',paperValue:'0.0001',codeValue:'0.0002'})]);
     expect(result.matches).toEqual([expect.objectContaining({field:'batch_size'})]);
+    expect(result.evidence).toEqual(expect.arrayContaining([expect.objectContaining({evidenceType:'CODE_VERIFIED',locator:expect.objectContaining({commitSha:'abc',repositoryLineStart:4})})]));
   });
 });
