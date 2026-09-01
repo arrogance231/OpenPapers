@@ -8,7 +8,7 @@ services:
       - "8787:8787"
     depends_on:
       grobid:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - openpapers-data:/app/data
 
@@ -20,6 +20,11 @@ services:
     ports:
       - "8070:8070"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8070/api/isalive"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 volumes:
   openpapers-data:
