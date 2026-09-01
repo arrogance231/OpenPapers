@@ -67,9 +67,9 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Completed claim/evidence persistence and conflict detection.
 - Completed the optional provider-independent extractor interface; an LLM implementation remains an external integration choice, not a Phase 6 backlog item.
 
-### Phase 7 — Research tools
+### Phase 7 — Research tools — COMPLETE
 - Implemented `get_references`, `get_citations`, `get_related_papers`, `research_method`, `find_implementations`, `get_repository_config`, `find_datasets`, and `find_models`. `research_method` reuses bounded multi-provider search while preserving evidence, conflicts, and provider failures.
-- Implemented `compare_papers`, `compare_methods`, and `verify_claim` with bounded inputs, direct metadata/search evidence, explicit overlap/difference reporting, conservative claim verification, and `UNKNOWN` benchmark comparability when aligned benchmark evidence is absent.
+- Implemented `compare_papers`, `compare_methods`, and `verify_claim` with bounded inputs, direct metadata/search evidence, explicit overlap/difference reporting, conservative claim verification, and `UNKNOWN` benchmark comparability when aligned benchmark evidence is absent. The complete public Phase 7 tool inventory is covered by a registration regression test.
 
 ### Phase 8 — Reproducibility and reports
 - Complete training-recipe extraction and paper-vs-code conflict reporting.
