@@ -22,4 +22,13 @@ describe('provenance-first recipe behavior', () => {
     expect(result.references[0]?.paperId).toBe(work.paperId);
     expect(service.db.getGraphEdges('S2-root')).toEqual([expect.objectContaining({targetPaperId:work.paperId,relation:'reference',provider:'semantic_scholar',evidenceId:result.evidence[0]?.evidenceId})]);
   });
+  it('resolves graph nodes to existing DOI lineage identities', async () => {
+    const db = new ResearchDb(':memory:');
+    const existing: ResearchWork = { paperId:'canonical_work', title:'Canonical', authors:[], doi:'10.1000/canonical', publicationStatus:'unknown', bibtex:'', sourceProviders:['crossref'], versions:[] };
+    db.upsertWork(existing);
+    const graphWork = {...existing, paperId:'semantic_work', sourceProviders:['semantic_scholar']};
+    const service = new ResearchService(db, undefined, undefined, undefined, { getReferences: async () => [graphWork], getCitations: async () => [], getRelated: async () => [], resolveAuthor: async () => undefined } as never);
+    await service.graph('root', 'reference');
+    expect(service.db.getGraphEdges('root')[0]?.targetPaperId).toBe('canonical_work');
+  });
 });

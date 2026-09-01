@@ -26,6 +26,7 @@ Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticate
 - `get_references({paper_id, limit})`, `get_citations({paper_id, limit})`, and `get_related_papers({paper_id, limit})`: Semantic Scholar graph retrieval with relation labels, source provenance, and evidence-backed works.
 - `resolve_author({author_id})`: Semantic Scholar author resolution with aliases and linked paper IDs.
 - Graph retrieval persists discovered works, evidence, and normalized edges in the configured SQLite database; duplicate metadata conflicts remain visible in response transparency rather than being silently discarded.
+- Known DOI and arXiv identifiers are used to reconcile graph nodes with existing canonical works before edges are stored.
 - `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; paper-linked searches include README/author-overlap assessments, conservative attribution classification including organization-owner claims, formal evidence records, commit/blob and line locators when available, while unsupported official claims remain `UNKNOWN`.
 - `find_models({query, limit})`: Hugging Face model discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
 - `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
