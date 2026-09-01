@@ -14,4 +14,12 @@ describe('citation integrity', () => {
     expect(result.valid).toBe(false);
     expect(result.errors.some(e => e.includes('evidence'))).toBe(true);
   });
+  it('rejects evidence whose source metadata does not match the referenced work', () => {
+    const response = { summary:'A claim [A Author, 2025].', data:{claim:'x'}, evidence:[evidence], references:[{paperId:'paper_1',title:'Different paper',authors:evidence.authors,year:2025,publicationStatus:'preprint',bibtex:'',sourceProviders:['test'],versions:[] }], transparency:{expandedQueries:[],sourcesSearched:[],candidates:1,retrievedAt:'',rankingRationale:[]} } as unknown as ResearchResponse<unknown>;
+    expect(validateCitationIntegrity(response).valid).toBe(false);
+  });
+  it('requires the summary citation to match an evidence citation', () => {
+    const response = { summary:'A claim [Someone Else, 2025].', data:{claim:'x'}, evidence:[evidence], references:[{paperId:'paper_1',title:'Paper',authors:evidence.authors,year:2025,publicationStatus:'preprint',bibtex:'',sourceProviders:['test'],versions:[] }], transparency:{expandedQueries:[],sourcesSearched:[],candidates:1,retrievedAt:'',rankingRationale:[]} } as unknown as ResearchResponse<unknown>;
+    expect(validateCitationIntegrity(response).valid).toBe(false);
+  });
 });

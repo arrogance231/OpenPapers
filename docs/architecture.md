@@ -6,12 +6,13 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 
 ## Phase plan
 
-### Phase 1 — Citation policy and integrity foundation (start now)
+### Phase 1 — Citation policy and integrity foundation (complete)
 - Adopt `OpenPapers` naming everywhere.
 - Add opt-in `CITATIONS.md` workspace instruction, restricted to that file.
 - Add citation-integrity data types and validator: factual output must reference existing evidence IDs, sources, authors, and claimed locators.
 - Add tests for unsupported claims, missing evidence, and valid cited responses.
 - No external API keys required; use deterministic fixtures.
+- Acceptance: `CITATIONS.md` provides the opt-in workspace policy; citation objects preserve source metadata and locators; MCP responses are rejected when evidence is absent, unresolved, metadata-mismatched, or not cited in the human-readable summary.
 
 ### Phase 2 — Reliable retrieval infrastructure
 - Add shared in-memory response caching with TTL and concurrent request deduplication, with authorization/cache-control safety.

@@ -13,14 +13,19 @@ export function validateCitationIntegrity<T>(response: ResearchResponse<T>): Cit
   const references = new Set(response.references.map(reference => reference.paperId));
   for (const item of evidence) {
     if (!references.has(item.sourceId) && item.sourceId !== 'local') errors.push(`evidence ${item.evidenceId} references missing source ${item.sourceId}`);
+    const reference = response.references.find(candidate => candidate.paperId === item.sourceId);
+    if (reference && normalizeText(reference.title) !== normalizeText(item.title)) errors.push(`evidence ${item.evidenceId} title does not match source ${item.sourceId}`);
+    if (reference && !item.authors.some(author => reference.authors.some(candidate => candidate.normalizedName === author.normalizedName))) errors.push(`evidence ${item.evidenceId} authors do not match source ${item.sourceId}`);
   }
   const dataText = JSON.stringify(response.data ?? '');
   const hasClaimLikeData = /claim|method|loss|objective|temperature|optimizer|dataset|benchmark|result|training/i.test(dataText);
-  const hasCitedSummary = /\[[^\]]+,\s*(?:19|20)\d{2}/.test(response.summary);
+  const hasCitedSummary = evidence.some(item => response.summary.includes(item.citationText));
   if (hasClaimLikeData && evidence.length === 0) errors.push('factual research data has no evidence records');
   if (hasClaimLikeData && evidence.length > 0 && !hasCitedSummary) errors.push('factual research data has no human-readable citation in summary');
   return { valid: errors.length === 0, errors };
 }
+
+function normalizeText(value: string): string { return value.normalize('NFKD').replace(/[^\p{L}\p{N}]+/gu, '').toLowerCase(); }
 
 function validateEvidence(item: Evidence, ids: Set<string>, errors: string[]): void {
   if (!item.evidenceId) errors.push('evidence record has no evidenceId');
