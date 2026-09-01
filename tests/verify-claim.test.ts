@@ -12,4 +12,14 @@ describe('claim verification', () => {
     expect(response.data.claim).toEqual(claim);
     expect(response.evidence).toEqual([claim.evidence]);
   });
+  it('reports persisted claim conflicts instead of treating a conflicted claim as unknown', async () => {
+    const db = new ResearchDb(':memory:');
+    const base = {claimKey:'loss|loss',kind:'loss' as const,sourceUrl:'https://example.com/paper',locator:{section:'Loss'},confidence:'heuristic' as const,evidenceType:'DERIVED' as const};
+    const claimA = {...base,claimId:'claim-a',statement:'Uses KL.',evidence:{evidenceId:'evidence-a',sourceId:base.sourceUrl,authors:[],title:'A',identifiers:{},evidenceType:'DERIVED' as const,sourceQuality:'C' as const,evidence:'Uses KL.',citationText:base.sourceUrl}};
+    const claimB = {...base,claimId:'claim-b',statement:'Uses MSE.',evidence:{evidenceId:'evidence-b',sourceId:base.sourceUrl,authors:[],title:'B',identifiers:{},evidenceType:'DERIVED' as const,sourceQuality:'C' as const,evidence:'Uses MSE.',citationText:base.sourceUrl}};
+    db.saveClaim(claimA); db.saveClaim(claimB); db.saveClaimConflict({claimKey:base.claimKey,selectedClaimId:'claim-a',alternateClaimId:'claim-b',selectedStatement:claimA.statement,alternateStatement:claimB.statement});
+    const response = await new ResearchService(db).verifyClaim('claim-a');
+    expect(response.data.status).toBe('CONTRADICTED');
+    expect(response.data.conflicts).toHaveLength(1);
+  });
 });
