@@ -43,9 +43,10 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented first slice: `PaperAcquirer` provides bounded byte-preserving HTTP acquisition with HTTP(S)-only validation, private/local host rejection, redirect revalidation and limits, timeout cancellation, declared-size checks, and streamed body limits.
 - Implemented second slice: format detection recognizes HTML/PDF/unknown content; dependency-free HTML parsing extracts the document title, heading-based sections, normalized paragraph text, and reference links. PDF and unknown binary inputs fail explicitly until a dedicated PDF parser is added.
 - Implemented third slice: `GrobidClient` posts bounded PDF bytes to GROBID’s `/api/processFulltextDocument` endpoint and parses returned TEI; `PdfParserChain` optionally falls back to configured PyMuPDF and Docling command adapters while preserving warnings and parser provenance.
+- Implemented fourth slice: the TEI parser tracks page-break number/ID metadata, nested division depth, page-aware sections, and page-aware search chunks.
 - Implemented: bounded PDF/HTML acquisition with SSRF, size, timeout, redirect, and path protections; decompression and archive protections remain parser-hardening work.
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references.
-- Implemented: bounded `read_paper` MCP acquisition/parsing and `search_within_paper`; matches carry stable URL, section heading/level, chunk ordinal, and chunk ID provenance. Page-aware PDF locators remain a follow-up to richer TEI page parsing.
+- Implemented: bounded `read_paper` MCP acquisition/parsing and `search_within_paper`; matches carry stable URL, section heading/level, page number/ID when supplied by GROBID, chunk ordinal, and chunk ID provenance.
 
 ### Phase 6 — Evidence-backed extraction
 - Refine Phase 4 graph relationship candidates using explicit provider lineage metadata where available and add live end-to-end MCP graph verification.

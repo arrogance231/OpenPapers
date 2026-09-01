@@ -1,7 +1,7 @@
 import type { AcquiredDocument } from './acquisition.js';
 
 export type DocumentFormat = 'html' | 'pdf' | 'unknown';
-export interface DocumentSection { level: number; heading: string; text: string; }
+export interface DocumentSection { level: number; heading: string; text: string; page?: number; pageId?: string; }
 export interface DocumentReference { text: string; href?: string; }
 export interface ParsedDocument { format: 'html' | 'pdf'; url: string; title?: string; sections: DocumentSection[]; references: DocumentReference[]; warnings: string[]; }
 
@@ -47,11 +47,35 @@ export function parseDocument(document: AcquiredDocument): ParsedDocument {
 
 export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   const titleMatch = tei.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+  const body = tei.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? '';
   const sections: DocumentSection[] = [];
-  for (const match of tei.matchAll(/<div\b[^>]*>[\s\S]*?<head\b[^>]*>([\s\S]*?)<\/head>([\s\S]*?)(?=<div\b|<\/body>)/gi)) {
-    const heading = textOf(match[1]!);
-    const text = textOf(match[2]!);
-    if (heading || text) sections.push({level:1,heading,text});
+  const sectionByDepth = new Map<number, DocumentSection>();
+  let depth = 0;
+  let page: number | undefined;
+  let pageId: string | undefined;
+  const tokenPattern = /<pb\b([^>]*)\/?\s*>|<div\b[^>]*>|<\/div\s*>|<head\b[^>]*>([\s\S]*?)<\/head\s*>|<p\b[^>]*>([\s\S]*?)<\/p\s*>/gi;
+  for (const match of body.matchAll(tokenPattern)) {
+    const token = match[0]!;
+    if (/^<pb\b/i.test(token)) {
+      const attrs = match[1] ?? '';
+      const number = attrs.match(/\bn\s*=\s*["'](\d+)["']/i)?.[1];
+      const identifier = attrs.match(/\b(?:xml:)?id\s*=\s*["']([^"']+)["']/i)?.[1];
+      page = number ? Number(number) : undefined;
+      pageId = identifier;
+    } else if (/^<div\b/i.test(token)) depth += 1;
+    else if (/^<\/div/i.test(token)) { sectionByDepth.delete(depth); depth = Math.max(0, depth - 1); }
+    else if (match[2] !== undefined) {
+      const heading = textOf(match[2]);
+      const section: DocumentSection = {level:Math.max(1,depth),heading,text:'',...(page === undefined ? {} : {page}),...(pageId === undefined ? {} : {pageId})};
+      sections.push(section);
+      sectionByDepth.set(Math.max(1,depth), section);
+    } else if (match[3] !== undefined) {
+      const text = textOf(match[3]);
+      if (!text) continue;
+      const section = sectionByDepth.get(Math.max(1,depth));
+      if (section) section.text = section.text ? `${section.text} ${text}` : text;
+      else sections.push({level:0,heading:'',text,...(page === undefined ? {} : {page}),...(pageId === undefined ? {} : {pageId})});
+    }
   }
   const references: DocumentReference[] = [];
   for (const match of tei.matchAll(/<biblStruct\b[^>]*>([\s\S]*?)<\/biblStruct>/gi)) {
@@ -61,8 +85,7 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[]};
 }
 
-
-export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; sectionHeading: string; sectionLevel: number; text: string; }
+export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; sectionHeading: string; sectionLevel: number; text: string; page?: number; pageId?: string; }
 
 export function chunkDocument(document: ParsedDocument, maxChars = 2000): DocumentChunk[] {
   if (!Number.isInteger(maxChars) || maxChars < 1) throw new Error('maxChars must be a positive integer');
@@ -72,12 +95,12 @@ export function chunkDocument(document: ParsedDocument, maxChars = 2000): Docume
     let text = '';
     for (const word of words) {
       if (text && text.length + word.length + 1 > maxChars) {
-        chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text});
+        chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text,...(section.page === undefined ? {} : {page:section.page}),...(section.pageId === undefined ? {} : {pageId:section.pageId})});
         text = '';
       }
       text = text ? `${text} ${word}` : word;
     }
-    if (text) chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text});
+    if (text) chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text,...(section.page === undefined ? {} : {page:section.page}),...(section.pageId === undefined ? {} : {pageId:section.pageId})});
   }
   return chunks;
 }

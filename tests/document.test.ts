@@ -6,8 +6,10 @@ const html = new TextEncoder().encode('<html><head><title>Paper</title><script>i
 
 describe('structured document parsing', () => {
   it('parses GROBID TEI sections and bibliographic references', () => {
-    const parsed = parseGrobidTei('https://example.com/paper.pdf', '<TEI><teiHeader><fileDesc><titleStmt><title>GROBID Paper</title></titleStmt></fileDesc></teiHeader><text><body><div><head>Introduction</head><p>Text <ref type="bibr" target="#b1">[1]</ref>.</p></div></body><back><div type="references"><listBibl><biblStruct xml:id="b1"><analytic><title>Referenced Work</title></analytic></biblStruct></listBibl></div></back></text></TEI>');
-    expect(parsed).toMatchObject({format:'pdf',title:'GROBID Paper',sections:[{level:1,heading:'Introduction',text:'Text [1].'}],references:[{text:'Referenced Work'}]});
+    const parsed = parseGrobidTei('https://example.com/paper.pdf', '<TEI><teiHeader><fileDesc><titleStmt><title>GROBID Paper</title></titleStmt></fileDesc></teiHeader><text><body><pb n="3" xml:id="page_3"/><div><head>Introduction</head><p>Text <ref type="bibr" target="#b1">[1]</ref>.</p><div><head>Nested</head><p>Nested text.</p></div></div></body><back><div type="references"><listBibl><biblStruct xml:id="b1"><analytic><title>Referenced Work</title></analytic></biblStruct></listBibl></div></back></text></TEI>');
+    expect(parsed).toMatchObject({format:'pdf',title:'GROBID Paper'});
+    expect(parsed.sections).toEqual(expect.arrayContaining([{level:1,heading:'Introduction',text:'Text [1].',page:3,pageId:'page_3'},{level:2,heading:'Nested',text:'Nested text.',page:3,pageId:'page_3'}]));
+    expect(parsed.references).toEqual([{text:'Referenced Work'}]);
   });
 
   it('posts PDF bytes to GROBID and returns parsed TEI', async () => {
