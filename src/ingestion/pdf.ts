@@ -8,6 +8,7 @@ import { parseGrobidTei, type ParsedDocument } from './document.js';
 const runFile = promisify(execFile);
 export interface PdfParser { process(body: Uint8Array, filename?: string): Promise<ParsedDocument>; }
 export interface PdfFallback { name: 'pymupdf' | 'docling'; extract(body: Uint8Array, filename?: string): Promise<ParsedDocument>; }
+type PdfCommandRunner = (command: string, args: string[], options: {maxBuffer: number; windowsHide: boolean; timeout: number}) => Promise<{stdout: string; stderr: string}>;
 
 export class GrobidClient implements PdfParser {
   constructor(private readonly baseUrl = process.env.GROBID_URL ?? 'http://127.0.0.1:8070', private readonly fetcher: typeof fetch = fetch, private readonly maxTeiBytes = 25 * 1024 * 1024) {}
@@ -24,14 +25,16 @@ export class GrobidClient implements PdfParser {
 }
 
 export class CommandPdfFallback implements PdfFallback {
-  constructor(public readonly name: 'pymupdf' | 'docling', private readonly command: string, private readonly script: string) {}
+  constructor(public readonly name: 'pymupdf' | 'docling', private readonly command: string, private readonly script: string, private readonly runner: PdfCommandRunner = (command, args, options) => runFile(command, args, options), private readonly timeoutMs = 120_000) {}
   async extract(body: Uint8Array, filename = 'paper.pdf'): Promise<ParsedDocument> {
     const directory = await mkdtemp(join(tmpdir(), 'openpapers-pdf-'));
     const path = join(directory, filename.replace(/[^A-Za-z0-9._-]/g, '_'));
     try {
       await writeFile(path, body);
-      const result = await runFile(this.command, [this.script, path], {maxBuffer:25 * 1024 * 1024, windowsHide:true});
-      const parsed = JSON.parse(result.stdout) as Omit<ParsedDocument, 'url' | 'format'>;
+      const result = await this.runner(this.command, [this.script, path], {maxBuffer:25 * 1024 * 1024, windowsHide:true, timeout:this.timeoutMs});
+      let parsed: Omit<ParsedDocument, 'url' | 'format'>;
+      try { parsed = JSON.parse(result.stdout) as Omit<ParsedDocument, 'url' | 'format'>; } catch { throw new Error('invalid PDF parser output: malformed JSON'); }
+      if (!parsed || !Array.isArray(parsed.sections) || !Array.isArray(parsed.references) || !Array.isArray(parsed.warnings)) throw new Error('invalid PDF parser output: missing required arrays');
       return {format:'pdf',url:filename,...parsed};
     } finally { await rm(directory, {recursive:true,force:true}); }
   }

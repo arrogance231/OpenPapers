@@ -28,4 +28,8 @@ describe('bounded paper acquisition', () => {
     const fetcher = async () => new Response(null, {status:302, headers:{location:'http://localhost/private'}});
     await expect(new PaperAcquirer(fetcher).acquire('https://example.com/start')).rejects.toThrow('unsafe host');
   });
+  it('rejects archive and compressed payloads before parsing', async () => {
+    const fetcher = async () => new Response(new Uint8Array([0x50,0x4b,0x03,0x04]), {status:200,headers:{'content-type':'application/zip'}});
+    await expect(new PaperAcquirer(fetcher).acquire('https://example.com/paper')).rejects.toThrow('archive or compressed content unsupported');
+  });
 });

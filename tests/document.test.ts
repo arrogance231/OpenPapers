@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { chunkDocument, detectDocumentFormat, parseDocument, parseGrobidTei, searchDocument } from '../src/ingestion/document.js';
-import { GrobidClient, PdfParserChain } from '../src/ingestion/pdf.js';
+import { CommandPdfFallback, GrobidClient, PdfParserChain } from '../src/ingestion/pdf.js';
 
 const html = new TextEncoder().encode('<html><head><title>Paper</title><script>ignore()</script></head><body><h1>Introduction</h1><p>First paragraph.</p><h2>Method</h2><p>Details <a href="https://example.com/ref">reference</a>.</p><h2>References</h2><p>[1] A cited work.</p></body></html>');
 
@@ -39,6 +39,10 @@ describe('structured document parsing', () => {
     const fallback = {name:'pymupdf', extract:async () => ({format:'pdf' as const,url:'file.pdf',sections:[],references:[],warnings:[]})};
     const chain = new PdfParserChain({process:async () => { throw new Error('offline'); }}, [fallback]);
     await expect(chain.process(new Uint8Array([37,80,68,70]), 'file.pdf')).resolves.toMatchObject({format:'pdf',warnings:['GROBID unavailable: Error: offline']});
+  });
+  it('rejects malformed fallback parser output', async () => {
+    const fallback = new CommandPdfFallback('pymupdf','python','script.py', async () => ({stdout:'{"format":"html"}',stderr:''}));
+    await expect(fallback.extract(new Uint8Array([37,80,68,70]), 'paper.pdf')).rejects.toThrow('invalid PDF parser output');
   });
   it('creates stable source-located chunks and searches them', () => {
     const parsed = parseDocument({url:'https://example.com/paper.html',contentType:'text/html',bytes:html.byteLength,body:html});

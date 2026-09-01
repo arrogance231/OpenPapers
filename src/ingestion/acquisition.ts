@@ -25,39 +25,44 @@ export class PaperAcquirer {
     for (let redirect = 0; redirect <= maxRedirects; redirect += 1) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), timeoutMs);
-      let response: Response;
-      try { response = await this.fetcher(url, {redirect:'manual', signal:controller.signal}); } finally { clearTimeout(timeout); }
-      if (response.status >= 300 && response.status < 400) {
-        const location = response.headers.get('location');
-        if (!location) throw new Error('redirect missing location');
-        if (redirect === maxRedirects) throw new Error('redirect limit');
-        url = assertSafeUrl(new URL(location, url).toString());
-        continue;
-      }
-      if (!response.ok) throw new Error(`acquisition failed: ${response.status}`);
-      const declared = Number(response.headers.get('content-length') ?? 0);
-      if (declared > maxBytes) throw new Error('size limit');
-      const chunks: Uint8Array[] = [];
-      let total = 0;
-      if (response.body) {
-        const reader = response.body.getReader();
-        while (true) {
-          const next = await reader.read();
-          if (next.done) break;
-          total += next.value.byteLength;
-          if (total > maxBytes) { await reader.cancel(); throw new Error('size limit'); }
-          chunks.push(next.value);
+      try {
+        const response = await this.fetcher(url, {redirect:'manual', signal:controller.signal});
+        if (response.status >= 300 && response.status < 400) {
+          const location = response.headers.get('location');
+          if (!location) throw new Error('redirect missing location');
+          if (redirect === maxRedirects) throw new Error('redirect limit');
+          url = assertSafeUrl(new URL(location, url).toString());
+          continue;
         }
-      } else {
-        const buffer = new Uint8Array(await response.arrayBuffer());
-        total = buffer.byteLength;
-        if (total > maxBytes) throw new Error('size limit');
-        chunks.push(buffer);
-      }
-      const body = new Uint8Array(total);
-      let offset = 0;
-      for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.byteLength; }
-      return {url:url.toString(), contentType:response.headers.get('content-type')?.split(';',1)[0]?.trim() ?? 'application/octet-stream', bytes:total, body};
+        if (!response.ok) throw new Error(`acquisition failed: ${response.status}`);
+        const declared = Number(response.headers.get('content-length') ?? 0);
+        if (declared > maxBytes) throw new Error('size limit');
+        const chunks: Uint8Array[] = [];
+        let total = 0;
+        if (response.body) {
+          const reader = response.body.getReader();
+          while (true) {
+            const next = await reader.read();
+            if (next.done) break;
+            total += next.value.byteLength;
+            if (total > maxBytes) { await reader.cancel(); throw new Error('size limit'); }
+            chunks.push(next.value);
+          }
+        } else {
+          const buffer = new Uint8Array(await response.arrayBuffer());
+          total = buffer.byteLength;
+          if (total > maxBytes) throw new Error('size limit');
+          chunks.push(buffer);
+        }
+        const body = new Uint8Array(total);
+        let offset = 0;
+        for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.byteLength; }
+        const contentType = response.headers.get('content-type')?.split(';',1)[0]?.trim() ?? 'application/octet-stream';
+        const encoding = response.headers.get('content-encoding')?.toLowerCase() ?? '';
+        const archiveMagic = (body[0] === 0x50 && body[1] === 0x4b && body[2] === 0x03 && body[3] === 0x04) || (body[0] === 0x1f && body[1] === 0x8b) || (body[0] === 0x42 && body[1] === 0x5a && body[2] === 0x68);
+        if (/zip|gzip|x-gzip|compress|tar|7z|rar/.test(`${contentType} ${encoding}`) || archiveMagic) throw new Error('archive or compressed content unsupported');
+        return {url:url.toString(), contentType, bytes:total, body};
+      } finally { clearTimeout(timeout); }
     }
     throw new Error('redirect limit');
   }

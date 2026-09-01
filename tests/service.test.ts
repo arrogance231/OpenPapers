@@ -68,4 +68,14 @@ describe('provenance-first recipe behavior', () => {
     const document = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer,parser).readPaper('https://example.com/paper.pdf');
     expect(document.format).toBe('pdf');
   });
+  it('reuses an unchanged parsed document without invoking the parser again', async () => {
+    const body = new Uint8Array([37,80,68,70,45]);
+    let calls = 0;
+    const acquirer = {acquire:async()=>({url:'https://example.com/cached.pdf',contentType:'application/pdf',bytes:body.byteLength,body})} as never;
+    const parser = {process:async()=>{ calls += 1; return {format:'pdf' as const,url:'https://example.com/cached.pdf',sections:[],references:[],warnings:[]}; }} as never;
+    const service = new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer,parser);
+    await service.readPaper('https://example.com/cached.pdf');
+    await service.readPaper('https://example.com/cached.pdf');
+    expect(calls).toBe(1);
+  });
 });

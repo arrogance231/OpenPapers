@@ -49,7 +49,9 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented seventh slice: tables preserve row/cell structure and body `<ref>` elements become explicit citation links to bibliography IDs with section/page provenance.
 - Implemented eighth slice: parsed rich elements are indexed as typed search chunks, allowing element-aware queries across sections, equations, figures, tables, and references.
 - Implemented ninth slice: in-text citation targets are checked against bibliography IDs and unresolved targets remain explicit parser warnings rather than being silently discarded.
-- Implemented: bounded PDF/HTML acquisition with SSRF, size, timeout, redirect, and path protections; decompression and archive protections remain parser-hardening work.
+- Implemented tenth slice: parsed documents are persisted by URL/content hash; unchanged inputs reuse parsed output, while changed inputs are reparsed.
+- Implemented eleventh slice: archive/compressed acquisition is rejected before parsing, body streaming remains under timeout, and fallback subprocess outputs are bounded, timed, injected for tests, and schema-validated.
+- Implemented: bounded PDF/HTML acquisition with SSRF, size, timeout, redirect, archive/compression, and path protections.
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references (GROBID-backed fields implemented; deeper layout fidelity remains dependent on TEI content).
 - Implemented: bounded `read_paper` MCP acquisition/parsing and `search_within_paper`; matches carry stable URL, section heading/level, page number/ID when supplied by GROBID, chunk ordinal, and chunk ID provenance.
 
