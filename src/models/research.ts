@@ -9,9 +9,10 @@ export interface Evidence { evidenceId: string; sourceId: string; authors: Autho
 export interface PaperVersion { versionId: string; sourceId: string; version?: string; canonicalUrl?: string; pdfUrl?: string; submittedAt?: string; updatedAt?: string; }
 export interface ResearchWork { paperId: string; title: string; authors: Author[]; authorIds?: string[]; topics?: string[]; year?: number; venue?: string; doi?: string; arxivId?: string; semanticScholarId?: string; openAlexId?: string; canonicalUrl?: string; pdfUrl?: string; citationCount?: number; publicationStatus: PublicationStatus; bibtex: string; sourceProviders: string[]; versions: PaperVersion[]; abstract?: string; }
 export type GraphRelation = 'reference' | 'citation' | 'related';
-export interface GraphItem { work: ResearchWork; relation: GraphRelation; source: string; evidence: Evidence; }
+export type RelationshipClass = 'DIRECT' | 'FOUNDATIONAL_CANDIDATE' | 'FOLLOW_UP_CANDIDATE' | 'UNKNOWN';
+export interface GraphItem { work: ResearchWork; relation: GraphRelation; relationshipClass: RelationshipClass; source: string; evidence: Evidence; }
 export interface AuthorProfile { authorId: string; name: string; aliases: string[]; paperIds: string[]; source: string; }
-export interface GraphEdge { sourcePaperId: string; targetPaperId: string; relation: GraphRelation; provider: string; evidenceId: string; retrievedAt: string; }
+export interface GraphEdge { sourcePaperId: string; targetPaperId: string; relation: GraphRelation; relationshipClass: RelationshipClass; provider: string; evidenceId: string; retrievedAt: string; }
 export interface SourceConflict { field: string; selected: string; alternate: string; selectedSource: string; alternateSource: string; }
 export interface MissingValue { value: null; status: 'NOT_REPORTED' | 'NOT_FOUND' | 'SOURCE_UNAVAILABLE' | 'AMBIGUOUS' | 'UNVERIFIED'; }
 export type Reported<T> = { value: T; status: 'REPORTED' | 'CODE_VERIFIED' | 'CONFLICTING'; sources: string[] } | MissingValue;

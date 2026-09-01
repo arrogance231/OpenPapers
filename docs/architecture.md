@@ -34,6 +34,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented: graph nodes/evidence are persisted through the existing SQLite boundary, graph edges are deduplicated by source/target/relation/provider, and duplicate-work metadata disagreements are exposed as structured transparency conflicts.
 - Implemented: graph nodes carrying a known DOI or arXiv identifier resolve to an existing canonical SQLite work identity before edge persistence, preventing provider-specific duplicate nodes.
 - Implemented: OpenAlex references and reverse-citation edges are retrieved through `referenced_works` and `filter=cites:` and merged with Semantic Scholar candidates when an OpenAlex root identity is available; partial provider failures remain explicit.
+- Implemented: graph edges persist a conservative relationship class (`FOUNDATIONAL_CANDIDATE`, `FOLLOW_UP_CANDIDATE`, `DIRECT`, or `UNKNOWN`) with a migration for existing SQLite databases; labels are candidates, not unsupported causal claims.
 - Combine Semantic Scholar/OpenAlex graph data with DOI/arXiv/publication-lineage reconciliation.
 - Add foundational/follow-up relationships and conflict-aware graph provenance.
 

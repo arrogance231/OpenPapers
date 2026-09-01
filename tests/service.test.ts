@@ -1,9 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { ResearchService } from '../src/research/service.js';
+import { ResearchService, classifyGraphRelationship } from '../src/research/service.js';
 import { ResearchDb } from '../src/database/db.js';
 import type { ResearchWork } from '../src/models/research.js';
 
 describe('provenance-first recipe behavior', () => {
+  it('classifies chronology-supported graph candidates conservatively', () => {
+    const root: ResearchWork = {paperId:'root',title:'Root',authors:[],year:2024,publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
+    const prior: ResearchWork = {...root,paperId:'prior',title:'Prior',year:2020};
+    const later: ResearchWork = {...root,paperId:'later',title:'Later',year:2025};
+    expect(classifyGraphRelationship(root,prior,'reference')).toBe('FOUNDATIONAL_CANDIDATE');
+    expect(classifyGraphRelationship(root,later,'citation')).toBe('FOLLOW_UP_CANDIDATE');
+    expect(classifyGraphRelationship(root,later,'related')).toBe('UNKNOWN');
+  });
   it('never guesses missing training parameters', () => {
     const work: ResearchWork = { paperId:'work_recipe', title:'Recipe Paper', authors:[], publicationStatus:'preprint', bibtex:'', sourceProviders:['test'], versions:[] };
     const service = new ResearchService(new ResearchDb(':memory:'));
