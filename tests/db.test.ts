@@ -47,6 +47,10 @@ describe('research database', () => {
     db.addToCollection(collection.id, 'paper-b');
     expect(db.getCollection(collection.id)).toEqual({id:collection.id,name:'distillation',paperIds:['paper-a','paper-b']});
     expect(db.listCollections()).toEqual([{id:collection.id,name:'distillation',paperIds:['paper-a','paper-b']}]);
+    db.removeFromCollection(collection.id, 'paper-a');
+    expect(db.getCollection(collection.id)?.paperIds).toEqual(['paper-b']);
+    db.deleteCollection(collection.id);
+    expect(db.getCollection(collection.id)).toBeUndefined();
     db.close();
   });
 });
