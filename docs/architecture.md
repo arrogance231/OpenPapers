@@ -79,6 +79,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Complete training-recipe extraction and paper-vs-code conflict reporting.
 - Add `build_research_report`, reproducibility mode, implementation mode, paper timelines, and recommendation/fact separation.
 - Add citation-integrity enforcement to every generated response.
+- Training recipes now project deterministic methodology, loss/objective, dataset, and explicit parameter facts from one parsed document, preserving derived evidence and leaving absent fields `NOT_REPORTED`.
 
 ### Phase 9 — Library and release engineering
 - Add local library, collections, ResearchPacks, refresh/remove tools, migrations, Postgres adapter, vector-retrieval interface, Docker hardening, and release documentation.
