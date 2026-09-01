@@ -57,6 +57,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 
 ### Phase 6 — Evidence-backed extraction
 - Refine Phase 4 graph relationship candidates using explicit provider lineage metadata where available and add live end-to-end MCP graph verification.
+- Implemented first slice: deterministic section-heading and structured-equation extraction is exposed through `ResearchService.extractPaperFacts` and the bounded `extract_paper_facts` MCP tool. Results are explicitly heuristic and carry URL/section/page locators.
 - Add deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
 - Add claim/evidence persistence and conflict detection.
 - Add optional provider-independent LLM extractor interface.

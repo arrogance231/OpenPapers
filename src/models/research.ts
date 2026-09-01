@@ -4,7 +4,7 @@ export type PublicationStatus = 'preprint' | 'workshop' | 'conference' | 'journa
 
 export interface Author { name: string; normalizedName: string; orcid?: string; }
 export interface Identifier { doi?: string; arxiv?: string; semanticScholar?: string; openAlex?: string; }
-export interface Locator { page?: number; section?: string; subsection?: string; table?: string; figure?: string; equation?: string; appendix?: string; repositoryPath?: string; repositoryLineStart?: number; repositoryLineEnd?: number; commitSha?: string; }
+export interface Locator { page?: number; pageId?: string; section?: string; subsection?: string; table?: string; figure?: string; equation?: string; appendix?: string; repositoryPath?: string; repositoryLineStart?: number; repositoryLineEnd?: number; commitSha?: string; }
 export interface Evidence { evidenceId: string; sourceId: string; authors: Author[]; title: string; year?: number; identifiers: Identifier; locator?: Locator; evidenceType: EvidenceType; sourceQuality: SourceQuality; evidence: string; citationText: string; }
 export interface PaperVersion { versionId: string; sourceId: string; version?: string; canonicalUrl?: string; pdfUrl?: string; submittedAt?: string; updatedAt?: string; }
 export interface ResearchWork { paperId: string; title: string; authors: Author[]; authorIds?: string[]; topics?: string[]; year?: number; venue?: string; doi?: string; arxivId?: string; semanticScholarId?: string; openAlexId?: string; canonicalUrl?: string; pdfUrl?: string; citationCount?: number; publicationStatus: PublicationStatus; bibtex: string; sourceProviders: string[]; versions: PaperVersion[]; abstract?: string; }

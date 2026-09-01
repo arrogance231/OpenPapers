@@ -78,4 +78,10 @@ describe('provenance-first recipe behavior', () => {
     await service.readPaper('https://example.com/cached.pdf');
     expect(calls).toBe(1);
   });
+  it('extracts heuristic facts from an acquired HTML paper', async () => {
+    const body = new TextEncoder().encode('<html><body><h1>Method</h1><p>We train a model.</p></body></html>');
+    const acquirer = {acquire:async()=>({url:'https://example.com/facts.html',contentType:'text/html',bytes:body.byteLength,body})} as never;
+    const facts = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer).extractPaperFacts('https://example.com/facts.html');
+    expect(facts).toMatchObject([{kind:'methodology',text:'We train a model.',sourceUrl:'https://example.com/facts.html',confidence:'heuristic'}]);
+  });
 });
