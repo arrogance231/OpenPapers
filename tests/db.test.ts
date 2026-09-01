@@ -1,4 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { ResearchDb } from '../src/database/db.js';
 import { author, bibtex, paperId } from '../src/research/citations.js';
 import type { ResearchWork } from '../src/models/research.js';
@@ -52,5 +55,12 @@ describe('research database', () => {
     db.deleteCollection(collection.id);
     expect(db.getCollection(collection.id)).toBeUndefined();
     db.close();
+  });
+  it('records an idempotent schema version for file-backed databases', () => {
+    const directory=mkdtempSync(join(tmpdir(),'openpapers-'));
+    const path=join(directory,'research.sqlite');
+    const first=new ResearchDb(path); expect(first.schemaVersion()).toBe(1); first.close();
+    const second=new ResearchDb(path); expect(second.schemaVersion()).toBe(1); second.close();
+    rmSync(directory,{recursive:true,force:true});
   });
 });
