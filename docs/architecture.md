@@ -69,7 +69,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 
 ### Phase 7 — Research tools
 - Implemented `get_references`, `get_citations`, `get_related_papers`, `research_method`, `find_implementations`, `get_repository_config`, `find_datasets`, and `find_models`. `research_method` reuses bounded multi-provider search while preserving evidence, conflicts, and provider failures.
-- Add `compare_papers`, `compare_methods`, `verify_claim`, and benchmark comparability flags.
+- Implemented `compare_papers` and `compare_methods` with bounded inputs, direct metadata/search evidence, explicit overlap/difference reporting, and `UNKNOWN` benchmark comparability when aligned benchmark evidence is absent. `verify_claim` remains the next Phase 7 slice.
 
 ### Phase 8 — Reproducibility and reports
 - Complete training-recipe extraction and paper-vs-code conflict reporting.
