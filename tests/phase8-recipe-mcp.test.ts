@@ -25,4 +25,5 @@ describe('Phase 8 training recipe MCP boundary',()=>{
     expect(response.isError).not.toBe(true);
     expect(response.structuredContent.data.method).toContain('student model');
   });
+
 });

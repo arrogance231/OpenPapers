@@ -76,9 +76,8 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Added MCP boundary regressions for `compare_papers` and `verify_claim`, including citation-integrity validation, structured comparison evidence, status, and conflict serialization.
 
 ### Phase 8 — Reproducibility and reports
-- Complete training-recipe extraction and paper-vs-code conflict reporting.
-- Add `build_research_report`, reproducibility mode, implementation mode, paper timelines, and recommendation/fact separation.
-- Add citation-integrity enforcement to every generated response.
+- Phase 8 is complete for the implemented deterministic scope: training-recipe extraction, paper-vs-code conflict reporting, research reports, reproducibility/implementation modes, timelines, and separated facts/recommendations.
+- Metadata-backed generated responses use the shared citation-integrity gate; URL-based heuristic extraction responses use the extraction-specific evidence contract because author metadata is unavailable and must not be fabricated.
 - Training recipes now project deterministic methodology, loss/objective, dataset, and explicit parameter facts from one parsed document, preserving derived evidence and leaving absent fields `NOT_REPORTED`.
 - Added bounded `build_research_report` service/MCP support with `literature_review`, `implementation`, and `reproducibility` modes; cited facts, recommendations, and year-sorted paper timelines are separate fields.
 - Added deterministic paper-versus-code reproducibility comparison for explicit numeric recipe fields, preserving paper source URLs and revision-pinned code line locators; absent values remain unavailable rather than conflicts.

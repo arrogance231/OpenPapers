@@ -9,7 +9,7 @@ describe('Phase 7 public tool inventory', () => {
     expect(names).toEqual(expect.arrayContaining([
       'get_references','get_citations','get_related_papers','research_method',
       'find_implementations','get_repository_config','find_datasets','find_models',
-      'compare_papers','compare_methods','verify_claim'
+      'compare_papers','compare_methods','verify_claim','build_research_report','compare_paper_to_code'
     ]));
   });
 });
