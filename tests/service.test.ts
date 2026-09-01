@@ -84,4 +84,12 @@ describe('provenance-first recipe behavior', () => {
     const facts = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer).extractPaperFacts('https://example.com/facts.html');
     expect(facts).toMatchObject([{kind:'methodology',text:'We train a model.',sourceUrl:'https://example.com/facts.html',confidence:'heuristic'}]);
   });
+  it('persists extracted claims through the service boundary', async () => {
+    const body = new TextEncoder().encode('<html><body><h1>Loss</h1><p>Uses KL divergence.</p></body></html>');
+    const acquirer = {acquire:async()=>({url:'https://example.com/claims.html',contentType:'text/html',bytes:body.byteLength,body})} as never;
+    const db = new ResearchDb(':memory:');
+    const result = await new ResearchService(db,undefined,undefined,undefined,undefined,acquirer).extractPaperClaims('https://example.com/claims.html');
+    expect(result.claims).toMatchObject([{kind:'loss',statement:'Uses KL divergence.',evidenceType:'DERIVED'}]);
+    expect(db.getClaims()).toHaveLength(1);
+  });
 });

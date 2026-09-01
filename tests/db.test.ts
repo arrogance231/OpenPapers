@@ -3,6 +3,7 @@ import { ResearchDb } from '../src/database/db.js';
 import { author, bibtex, paperId } from '../src/research/citations.js';
 import type { ResearchWork } from '../src/models/research.js';
 import type { ParsedDocument } from '../src/ingestion/document.js';
+import type { PaperClaim } from '../src/extraction/claims.js';
 
 describe('research database', () => {
   it('round-trips works and supports full-text search', () => {
@@ -27,6 +28,15 @@ describe('research database', () => {
     db.saveParsedDocument(document, 'hash-a');
     expect(db.getParsedDocument(document.url, 'hash-a')).toEqual(document);
     expect(db.getParsedDocument(document.url, 'hash-b')).toBeUndefined();
+    db.close();
+  });
+  it('persists claims and conflicts', () => {
+    const db = new ResearchDb(':memory:');
+    const claim: PaperClaim = {claimId:'claim-a',claimKey:'loss|loss',kind:'loss',statement:'Uses KL.',sourceUrl:'https://example.com/paper',locator:{section:'Loss'},confidence:'heuristic',evidenceType:'DERIVED'};
+    const conflict = {claimKey:'loss|loss',selectedClaimId:'claim-a',alternateClaimId:'claim-b',selectedStatement:'Uses KL.',alternateStatement:'Uses CE.'};
+    db.saveClaim(claim); db.saveClaimConflict(conflict);
+    expect(db.getClaims()).toEqual([claim]);
+    expect(db.getClaimConflicts()).toEqual([conflict]);
     db.close();
   });
 });
