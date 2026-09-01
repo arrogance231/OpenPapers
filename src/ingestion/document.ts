@@ -60,3 +60,31 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   }
   return {format:'pdf',url,...(titleMatch ? {title:textOf(titleMatch[1]!)} : {}),sections,references,warnings:[]};
 }
+
+
+export interface DocumentChunk { chunkId: string; url: string; format: 'html' | 'pdf'; ordinal: number; sectionHeading: string; sectionLevel: number; text: string; }
+
+export function chunkDocument(document: ParsedDocument, maxChars = 2000): DocumentChunk[] {
+  if (!Number.isInteger(maxChars) || maxChars < 1) throw new Error('maxChars must be a positive integer');
+  const chunks: DocumentChunk[] = [];
+  for (const [sectionIndex, section] of document.sections.entries()) {
+    const words = section.text.split(/\s+/).filter(Boolean);
+    let text = '';
+    for (const word of words) {
+      if (text && text.length + word.length + 1 > maxChars) {
+        chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text});
+        text = '';
+      }
+      text = text ? `${text} ${word}` : word;
+    }
+    if (text) chunks.push({chunkId:`${document.url}#section-${sectionIndex}-chunk-${chunks.length}`,url:document.url,format:document.format,ordinal:chunks.length,sectionHeading:section.heading,sectionLevel:section.level,text});
+  }
+  return chunks;
+}
+
+export function searchDocument(document: ParsedDocument, query: string, limit = 10): DocumentChunk[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) throw new Error('query must not be empty');
+  if (!Number.isInteger(limit) || limit < 1) throw new Error('limit must be a positive integer');
+  return chunkDocument(document).filter(chunk => `${chunk.sectionHeading} ${chunk.text}`.toLowerCase().includes(normalized)).sort((a,b) => Number(`${b.sectionHeading} ${b.text}`.toLowerCase().includes(normalized)) - Number(`${a.sectionHeading} ${a.text}`.toLowerCase().includes(normalized)) || a.ordinal-b.ordinal).slice(0,limit);
+}

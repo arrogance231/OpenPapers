@@ -45,7 +45,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented third slice: `GrobidClient` posts bounded PDF bytes to GROBID’s `/api/processFulltextDocument` endpoint and parses returned TEI; `PdfParserChain` optionally falls back to configured PyMuPDF and Docling command adapters while preserving warnings and parser provenance.
 - Implemented: bounded PDF/HTML acquisition with SSRF, size, timeout, redirect, and path protections; decompression and archive protections remain parser-hardening work.
 - Parse page boundaries, section hierarchy, paragraphs, equations, tables, figure captions, appendices, and references.
-- Implemented: bounded `read_paper` MCP acquisition/parsing for HTML; add `search_within_paper` and chunk-level provenance after PDF/page parsing.
+- Implemented: bounded `read_paper` MCP acquisition/parsing and `search_within_paper`; matches carry stable URL, section heading/level, chunk ordinal, and chunk ID provenance. Page-aware PDF locators remain a follow-up to richer TEI page parsing.
 
 ### Phase 6 — Evidence-backed extraction
 - Refine Phase 4 graph relationship candidates using explicit provider lineage metadata where available and add live end-to-end MCP graph verification.
