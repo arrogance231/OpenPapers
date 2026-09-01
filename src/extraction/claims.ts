@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto';
-import type { Locator, EvidenceType } from '../models/research.js';
+import type { Locator, Evidence, EvidenceType } from '../models/research.js';
 import type { PaperFact } from './heuristic.js';
 
-export interface PaperClaim { claimId: string; claimKey: string; kind: PaperFact['kind']; statement: string; sourceUrl: string; locator: Locator; confidence: PaperFact['confidence']; evidenceType: EvidenceType; }
+export interface PaperClaim { claimId: string; claimKey: string; kind: PaperFact['kind']; statement: string; sourceUrl: string; locator: Locator; confidence: PaperFact['confidence']; evidenceType: EvidenceType; evidence: Evidence; }
 export interface ClaimConflict { claimKey: string; selectedClaimId: string; alternateClaimId: string; selectedStatement: string; alternateStatement: string; }
 export interface ClaimReconciliation { claims: PaperClaim[]; conflicts: ClaimConflict[]; }
 
@@ -14,7 +14,8 @@ export function extractPaperClaims(facts: PaperFact[]): PaperClaim[] {
     const claimKey = `${fact.kind}|${normalize(anchor)}`;
     const seed = `${claimKey}|${fact.sourceUrl}|${JSON.stringify(fact.locator)}|${fact.text}`;
     const claimId = `claim-${createHash('sha256').update(seed).digest('hex')}`;
-    return {claimId,claimKey,kind:fact.kind,statement:fact.text,sourceUrl:fact.sourceUrl,locator:fact.locator,confidence:fact.confidence,evidenceType:'DERIVED'};
+    const evidence: Evidence = {evidenceId:`evidence-${claimId.slice(6)}`,sourceId:fact.sourceUrl,authors:[],title:`Extracted ${fact.kind} claim`,identifiers:{},locator:fact.locator,evidenceType:'DERIVED',sourceQuality:'C',evidence:fact.text,citationText:`${fact.sourceUrl}${fact.locator.section ? `#${fact.locator.section}` : ''}`};
+    return {claimId,claimKey,kind:fact.kind,statement:fact.text,sourceUrl:fact.sourceUrl,locator:fact.locator,confidence:fact.confidence,evidenceType:'DERIVED',evidence};
   });
 }
 

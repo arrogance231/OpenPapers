@@ -93,6 +93,7 @@ describe('provenance-first recipe behavior', () => {
     const result = await new ResearchService(db,undefined,undefined,undefined,undefined,acquirer).extractPaperClaims('https://example.com/claims.html');
     expect(result.claims).toMatchObject([{kind:'loss',statement:'Uses KL divergence.',evidenceType:'DERIVED'}]);
     expect(db.getClaims()).toHaveLength(1);
+    expect(db.getEvidenceForPaper(result.claims[0]!.claimId)).toEqual([result.claims[0]!.evidence]);
   });
   it('runs an injected provider-independent extractor after parsing', async () => {
     const body = new TextEncoder().encode('<html><body><h1>Method</h1><p>We train a model.</p></body></html>');
@@ -100,5 +101,14 @@ describe('provenance-first recipe behavior', () => {
     const extractor: PaperExtractor<string> = {name:'test',extract:async document=>document.sections[0]?.heading ?? 'missing'};
     const value = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer).extractWith('https://example.com/custom.html',extractor);
     expect(value).toBe('Method');
+  });
+  it('projects explicit paper parameters into a partial training recipe', async () => {
+    const body = new TextEncoder().encode('<html><body><h1>Training Details</h1><p>We use AdamW with learning rate 2e-5, batch size 32, and train for 3 epochs.</p></body></html>');
+    const acquirer = {acquire:async()=>({url:'https://example.com/recipe.html',contentType:'text/html',bytes:body.byteLength,body})} as never;
+    const recipe = await new ResearchService(new ResearchDb(':memory:'),undefined,undefined,undefined,undefined,acquirer).recipeFromPaper('https://example.com/recipe.html');
+    expect(recipe.data.learning_rate).toMatchObject({value:0.00002,status:'REPORTED'});
+    expect(recipe.data.batch_size).toMatchObject({value:32,status:'REPORTED'});
+    expect(recipe.data.epochs).toMatchObject({value:3,status:'REPORTED'});
+    expect(recipe.data.weight_decay).toEqual({value:null,status:'NOT_REPORTED'});
   });
 });

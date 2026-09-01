@@ -1,4 +1,5 @@
 import { createServer as createHttpServer } from 'node:http';
+
 import { McpServer, createMcpHandler } from '@modelcontextprotocol/server';
 import { serveStdio } from '@modelcontextprotocol/server/stdio';
 import { toNodeHandler, localhostHostValidation, localhostOriginValidation } from '@modelcontextprotocol/node';
@@ -38,4 +39,4 @@ async function main(): Promise<void> {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]?.replaceAll('\\', '/')}`) void main();
+if (process.argv[1]?.replaceAll('\\', '/').endsWith('dist/mcp/server.js')) void main();

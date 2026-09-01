@@ -62,6 +62,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented third slice: explicit training parameter extraction recognizes labeled numeric and optimizer values without inferring unlabeled numbers, and exposes section/page provenance through `extract_training_parameters`.
 - Implemented fourth slice: graph classification accepts explicit provider relation metadata, rejects contradictory metadata, and exposes `relationshipBasis` in graph responses.
 - Implemented fifth slice: added the provider-independent async `PaperExtractor<T>` contract, deterministic implementation, and injectable service execution seam.
+- Implemented sixth slice: claims now carry full persisted `Evidence` records, explicit parameters project into typed partial recipes, and live HTTP MCP initialization/tool discovery/graph failure transparency were verified.
 - Add deterministic heuristic extraction for methodology, losses, equations, datasets, training stages, hyperparameters, benchmarks, and limitations.
 - Add claim/evidence persistence and conflict detection.
 - Add optional provider-independent LLM extractor interface.

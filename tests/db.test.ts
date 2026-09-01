@@ -32,7 +32,7 @@ describe('research database', () => {
   });
   it('persists claims and conflicts', () => {
     const db = new ResearchDb(':memory:');
-    const claim: PaperClaim = {claimId:'claim-a',claimKey:'loss|loss',kind:'loss',statement:'Uses KL.',sourceUrl:'https://example.com/paper',locator:{section:'Loss'},confidence:'heuristic',evidenceType:'DERIVED'};
+    const claim: PaperClaim = {claimId:'claim-a',claimKey:'loss|loss',kind:'loss',statement:'Uses KL.',sourceUrl:'https://example.com/paper',locator:{section:'Loss'},confidence:'heuristic',evidenceType:'DERIVED',evidence:{evidenceId:'evidence-a',sourceId:'https://example.com/paper',authors:[],title:'Loss claim',identifiers:{},locator:{section:'Loss'},evidenceType:'DERIVED',sourceQuality:'C',evidence:'Uses KL.',citationText:'https://example.com/paper#Loss'}};
     const conflict = {claimKey:'loss|loss',selectedClaimId:'claim-a',alternateClaimId:'claim-b',selectedStatement:'Uses KL.',alternateStatement:'Uses CE.'};
     db.saveClaim(claim); db.saveClaimConflict(conflict);
     expect(db.getClaims()).toEqual([claim]);
