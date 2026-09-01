@@ -20,12 +20,14 @@ export class ResearchService {
     const settled = await Promise.allSettled([semanticCall, openAlexCall]);
     const candidates = settled.flatMap((result, index) => result.status === 'fulfilled' ? result.value.map(work => ({work, source: index === 0 ? 'semantic_scholar' : 'openalex'})) : []);
     const failures = settled.map((result, index) => result.status === 'rejected' ? `${index === 0 ? 'semantic_scholar' : 'openalex'}: ${String(result.reason)}` : undefined).filter((failure): failure is string => Boolean(failure));
+    const conflicts:SourceConflict[] = [];
     const unique = new Map<string, {work:ResearchWork; source:string; providers:string[]}>();
     for (const candidate of candidates) {
       const work = resolveGraphWork(this.db, candidate.work);
       const key = work.doi ?? work.arxivId ?? canonicalKey(work);
       const existing = unique.get(key);
       if (existing) {
+        collectConflicts(existing.work, work, conflicts);
         existing.work.sourceProviders = [...new Set([...existing.work.sourceProviders, ...work.sourceProviders])];
         existing.source = `${existing.source},${candidate.source}`;
         existing.providers = [...new Set([...existing.providers, candidate.source])];
@@ -40,7 +42,7 @@ export class ResearchService {
       this.db.addEvidence(item.evidence, item.work.paperId);
       for (const provider of items[index]!.providers) this.db.upsertGraphEdge({sourcePaperId:id, targetPaperId:item.work.paperId, relation, provider, relationshipClass:item.relationshipClass, evidenceId:evidence[index]!.evidenceId, retrievedAt});
     });
-    return {summary:data.length ? data.map(item => `${item.work.title} ${item.evidence.citationText}`).join('\n') : `No ${relation} works were reported.`, data, evidence, references:items.map(item => item.work), transparency:{expandedQueries:[], sourcesSearched:openAlexId ? ['semantic_scholar','openalex'] : ['semantic_scholar'], providerFailures:failures, candidates:candidates.length, retrievedAt, rankingRationale:['identifier-first cross-provider graph reconciliation']}};
+    return {summary:data.length ? data.map(item => `${item.work.title} ${item.evidence.citationText}`).join('\n') : `No ${relation} works were reported.`, data, evidence, references:items.map(item => item.work), transparency:{expandedQueries:[], sourcesSearched:openAlexId ? ['semantic_scholar','openalex'] : ['semantic_scholar'], providerFailures:failures, candidates:candidates.length, retrievedAt, rankingRationale:['identifier-first cross-provider graph reconciliation'], conflicts}};
   }
   async graph(id:string, relation:GraphRelation, limit=20):Promise<ResearchResponse<GraphItem[]>> { const works=relation==='reference'?await this.semanticScholar.getReferences(id,limit):relation==='citation'?await this.semanticScholar.getCitations(id,limit):await this.semanticScholar.getRelated(id,limit); const root=this.db.getWork(id); const resolvedWorks=works.map(work=>resolveGraphWork(this.db,work)); const retrievedAt=new Date().toISOString(); const evidence=resolvedWorks.map(work=>makeEvidence(work.paperId,work,`Semantic Scholar reports this work as a ${relation} of ${id}.`,'DIRECT','B')); const data=resolvedWorks.map((work,index)=>({work,relation,relationshipClass:classifyGraphRelationship(root,work,relation),source:'semantic_scholar',evidence:evidence[index]!})); data.forEach((item,index)=>{ this.db.upsertWork(item.work); this.db.addEvidence(item.evidence,item.work.paperId); const edge:GraphEdge={sourcePaperId:id,targetPaperId:item.work.paperId,relation,provider:item.source,relationshipClass:item.relationshipClass,evidenceId:evidence[index]!.evidenceId,retrievedAt}; this.db.upsertGraphEdge(edge); }); return {summary:data.length?data.map(item=>`${item.work.title} ${item.evidence.citationText}`).join('\\n'):`No ${relation} works were reported.`,data,evidence,references:resolvedWorks,transparency:{expandedQueries:[],sourcesSearched:['semantic_scholar'],providerFailures:[],candidates:data.length,retrievedAt,rankingRationale:[`Semantic Scholar ${relation} graph response`]}}; }
   async resolveAuthor(id:string):Promise<AuthorProfile|undefined> { const profile=await this.semanticScholar.resolveAuthor(id); return profile?.authorId&&profile.name ? {authorId:profile.authorId,name:profile.name,aliases:profile.aliases ?? [],paperIds:(profile.papers ?? []).map(paper=>paper.paperId).filter((paperId):paperId is string=>Boolean(paperId)),source:'semantic_scholar'} : undefined; }

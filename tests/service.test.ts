@@ -51,4 +51,14 @@ describe('provenance-first recipe behavior', () => {
     expect(result.data.map(item=>item.source)).toEqual(['semantic_scholar','openalex']);
     expect(result.transparency.sourcesSearched).toEqual(['semantic_scholar','openalex']);
   });
+  it('reports metadata conflicts when providers merge one graph node', async () => {
+    const db = new ResearchDb(':memory:');
+    db.upsertWork({paperId:'root',title:'Root',authors:[],openAlexId:'https://openalex.org/W1',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]});
+    const semanticWork: ResearchWork = {paperId:'semantic_same',title:'Canonical Title',doi:'10.1000/example',authors:[],year:2022,publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
+    const openAlexWork: ResearchWork = {paperId:'openalex_same',title:'Conflicting Title',doi:'10.1000/example',authors:[],year:2023,openAlexId:'https://openalex.org/W2',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]};
+    const provider={getReferences:async()=>[semanticWork],getCitations:async()=>[],getRelated:async()=>[],resolveAuthor:async()=>undefined} as never;
+    const openalex={getReferences:async()=>[openAlexWork],getCitations:async()=>[],getRelated:async()=>[]} as never;
+    const result=await new ResearchService(db,undefined,undefined,openalex,provider).graphAll('root','reference');
+    expect(result.transparency.conflicts?.map(conflict=>conflict.field)).toEqual(expect.arrayContaining(['title','year']));
+  });
 });
