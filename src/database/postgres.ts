@@ -5,6 +5,8 @@ import type { PaperClaim, ClaimConflict } from '../extraction/claims.js';
 import type { Collection } from './db.js';
 import type { ResearchStore } from './store.js';
 
+type PostgresClient={query<Row=Record<string,unknown>>(text:string,parameters?:readonly unknown[]):Promise<{rows:Row[]}>;end?:()=>Promise<void>;close?:()=>Promise<void>};
+
 export const POSTGRES_SCHEMA=`
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE TABLE IF NOT EXISTS works(paper_id text PRIMARY KEY,payload jsonb NOT NULL);
@@ -26,8 +28,9 @@ END $$;
 export class PostgresResearchStore implements ResearchStore {
   private pending:Promise<void>=Promise.resolve();
   private readonly works=new Map<string,ResearchWork>(); private readonly evidence=new Map<string,{paperId:string;value:Evidence}>(); private readonly edges=new Map<string,GraphEdge>(); private readonly parsed=new Map<string,ParsedDocument>(); private readonly claims=new Map<string,PaperClaim>(); private readonly conflicts=new Map<string,ClaimConflict>(); private readonly collections=new Map<string,Collection>(); private readonly vectors=new Map<string,{embedding:number[];payload:unknown}>();
-  private constructor(private readonly pool:Pool){}
+  private constructor(private readonly pool:PostgresClient){}
   static fromConfig(config:PoolConfig|string|undefined=process.env.DATABASE_URL){if(!config)throw new Error('DATABASE_URL is required for PostgreSQL'); return new PostgresResearchStore(new Pool(typeof config==='string'?{connectionString:config}:config));}
+  static fromQueryClient(client:PostgresClient):PostgresResearchStore{return new PostgresResearchStore(client);}
   async initialize():Promise<void>{await this.pool.query(POSTGRES_SCHEMA); const [works,evidence,edges,parsed,claims,conflicts,collections,items,vectors]=await Promise.all([this.pool.query<any>('SELECT paper_id,payload FROM works'),this.pool.query<any>('SELECT evidence_id,paper_id,payload FROM evidence'),this.pool.query<any>('SELECT edge_key,payload FROM graph_edges'),this.pool.query<any>('SELECT cache_key,payload FROM parsed_documents'),this.pool.query<any>('SELECT claim_id,payload FROM claims'),this.pool.query<any>('SELECT conflict_key,payload FROM claim_conflicts'),this.pool.query<any>('SELECT collection_id,name FROM collections'),this.pool.query<any>('SELECT collection_id,paper_id FROM collection_items'),this.pool.query<any>('SELECT record_id,embedding,payload FROM vector_records')]); works.rows.forEach((x:any)=>this.works.set(x.paper_id,x.payload)); evidence.rows.forEach((x:any)=>this.evidence.set(x.evidence_id,{paperId:x.paper_id,value:x.payload})); edges.rows.forEach((x:any)=>this.edges.set(x.edge_key,x.payload)); parsed.rows.forEach((x:any)=>this.parsed.set(x.cache_key,x.payload)); claims.rows.forEach((x:any)=>this.claims.set(x.claim_id,x.payload)); conflicts.rows.forEach((x:any)=>this.conflicts.set(x.conflict_key,x.payload)); collections.rows.forEach((x:any)=>this.collections.set(x.collection_id,{id:x.collection_id,name:x.name,paperIds:[]})); items.rows.forEach((x:any)=>this.collections.get(x.collection_id)?.paperIds.push(x.paper_id)); vectors.rows.forEach((x:any)=>this.vectors.set(x.record_id,{embedding:x.embedding,payload:x.payload}));}
   private write(promise:Promise<unknown>):void{this.pending=this.pending.then(()=>promise.then(()=>undefined));}
   async flush():Promise<void>{await this.pending;}
@@ -54,6 +57,6 @@ export class PostgresResearchStore implements ResearchStore {
   upsertVector(recordId:string,embedding:number[],payload:unknown):void{this.vectors.set(recordId,{embedding,payload});this.write(this.pool.query('INSERT INTO vector_records(record_id,embedding,payload) VALUES($1,$2::vector,$3) ON CONFLICT(record_id) DO UPDATE SET embedding=excluded.embedding,payload=excluded.payload',[recordId,toVectorLiteral(embedding),payload]));}
   searchVectors(query:number[],limit=10):Array<{recordId:string;score:number;payload:unknown}>{return [...this.vectors.entries()].map(([recordId,v])=>{const dot=v.embedding.reduce((s,x,i)=>s+x*(query[i]??0),0);const na=Math.sqrt(v.embedding.reduce((s,x)=>s+x*x,0));const nb=Math.sqrt(query.reduce((s,x)=>s+x*x,0));return {recordId,score:na&&nb?dot/(na*nb):0,payload:v.payload};}).sort((a,b)=>b.score-a.score||a.recordId.localeCompare(b.recordId)).slice(0,limit);}
   async searchVectorsSql(query:number[],limit=10):Promise<Array<{recordId:string;score:number;payload:unknown}>>{const r=await this.pool.query<any>('SELECT record_id,payload,1-(embedding <=> $1::vector) AS score FROM vector_records ORDER BY embedding <=> $1::vector,record_id LIMIT $2',[toVectorLiteral(query),limit]);return r.rows.map((row:any)=>({recordId:row.record_id,score:Number(row.score),payload:row.payload}));}
-  close():void{this.write(this.pool.end());}
+  close():void{this.write((this.pool.close??this.pool.end!)());}
 }
 function toVectorLiteral(values:number[]):string{return `[${values.map(value=>{if(!Number.isFinite(value))throw new Error('vector values must be finite');return String(value);}).join(',')}]`;}
