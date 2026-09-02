@@ -4,6 +4,9 @@ services:
     environment:
       GROBID_URL: http://grobid:8070
       RESEARCH_DB_PATH: /app/data/research.sqlite
+      MCP_TRANSPORT: http
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 8787
     ports:
       - "8787:8787"
     depends_on:

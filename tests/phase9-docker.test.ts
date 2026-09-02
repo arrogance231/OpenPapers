@@ -12,4 +12,10 @@ describe('Docker hardening',()=>{
     expect(compose).toContain('test: ["CMD", "curl", "-f", "http://localhost:8070/api/isalive"]');
     expect(compose).toContain('condition: service_healthy');
   });
+  it('runs the published OpenPapers port in HTTP mode',()=>{
+    const compose=readFileSync('docker-compose.yml','utf8');
+    expect(compose).toContain('MCP_TRANSPORT: http');
+    expect(compose).toContain('HTTP_HOST: 0.0.0.0');
+    expect(compose).toContain('HTTP_PORT: 8787');
+  });
 });
