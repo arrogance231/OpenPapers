@@ -154,4 +154,8 @@ OpenPapers builds on scholarly infrastructure from Semantic Scholar, OpenAlex, a
 
 ## Citing this project
 
-A citation record will be added when the project has a stable public authorship and release identity. Do not cite generated research responses as if they were original sources; cite the underlying papers and datasets referenced by the response.
+OpenPapers does not generate or maintain an automatic `CITATIONS.md` file.
+A formal citation record for the project will be added when it has a stable
+public authorship and release identity. Do not cite generated research
+responses as if they were original sources; cite the underlying papers,
+datasets, and provider records referenced by each response.
