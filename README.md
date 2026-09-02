@@ -5,7 +5,7 @@
 <h1 align="center">OpenPapers</h1>
 
 <p align="center">
-  Provenance-first scholarly research infrastructure for MCP clients.
+  Provenance-first scholarly research infrastructure for Model Context Protocol clients.
 </p>
 
 <p align="center">
@@ -14,28 +14,28 @@
   <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D22.5-339933.svg" alt="Node.js 22.5 or newer"></a>
 </p>
 
-OpenPapers is a provenance-first Model Context Protocol (MCP) server for scholarly retrieval, paper ingestion, and reproducibility-oriented research workflows.
+OpenPapers is a Model Context Protocol (MCP) server for scholarly retrieval, paper ingestion, and reproducible research workflows. It preserves source identities, evidence, uncertainty, and provider failures instead of presenting generated output as verified research.
 
-## Overview
+## What OpenPapers does
 
-The project aggregates scholarly metadata and developer resources through replaceable provider adapters. It normalizes paper identities, preserves upstream identifiers and URLs, records evidence and uncertainty, and exposes bounded operations over MCP. Retrieved content is treated as untrusted data; repository code and downloaded documents are not executed.
+OpenPapers combines scholarly and developer sources through replaceable provider adapters. It treats downloaded papers and repository content as untrusted data and never executes them.
 
-## Features
-
-- Multi-provider paper search across arXiv, Crossref, OpenAlex, and Semantic Scholar.
-- DOI, arXiv, OpenAlex, and Semantic Scholar identity preservation and cross-provider reconciliation.
-- Citation/reference graph discovery with provider lineage and conservative relationship labels.
-- Bounded HTML and PDF acquisition, GROBID-backed parsing, and optional PyMuPDF/Docling fallbacks.
-- Evidence-backed heuristic facts, claims, conflicts, training parameters, and reproducibility reports.
-- Static GitHub repository discovery and revision-pinned configuration inspection.
-- Hugging Face model and dataset discovery with paper-link reconciliation.
-- SQLite/FTS5 storage, optional PostgreSQL/pgvector storage, collections, ResearchPacks, and vector retrieval.
-- MCP stdio and stateless Streamable HTTP transports.
+- Searches arXiv, Crossref, OpenAlex, and Semantic Scholar
+- Preserves DOI, arXiv, OpenAlex, and Semantic Scholar identities during reconciliation
+- Discovers citations, references, related papers, authors, repositories, models, and datasets
+- Acquires bounded HTML and PDF content, with GROBID parsing and optional local fallbacks
+- Extracts source-located facts, claims, conflicts, training parameters, and reproducibility reports
+- Inspects revision-pinned GitHub configuration files without executing repository code
+- Stores research in SQLite with full-text search (FTS5) or PostgreSQL with pgvector
+- Manages collections, portable ResearchPacks, refresh operations, and vector retrieval
+- Serves MCP over stdio or stateless Streamable HTTP
 
 ## Supported sources
 
+OpenPapers uses each provider for a defined part of the research workflow:
+
 | Source | Role | Authentication |
-|---|---|---|
+| --- | --- | --- |
 | [arXiv](https://arxiv.org/) | Preprint search and metadata | Not required |
 | [Crossref](https://www.crossref.org/) | DOI and bibliographic metadata | Not required |
 | [OpenAlex](https://openalex.org/) | Open scholarly metadata and citation relationships | Not required |
@@ -43,9 +43,98 @@ The project aggregates scholarly metadata and developer resources through replac
 | [GitHub](https://github.com/) | Repository discovery, revisions, contents, and implementation evidence | Optional token; anonymous access is rate-limited |
 | [Hugging Face](https://huggingface.co/) | Model and dataset discovery, cards, revisions, and paper links | Optional token |
 
-Provider selection depends on the requested identifier, query, and available metadata. Results may be cross-referenced across providers; no provider is authoritative for every field.
+Provider selection depends on the identifier, query, and available metadata. No provider is authoritative for every field.
 
-## Architecture
+## Choose a runtime
+
+Choose a local Node.js installation or the complete Docker Compose stack:
+
+- **Local runtime**: Node.js 22.5 or newer and npm
+- **Container runtime**: Docker Engine with Compose support
+- **Optional PDF parsing**: GROBID, PyMuPDF, or Docling
+- **Optional persistent vector search**: PostgreSQL with pgvector
+
+The container image uses Node.js 24. Docker Compose supplies PostgreSQL, pgvector, and GROBID.
+
+## Install locally
+
+Install the locked dependencies and compile the TypeScript source:
+
+```sh
+git clone https://github.com/arrogance231/openpapers.git
+cd openpapers
+npm ci
+npm run build
+```
+
+Copy `.env.example` to `.env` if you want persistent SQLite storage or optional provider credentials:
+
+```sh
+cp .env.example .env
+```
+
+The example configuration stores SQLite data at `./data/research.sqlite`. OpenPapers otherwise uses an in-memory SQLite database when `RESEARCH_DB_PATH` is unset.
+
+## Connect an MCP client
+
+Use stdio for a local MCP client. The following `.vscode/mcp.json` example assumes the repository is your open VS Code workspace:
+
+```json
+{
+  "servers": {
+    "openpapers": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["./dist/mcp/server.js"]
+    }
+  }
+}
+```
+
+Other MCP clients use the same command and script path, but their configuration keys may differ. Build the project before the client starts the server.
+
+You can also run the stdio server directly for transport diagnostics:
+
+```sh
+npm start
+```
+
+## Run Streamable HTTP
+
+Set `MCP_TRANSPORT=http` in `.env`, then start the server:
+
+```sh
+npm start
+```
+
+The default endpoint is `http://127.0.0.1:8787/mcp`. Keep it on loopback unless a trusted reverse proxy supplies authentication and Transport Layer Security (TLS).
+
+To run the complete container stack instead, use:
+
+```sh
+docker compose up --build --wait
+```
+
+Docker Compose starts OpenPapers at `http://127.0.0.1:8787/mcp`, PostgreSQL with pgvector, and GROBID. Stop the stack with `docker compose down`; the named volumes remain available.
+
+See [the installation guide](docs/installation.md) for deployment choices and [the configuration reference](docs/configuration.md) for every environment variable.
+
+## MCP tools
+
+OpenPapers registers 36 bounded tools. The inventory below matches the current server registration:
+
+- **Retrieval**: `search_papers`, `get_paper`, `get_bibtex`, `research_method`, `research_topic`
+- **Graphs**: `get_references`, `get_citations`, `get_related_papers`, `resolve_author`
+- **Documents and extraction**: `read_paper`, `search_within_paper`, `extract_paper_facts`, `extract_paper_claims`, `extract_training_parameters`
+- **Verification and reproducibility**: `extract_training_recipe`, `extract_training_recipe_from_url`, `build_research_report`, `compare_paper_to_code`, `compare_papers`, `compare_methods`, `verify_claim`
+- **Developer ecosystem**: `find_implementations`, `find_models`, `find_datasets`, `find_repository_configs`, `get_repository_config`
+- **Research library**: `create_collection`, `list_collections`, `add_paper_to_collection`, `remove_paper_from_collection`, `delete_collection`, `export_research_pack`, `import_research_pack`, `refresh_collection`, `refresh_paper`, `vector_search`
+
+Tool inputs use bounded Zod schemas. Responses include readable MCP content and structured data where the contract supports it. Follow the [usage guide](docs/usage.md) for a representative research workflow.
+
+## How OpenPapers is structured
+
+Requests pass from an MCP transport through tool modules and the research service. Provider adapters handle external APIs, while storage and retrieval components preserve local results.
 
 ```text
 MCP transport -> tool modules -> ResearchService -> provider adapters
@@ -54,115 +143,64 @@ MCP transport -> tool modules -> ResearchService -> provider adapters
                               storage/retrieval     external APIs
 ```
 
-See [docs/architecture.md](docs/architecture.md), [docs/providers.md](docs/providers.md), and [docs/extending.md](docs/extending.md).
+Read the [architecture](docs/architecture.md), [provider](docs/providers.md), and [extension](docs/extending.md) guides for implementation details.
 
-## Installation
+## Provenance and trust boundaries
 
-Requirements: Node.js 22.5 or newer. Node.js 24 is used by the container image.
+Material claims include evidence records when source data is available. Records can contain source IDs, authors, titles, persistent identifiers, quality labels, evidence types, and locators.
 
-```sh
-npm ci
-npm run build
-```
+OpenPapers keeps provider failures, conflicts, unavailable values, and heuristic derivations explicit. Generated summaries are not academic sources. Verify them against the cited records.
 
-For the Docker deployment, install Docker Desktop or another Docker Engine with Compose support and run:
-
-```sh
-docker compose up --build --wait
-```
-
-The Compose profile starts OpenPapers, PostgreSQL with pgvector, and GROBID. See [docs/installation.md](docs/installation.md) for SQLite, PostgreSQL, and GROBID options.
-
-## Configuration
-
-Copy the example file before configuring optional integrations:
-
-```sh
-cp .env.example .env
-```
-
-The local default uses SQLite at `./data/research.sqlite`. Important variables are documented in [docs/configuration.md](docs/configuration.md). `.env` is ignored by Git and must never contain committed credentials.
-
-## Quick start
-
-Start the stdio server after building:
-
-```sh
-npm start
-```
-
-To start the HTTP transport locally:
-
-```sh
-MCP_TRANSPORT=http npm start
-```
-
-The endpoint is `http://127.0.0.1:8787/mcp`. Keep it on loopback unless a trusted reverse proxy provides authentication and TLS.
-
-## MCP interface
-
-The server currently registers 36 MCP tools, including:
-
-- Retrieval: `search_papers`, `get_paper`, `get_bibtex`, `research_method`, `research_topic`.
-- Graphs: `get_references`, `get_citations`, `get_related_papers`, `resolve_author`.
-- Documents: `read_paper`, `search_within_paper`, `extract_paper_facts`, `extract_paper_claims`, `extract_training_parameters`.
-- Reproducibility: `extract_training_recipe`, `extract_training_recipe_from_url`, `build_research_report`, `compare_paper_to_code`.
-- Ecosystem: `find_implementations`, `find_models`, `find_datasets`, `find_repository_configs`, `get_repository_config`.
-- Library: collections, ResearchPacks, refresh operations, and `vector_search`.
-
-Tool schemas are bounded with Zod. Responses expose both human-readable content and structured data where applicable. See [docs/usage.md](docs/usage.md) for representative calls.
-
-## Data sources, provenance, and citations
-
-Material claims carry evidence records containing source IDs, authors, titles, persistent identifiers, source quality, evidence type, and locators when available. Provider failures, conflicts, unavailable values, and heuristic derivations remain explicit. Generated summaries are not original academic sources and should be checked against the cited records.
-
-The repository license applies to this project's source code only. Papers, abstracts, metadata, API responses, datasets, model weights, model cards, and GitHub repositories remain subject to their respective licenses and service terms. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) and [docs/limitations.md](docs/limitations.md).
+The project does not execute downloaded documents or discovered repositories. Read the [security policy](SECURITY.md), [reproducibility guide](docs/reproducibility.md), and [known limitations](docs/limitations.md) before exposing the HTTP transport or relying on extracted results.
 
 ## Development and testing
 
+Run the complete credential-free validation suite with one command:
+
 ```sh
-npm ci
+npm run check
+```
+
+The command runs the TypeScript check, architecture rules, production build, and Vitest suite. You can also run each stage separately:
+
+```sh
 npm run lint
 npm run architecture-check
 npm run build
 npm test
-npm run check
 ```
 
-Contributors should read [CONTRIBUTING.md](CONTRIBUTING.md). Live provider, Docker, and model workflow checks are separate from credential-free tests; [docs/reproducibility.md](docs/reproducibility.md) describes the distinction.
+Live provider, Docker, GROBID, and model workflow checks remain separate from credential-free tests. Contributors should read [CONTRIBUTING.md](CONTRIBUTING.md) and the [release checklist](RELEASE_CHECKLIST.md).
 
-## Limitations
+## Find more documentation
 
-- Anonymous provider access can be rate-limited or unavailable.
-- Title-only searches can miss or mis-rank a canonical record; identifier follow-up is the reliable fallback when a DOI or provider-native identifier is known.
-- PDF layout fidelity depends on the TEI returned by GROBID. PDF fallbacks are opt-in.
-- Heuristic extraction does not establish independently verified facts.
-- PostgreSQL/pgvector and GROBID require external services.
+The documentation index groups guides by task and audience:
 
-See [docs/limitations.md](docs/limitations.md) for details and the deferred retrieval-ranking roadmap.
+- [Documentation index](docs/README.md)
+- [Installation](docs/installation.md)
+- [Configuration reference](docs/configuration.md)
+- [Usage and MCP tools](docs/usage.md)
+- [Architecture](docs/architecture.md)
+- [Provider integrations](docs/providers.md)
+- [Provenance and reproducibility](docs/reproducibility.md)
+- [Known limitations](docs/limitations.md)
+- [Roadmap](docs/roadmap.md)
+- [Release and deployment](docs/release.md)
 
-## Roadmap
+## Project status and roadmap
 
-The project is deliberately testing provenance and citation correctness before
-adding automatic citation output. See [docs/roadmap.md](docs/roadmap.md) for
-the staged verification gates, planned formal citation metadata, and future
-source-aware citation work.
+Version `0.1.0` is the current package baseline. The project prioritizes provenance and citation verification before automatic citation output.
 
-## License
+The [changelog](CHANGELOG.md) records completed work. The [roadmap](docs/roadmap.md) describes citation metadata, source-aware citation output, and deferred retrieval improvements.
 
-OpenPapers is licensed under the [Apache License, Version 2.0](LICENSE.md).
-The license applies to this project's source code only. Papers, abstracts,
-metadata, API responses, datasets, model weights, model cards, and GitHub
-repositories remain subject to their respective licenses and service terms.
+## License and acknowledgements
 
-## Acknowledgements
+OpenPapers is licensed under the [Apache License, Version 2.0](LICENSE.md). This license covers the project's source code only.
 
-OpenPapers builds on scholarly infrastructure from Semantic Scholar, OpenAlex, arXiv, and Crossref, and developer ecosystem infrastructure from GitHub and Hugging Face. It also uses the Model Context Protocol SDK, PostgreSQL/pgvector, GROBID, Node.js, TypeScript, Zod, and Vitest. These projects and services remain the property of their respective maintainers. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for official links.
+Papers, abstracts, metadata, API responses, datasets, model weights, model cards, and GitHub repositories retain their own licenses and service terms. [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) lists the external projects and services used by OpenPapers.
 
-## Citing this project
+## Cite this project
 
-OpenPapers does not generate or maintain an automatic `CITATIONS.md` file.
-A formal citation record for the project will be added when it has a stable
-public authorship and release identity. Do not cite generated research
-responses as if they were original sources; cite the underlying papers,
-datasets, and provider records referenced by each response.
+OpenPapers does not maintain an automatic `CITATIONS.md` file. A formal citation record will be added after the project has a stable public authorship and release identity.
+
+Do not cite generated research responses as original sources. Cite the papers, datasets, and provider records referenced by each response.
