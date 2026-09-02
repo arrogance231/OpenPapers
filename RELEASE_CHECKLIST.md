@@ -57,4 +57,4 @@ Latest verification: Compose configuration/build/start passed; all three service
 
 - [x] Changelog is updated for the current unreleased baseline.
 - [x] Version metadata is consistent between `package.json` and `package-lock.json` (`0.1.0`, Apache-2.0, Node.js >=22.5).
-- [ ] Git working tree is clean after this checklist update and commit.
+- [x] Git working tree is clean after the release checklist update and commit.
