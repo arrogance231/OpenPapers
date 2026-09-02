@@ -9,6 +9,7 @@
 ## Architecture and extension
 
 - [Architecture and roadmap](architecture.md)
+- [Roadmap and citation testing](roadmap.md)
 - [Provider integrations](providers.md)
 - [Extension guide](extending.md)
 - [Maintainability report](maintainability.md)

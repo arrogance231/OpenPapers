@@ -141,6 +141,13 @@ Contributors should read [CONTRIBUTING.md](CONTRIBUTING.md). Live provider, Dock
 
 See [docs/limitations.md](docs/limitations.md) for details and the deferred retrieval-ranking roadmap.
 
+## Roadmap
+
+The project is deliberately testing provenance and citation correctness before
+adding automatic citation output. See [docs/roadmap.md](docs/roadmap.md) for
+the staged verification gates, planned formal citation metadata, and future
+source-aware citation work.
+
 ## License
 
 OpenPapers is licensed under the [Apache License, Version 2.0](LICENSE.md).
