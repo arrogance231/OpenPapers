@@ -27,5 +27,9 @@ export interface ResearchStore {
   close():void;
 }
 
+export type AsyncResearchStore = {
+  [K in keyof ResearchStore]: ResearchStore[K] extends (...args: infer A) => infer R ? (...args: A) => Promise<Awaited<R>> : ResearchStore[K]
+};
+
 export interface PostgresQueryResult<Row=Record<string,unknown>> { rows:Row[]; }
 export interface PostgresQueryClient { query<Row=Record<string,unknown>>(text:string,parameters?:readonly unknown[]):Promise<PostgresQueryResult<Row>>; close():Promise<void>; }

@@ -4,6 +4,7 @@ import { McpServer, createMcpHandler } from '@modelcontextprotocol/server';
 import { serveStdio } from '@modelcontextprotocol/server/stdio';
 import { toNodeHandler, localhostHostValidation, localhostOriginValidation } from '@modelcontextprotocol/node';
 import { ResearchService } from '../research/service.js';
+import { PostgresResearchStore } from '../database/postgres.js';
 import { registerTools } from './tools.js';
 
 export function createMcpServer(research = new ResearchService()): McpServer {
@@ -17,9 +18,11 @@ export function createHttpHandler(research = new ResearchService()) {
 }
 
 async function main(): Promise<void> {
+  const research = process.env.DATABASE_BACKEND === 'postgres' ? new ResearchService(PostgresResearchStore.fromConfig()) : new ResearchService();
+  if (research.db instanceof PostgresResearchStore) await research.db.initialize();
   const mode = process.env.MCP_TRANSPORT ?? 'stdio';
   if (mode === 'http') {
-    const handler = createHttpHandler();
+    const handler = createHttpHandler(research);
     const nodeHandler = toNodeHandler(handler);
     const host = process.env.HTTP_HOST ?? '127.0.0.1';
     const port = Number(process.env.HTTP_PORT ?? 8787);
@@ -34,7 +37,7 @@ async function main(): Promise<void> {
     const shutdown = async () => { await handler.close(); http.close(); };
     process.once('SIGINT', () => void shutdown()); process.once('SIGTERM', () => void shutdown());
   } else {
-    await serveStdio(() => createMcpServer());
+    await serveStdio(() => createMcpServer(research));
     console.error('OpenPapers stdio server running');
   }
 }

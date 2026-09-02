@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     environment:
       POSTGRES_DB: openpapers
       POSTGRES_USER: openpapers
@@ -10,12 +10,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   openpapers:
     build: .
     environment:
       GROBID_URL: http://grobid:8070
-      RESEARCH_DB_PATH: /app/data/research.sqlite
+      DATABASE_BACKEND: postgres
+      DATABASE_URL: postgresql://openpapers:openpapers-local-only@postgres:5432/openpapers
       MCP_TRANSPORT: http
       HTTP_HOST: 0.0.0.0
       HTTP_PORT: 8787
@@ -45,3 +48,4 @@ services:
 
 volumes:
   openpapers-data:
+  postgres-data:

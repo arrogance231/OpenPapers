@@ -11,7 +11,7 @@ npm run build
 npm test
 ```
 
-The default database is `./data/research.sqlite`. Set `RESEARCH_DB_PATH` to use another SQLite path. Existing databases are upgraded idempotently and report their schema version through the database API.
+The local CLI default database is `./data/research.sqlite`. Set `RESEARCH_DB_PATH` to use another SQLite path. The Docker Compose deployment uses PostgreSQL with the pgvector extension by setting `DATABASE_BACKEND=postgres` and `DATABASE_URL`; its data is stored in the `postgres-data` volume.
 
 ## MCP server
 
@@ -41,4 +41,4 @@ Back up the SQLite file before upgrades. The schema migration ledger is append-o
 
 ## Optional integrations
 
-GROBID, provider APIs, Docker, and model/tool-calling workflows are optional integration scopes. A passing deterministic test suite does not constitute live provider, container, or model verification.
+GROBID, provider APIs, Docker, and model/tool-calling workflows are optional integration scopes. A passing deterministic test suite does not constitute live provider, container, or model verification. The Compose PostgreSQL backend is verified separately with live MCP persistence and pgvector extension checks.

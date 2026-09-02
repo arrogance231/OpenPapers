@@ -4,7 +4,9 @@
   "private": true,
   "description": "Provenance-first MCP server for reproducible LLM/ML research",
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node --env-file-if-exists=.env dist/mcp/server.js",
@@ -13,13 +15,15 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@modelcontextprotocol/server": "^2.0.0",
     "@modelcontextprotocol/node": "^2.0.0",
+    "@modelcontextprotocol/server": "^2.0.0",
+    "pg": "^8.23.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.15.0",
+    "@types/pg": "^8.23.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
