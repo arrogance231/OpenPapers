@@ -13,4 +13,5 @@ describe('ResearchPack import',()=>{
     expect(collection.name).toBe('restored'); expect(targetDb.getWork(paper.paperId)).toEqual(paper); expect(targetDb.getCollection(collection.id)?.paperIds).toEqual([paper.paperId]); sourceDb.close(); targetDb.close();
   });
   it('rejects an unsupported pack format',()=>{ expect(()=>new ResearchService(new ResearchDb(':memory:')).importResearchPack({format:'unknown'} as any)).toThrow('unsupported ResearchPack format'); });
+  it('rejects malformed paper metadata before persistence',()=>{ const db=new ResearchDb(':memory:'); expect(()=>new ResearchService(db).importResearchPack({format:'openpapers.research-pack.v1',collection:{id:'ignored',name:'bad'},papers:[{paperId:'paper-a',title:'A'}],evidence:[]} as any)).toThrow('invalid ResearchPack paper'); db.close(); });
 });
