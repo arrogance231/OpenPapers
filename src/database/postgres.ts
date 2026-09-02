@@ -4,6 +4,7 @@ import type { ParsedDocument } from '../ingestion/document.js';
 import type { PaperClaim, ClaimConflict } from '../extraction/claims.js';
 import type { Collection } from './db.js';
 import type { ResearchStore } from './store.js';
+import type { ResearchPack } from '../research/research-pack.js';
 
 type PostgresClient={query<Row=Record<string,unknown>>(text:string,parameters?:readonly unknown[]):Promise<{rows:Row[]}>;end?:()=>Promise<void>;close?:()=>Promise<void>};
 
@@ -54,6 +55,7 @@ export class PostgresResearchStore implements ResearchStore {
   removeFromCollection(id:string,paperId:string):void{const c=this.collections.get(id);if(c)c.paperIds=c.paperIds.filter(x=>x!==paperId);this.write(this.pool.query('DELETE FROM collection_items WHERE collection_id=$1 AND paper_id=$2',[id,paperId]));}
   deleteCollection(id:string):void{this.collections.delete(id);this.write(this.pool.query('DELETE FROM collection_items WHERE collection_id=$1',[id]).then(()=>this.pool.query('DELETE FROM collections WHERE collection_id=$1',[id])));}
   async deleteCollectionTransactional(id:string):Promise<void>{this.collections.delete(id);await this.withTransaction(async tx=>{await tx('DELETE FROM collection_items WHERE collection_id=$1',[id]);await tx('DELETE FROM collections WHERE collection_id=$1',[id]);});}
+  async importResearchPackTransactional(pack:ResearchPack):Promise<Collection>{const id=`collection_${Buffer.from(pack.collection.name).toString('hex').slice(0,24)}`;const collection={id,name:pack.collection.name,paperIds:pack.papers.map(paper=>paper.paperId)} as Collection;await this.withTransaction(async tx=>{await tx('INSERT INTO collections(collection_id,name) VALUES($1,$2) ON CONFLICT(name) DO NOTHING',[id,collection.name]);for(const paper of pack.papers){await tx('INSERT INTO works(paper_id,payload) VALUES($1,$2) ON CONFLICT(paper_id) DO UPDATE SET payload=excluded.payload',[paper.paperId,paper]);await tx('INSERT INTO collection_items(collection_id,paper_id) VALUES($1,$2) ON CONFLICT DO NOTHING',[id,paper.paperId]);}for(const item of pack.evidence)await tx('INSERT INTO evidence(evidence_id,paper_id,payload) VALUES($1,$2,$3) ON CONFLICT(evidence_id) DO UPDATE SET paper_id=excluded.paper_id,payload=excluded.payload',[item.evidence.evidenceId,item.paperId,item.evidence]);});this.collections.set(id,collection);for(const paper of pack.papers)this.works.set(paper.paperId,paper);for(const item of pack.evidence)this.evidence.set(item.evidence.evidenceId,{paperId:item.paperId,value:item.evidence});return collection;}
   getCollection(id:string):Collection|undefined{return this.collections.get(id);}
   listCollections():Collection[]{return [...this.collections.values()].sort((a,b)=>a.name.localeCompare(b.name)).map(c=>({...c,paperIds:[...c.paperIds].sort()}));}
   upsertVector(recordId:string,embedding:number[],payload:unknown):void{this.vectors.set(recordId,{embedding,payload});this.write(this.pool.query('INSERT INTO vector_records(record_id,embedding,payload) VALUES($1,$2::vector,$3) ON CONFLICT(record_id) DO UPDATE SET embedding=excluded.embedding,payload=excluded.payload',[recordId,toVectorLiteral(embedding),payload]));}
