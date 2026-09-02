@@ -5,7 +5,7 @@ import type { ResearchWork } from '../src/models/research.js';
 import type { PaperExtractor } from '../src/extraction/extractor.js';
 
 describe('provenance-first recipe behavior', () => {
-  it('classifies chronology-supported graph candidates conservatively', () => {
+  it('classifies chronology-supported graph candidates conservatively', async () => {
     const root: ResearchWork = {paperId:'root',title:'Root',authors:[],year:2024,publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
     const prior: ResearchWork = {...root,paperId:'prior',title:'Prior',year:2020};
     const later: ResearchWork = {...root,paperId:'later',title:'Later',year:2025};
@@ -13,7 +13,7 @@ describe('provenance-first recipe behavior', () => {
     expect(classifyGraphRelationship(root,later,'citation')).toBe('FOLLOW_UP_CANDIDATE');
     expect(classifyGraphRelationship(root,later,'related')).toBe('UNKNOWN');
   });
-  it('never guesses missing training parameters', () => {
+  it('never guesses missing training parameters', async () => {
     const work: ResearchWork = { paperId:'work_recipe', title:'Recipe Paper', authors:[], publicationStatus:'preprint', bibtex:'', sourceProviders:['test'], versions:[] };
     const service = new ResearchService(new ResearchDb(':memory:'));
     const response = service.recipe(work);
@@ -30,20 +30,20 @@ describe('provenance-first recipe behavior', () => {
     expect(result.data[0]?.relationshipBasis).toBe('PROVIDER_EXPLICIT');
     expect(result.data[0]?.evidence.sourceId).toBe(work.paperId);
     expect(result.references[0]?.paperId).toBe(work.paperId);
-    expect(service.db.getGraphEdges('S2-root')).toEqual([expect.objectContaining({targetPaperId:work.paperId,relation:'reference',provider:'semantic_scholar',evidenceId:result.evidence[0]?.evidenceId})]);
+    expect(await service.db.getGraphEdges('S2-root')).toEqual([expect.objectContaining({targetPaperId:work.paperId,relation:'reference',provider:'semantic_scholar',evidenceId:result.evidence[0]?.evidenceId})]);
   });
   it('resolves graph nodes to existing DOI lineage identities', async () => {
     const db = new ResearchDb(':memory:');
     const existing: ResearchWork = { paperId:'canonical_work', title:'Canonical', authors:[], doi:'10.1000/canonical', publicationStatus:'unknown', bibtex:'', sourceProviders:['crossref'], versions:[] };
-    db.upsertWork(existing);
+    await db.upsertWork(existing);
     const graphWork = {...existing, paperId:'semantic_work', sourceProviders:['semantic_scholar']};
     const service = new ResearchService(db, undefined, undefined, undefined, { getReferences: async () => [graphWork], getCitations: async () => [], getRelated: async () => [], resolveAuthor: async () => undefined } as never);
     await service.graph('root', 'reference');
-    expect(service.db.getGraphEdges('root')[0]?.targetPaperId).toBe('canonical_work');
+    expect((await service.db.getGraphEdges('root'))[0]?.targetPaperId).toBe('canonical_work');
   });
   it('merges Semantic Scholar and OpenAlex graph candidates when a root has an OpenAlex identity', async () => {
     const db = new ResearchDb(':memory:');
-    db.upsertWork({paperId:'root',title:'Root',authors:[],openAlexId:'https://openalex.org/W1',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]});
+    await db.upsertWork({paperId:'root',title:'Root',authors:[],openAlexId:'https://openalex.org/W1',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]});
     const semanticWork: ResearchWork = {paperId:'semantic_child',title:'Semantic Child',authors:[],publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
     const openAlexWork: ResearchWork = {paperId:'openalex_child',title:'OpenAlex Child',authors:[],openAlexId:'https://openalex.org/W2',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]};
     const provider={getReferences:async()=>[semanticWork],getCitations:async()=>[],getRelated:async()=>[],resolveAuthor:async()=>undefined} as never;
@@ -55,7 +55,7 @@ describe('provenance-first recipe behavior', () => {
   });
   it('reports metadata conflicts when providers merge one graph node', async () => {
     const db = new ResearchDb(':memory:');
-    db.upsertWork({paperId:'root',title:'Root',authors:[],openAlexId:'https://openalex.org/W1',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]});
+    await db.upsertWork({paperId:'root',title:'Root',authors:[],openAlexId:'https://openalex.org/W1',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]});
     const semanticWork: ResearchWork = {paperId:'semantic_same',title:'Canonical Title',doi:'10.1000/example',authors:[],year:2022,publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
     const openAlexWork: ResearchWork = {paperId:'openalex_same',title:'Conflicting Title',doi:'10.1000/example',authors:[],year:2023,openAlexId:'https://openalex.org/W2',publicationStatus:'unknown',bibtex:'',sourceProviders:['openalex'],versions:[]};
     const provider={getReferences:async()=>[semanticWork],getCitations:async()=>[],getRelated:async()=>[],resolveAuthor:async()=>undefined} as never;
@@ -92,8 +92,8 @@ describe('provenance-first recipe behavior', () => {
     const db = new ResearchDb(':memory:');
     const result = await new ResearchService(db,undefined,undefined,undefined,undefined,acquirer).extractPaperClaims('https://example.com/claims.html');
     expect(result.claims).toMatchObject([{kind:'loss',statement:'Uses KL divergence.',evidenceType:'DERIVED'}]);
-    expect(db.getClaims()).toHaveLength(1);
-    expect(db.getEvidenceForPaper(result.claims[0]!.claimId)).toEqual([result.claims[0]!.evidence]);
+    expect(await db.getClaims()).toHaveLength(1);
+    expect(await db.getEvidenceForPaper(result.claims[0]!.claimId)).toEqual([result.claims[0]!.evidence]);
   });
   it('runs an injected provider-independent extractor after parsing', async () => {
     const body = new TextEncoder().encode('<html><body><h1>Method</h1><p>We train a model.</p></body></html>');

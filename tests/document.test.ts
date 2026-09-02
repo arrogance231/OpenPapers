@@ -26,6 +26,11 @@ describe('structured document parsing', () => {
     expect(parsed.warnings).toEqual(['unresolved citation target: missing']);
   });
 
+  it('accepts namespace-qualified TEI tags emitted by GROBID deployments', () => {
+    const parsed = parseGrobidTei('https://example.com/namespaced.pdf', '<tei:TEI xmlns:tei="http://www.tei-c.org/ns/1.0"><tei:teiHeader><tei:fileDesc><tei:titleStmt><tei:title>Namespaced</tei:title></tei:titleStmt></tei:fileDesc></tei:teiHeader><tei:text><tei:body><tei:div><tei:head>Method</tei:head><tei:p>Namespace-safe text.</tei:p></tei:div></tei:body></tei:text></tei:TEI>');
+    expect(parsed).toMatchObject({title:'Namespaced',sections:[{heading:'Method',text:'Namespace-safe text.'}]});
+  });
+
   it('posts PDF bytes to GROBID and returns parsed TEI', async () => {
     let request: Request | undefined;
     const fetcher = async (input: RequestInfo | URL, init?: RequestInit) => { request = new Request(input, init); return new Response('<TEI><teiHeader><fileDesc><titleStmt><title>Result</title></titleStmt></fileDesc></teiHeader><text><body><div><head>Body</head><p>Content.</p></div></body></text></TEI>', {status:200, headers:{'content-type':'application/xml'}}); };

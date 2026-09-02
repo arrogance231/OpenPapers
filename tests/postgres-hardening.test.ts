@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { PostgresResearchStore } from '../src/database/postgres.js';
+import { ResearchService } from '../src/research/service.js';
 
 describe('PostgreSQL hardening contracts', () => {
-  it('propagates a rejected queued write through flush', async () => {
+  it('propagates a rejected write through the async repository boundary', async () => {
     const query = vi.fn().mockRejectedValueOnce(new Error('write failed'));
     const store = PostgresResearchStore.fromQueryClient({ query, close: vi.fn(async () => undefined) } as any);
-    store.upsertWork({ paperId: 'paper-1', title: 'Test' } as any);
+    await expect(store.upsertWork({ paperId: 'paper-1', title: 'Test' } as any)).rejects.toThrow('write failed');
     await expect(store.flush()).rejects.toThrow('write failed');
   });
 
@@ -20,6 +21,13 @@ describe('PostgreSQL hardening contracts', () => {
       { recordId: 'far', score: 0, payload: undefined },
     ]);
     expect(query).toHaveBeenCalledWith(expect.stringContaining('<=>'), ['[1,0]', 2]);
+  });
+
+  it('preserves adapter context when the service flushes storage', async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [] });
+    const store = PostgresResearchStore.fromQueryClient({ query, close: vi.fn(async () => undefined) } as any);
+    await new ResearchService(store).flushStorage();
+    expect(query).not.toHaveBeenCalled();
   });
 
   it('commits successful transactions and rolls back failures', async () => {

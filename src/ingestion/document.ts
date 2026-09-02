@@ -49,8 +49,9 @@ export function parseDocument(document: AcquiredDocument): ParsedDocument {
 
 
 export function parseGrobidTei(url: string, tei: string): ParsedDocument {
-  const titleMatch = tei.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
-  const body = tei.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? '';
+  const normalizedTei = tei.replace(/<(\/?)(?:tei|ns\d+):/gi, '<$1');
+  const titleMatch = normalizedTei.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+  const body = normalizedTei.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? '';
   const sections: DocumentSection[] = [];
   const sectionByDepth = new Map<number, DocumentSection>();
   const appendixDepths = new Set<number>();

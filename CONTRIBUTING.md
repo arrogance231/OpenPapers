@@ -1,44 +1,56 @@
 # Contributing to OpenPapers
 
-OpenPapers is an open-source, provenance-first MCP server. Contributions are welcome when they preserve traceability, explicit uncertainty, provider isolation, and safe handling of untrusted research content.
+Contributions should improve scholarly retrieval, provenance, reproducibility, safety, or the contributor experience without weakening source attribution or uncertainty handling.
 
 ## Development setup
 
-Requirements: Node.js 24+.
+Requirements: Node.js 22.5 or newer and npm.
 
 ```sh
-npm install
-npm run lint
-npm run build
-npm test
+npm ci
+cp .env.example .env   # only when local configuration is needed
+npm run check
 ```
 
-Copy `.env.example` to `.env` only when live provider testing is needed. Never commit `.env`, credentials, downloaded data, or private repository content.
+The default tests use deterministic fixtures and do not require provider credentials. Live provider, Docker, GROBID, and model workflow checks are optional and must be described separately from fixture results.
 
-## Contribution rules
+## Engineering expectations
 
-- Use test-first development for behavior changes.
-- Keep provider adapters independent and inject `fetch` in tests.
-- Keep MCP tool modules independent; avoid adding unrelated handlers to `src/mcp/tools.ts`.
-- Add bounded Zod schemas to every tool.
-- Treat remote papers, READMEs, model cards, and repositories as untrusted data.
-- Never execute repository scripts, notebooks, Makefiles, or downloaded code.
-- Never guess missing research parameters; use explicit statuses such as `NOT_REPORTED` or `SOURCE_UNAVAILABLE`.
-- Every material research claim must resolve to evidence with authors, source identity, and a locator when available.
-- Do not silently classify a GitHub repository as official.
+- Keep provider-specific payloads inside provider adapters and map them to domain types.
+- Preserve provider-native identifiers, source URLs, revisions, commits, blob IDs, and line locators where available.
+- Treat papers, repository files, model cards, and API responses as untrusted data; never execute downloaded content.
+- Represent unavailable, conflicting, heuristic, and unverified values explicitly. Do not guess missing research parameters.
+- Use bounded Zod schemas for MCP inputs and return structured data together with concise text.
+- Add tests for success, missing data, malformed data, and upstream failures.
+- Keep factual results separate from recommendations or generated synthesis.
 
-## Adding providers and tools
+## Adding a provider
 
-Read `docs/extending.md` before starting provider or MCP work. New providers must include pure payload mappers, normalized domain output, failure handling, and fixture tests. New MCP capabilities belong in `src/mcp/tool-modules/` and must return both human-readable and machine-readable output. Repository discovery should remain bounded and allowlisted; use `find_repository_configs` for common root-level config files and `get_repository_config` for an explicitly requested file. The Phase 10 maintainability audit will periodically review these seams and may refine them through focused, backward-compatible changes.
+Read [docs/extending.md](docs/extending.md). Add a provider module, pure mapper fixtures, injected-fetcher tests, normalized domain output, failure handling, and documentation in [docs/providers.md](docs/providers.md). Authentication must remain optional unless the feature genuinely cannot operate without it.
 
-## Pull request checklist
+## Adding or changing MCP tools
 
-- [ ] Scope is limited to one subsystem or coherent feature.
-- [ ] Tests cover success, missing data, malformed data, and upstream failure behavior.
-- [ ] Provenance and source quality are documented.
-- [ ] Security impact is documented.
-- [ ] No secrets or generated research data are included.
-- [ ] `npm run lint && npm run build && npm test` passes.
-- [ ] README or docs are updated for public MCP tools or extension points.
+Place capabilities in `src/mcp/tool-modules/` where practical and register them from the existing tool registry. Add bounded input schemas, handler tests, provenance coverage, and a registration-inventory update when the public tool list changes. Do not create a second transport or server.
 
-Use focused commits and describe any live verification separately from deterministic CI tests.
+## Pull requests
+
+Use a focused branch and pull request. Describe:
+
+- motivation and scope;
+- affected providers, tools, or persistence boundaries;
+- provenance and security implications;
+- reproduction steps and assumptions;
+- fixture results and, when relevant, benchmark or live-provider results;
+- documentation changes and known limitations.
+
+Before submitting:
+
+```sh
+npm run lint
+npm run architecture-check
+npm run build
+npm test
+npm run check
+```
+
+Do not commit `.env`, credentials, downloaded papers, generated databases, private repository content, or provider response dumps. See [SECURITY.md](SECURITY.md).

@@ -1,8 +1,22 @@
-# Security
+# Security policy
 
-- Treat all external academic and repository content as untrusted data; never execute downloaded code.
-- The server fetches only documented metadata endpoints in this slice. Future PDF/repository fetchers must enforce HTTPS, size/time limits, redirect validation, SSRF protections, decompression limits, and path confinement.
-- Do not put credentials in tool arguments, schemas, logs, or MCP custom headers.
-- HTTP deployment must use TLS and an authentication proxy. Bind localhost by default. Host/Origin guards are enabled for local HTTP.
-- MCP tool inputs are Zod-validated. Tool failures are returned as `isError` results where actionable.
-- Avoid prompt-injection propagation: retrieved text is evidence only and must not be interpreted as server instructions.
+## Reporting vulnerabilities
+
+Do not open a public issue for an undisclosed vulnerability. Use the repository's GitHub Security Advisories workflow when enabled, or contact the repository maintainers through the private contact mechanism configured for the GitHub project. Include reproduction steps, affected versions, impact, and a proposed mitigation when available.
+
+## Credential handling
+
+- API keys and tokens are optional configuration for provider access; never commit them.
+- Keep secrets in a local `.env` file or an external secret manager. `.env` is ignored by Git; `.env.example` contains placeholders only.
+- Do not place credentials in MCP arguments, custom headers, source fixtures, logs, benchmark output, screenshots, or issue reports.
+- If a credential is exposed, revoke or rotate it immediately and remove it from all published history where possible.
+
+## Security boundaries
+
+- External paper, repository, model-card, and dataset content is untrusted input and is not executed.
+- HTTP acquisition is bounded by scheme, host, redirect, timeout, and response-size checks. Archive/compressed responses are rejected before parsing.
+- The HTTP MCP transport binds to loopback by default and validates Host and Origin. Deployments exposed beyond a trusted local network require TLS and authentication at a reverse proxy.
+- MCP inputs are schema-validated and provider calls use bounded limits and retry policies.
+- Authorization-bearing responses are excluded from shared/durable caching; `private` and `no-store` responses are not cached.
+
+Report suspected SSRF, credential leakage, unsafe content execution, authentication bypass, or provenance-integrity failures as security issues.

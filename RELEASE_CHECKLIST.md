@@ -1,38 +1,51 @@
-# OpenPapers Release Checklist
+# Release checklist
+
+Use this checklist for a release candidate. Mark items only after running them against the current checkout and record environment-dependent evidence in the release notes.
 
 ## Automated gates
 
-- [ ] `npm ci`
+- [ ] `npm ci --no-audit --no-fund`
 - [ ] `npm run lint`
+- [ ] `npm run architecture-check`
 - [ ] `npm run build`
 - [ ] `npm test`
+- [ ] `npm run check`
 - [ ] `git diff --check`
+
+## Documentation and security
+
+- [ ] README, provider documentation, configuration examples, and limitations match the implementation.
+- [ ] `.env.example` contains placeholders only.
+- [ ] No credentials, authorization headers, downloaded research data, or private repository content are present.
+- [ ] External provider failures and provenance behavior remain documented.
+- [ ] Dependency and upstream license obligations have been reviewed.
+- [x] Apache-2.0 is selected and `LICENSE.md` is present; review third-party notices separately.
 
 ## Runtime gates
 
-- [ ] `docker compose config -q`
-- [ ] `docker compose up -d --build --wait`
-- [ ] `docker compose ps` shows OpenPapers running and GROBID healthy
-- [ ] `curl http://127.0.0.1:8070/api/isalive` returns HTTP 200 and `true`
-- [ ] MCP initialize, `tools/list`, and a bounded local `tools/call` return HTTP 200
-- [ ] `docker compose exec -T openpapers id` confirms non-root runtime
-- [ ] Persistent `/app/data` write test passes
-
-## Benchmarks
-
-Run against a running HTTP server:
+When Docker is available:
 
 ```sh
+docker compose config -q
+docker compose up -d --build --wait
+docker compose ps
+curl http://127.0.0.1:8070/api/isalive
+node scripts/adversarial-mcp-smoke.mjs
 MCP_BENCHMARK_RUNS=30 node scripts/mcp-benchmark.mjs
+docker compose down
 ```
 
-Record Docker/Node versions, host CPU/RAM, run count, endpoint, median, P95, and max. These control-plane measurements do not represent provider, PDF, GROBID, Postgres, or Qwen throughput.
+Verify MCP initialization, `tools/list`, at least one bounded `tools/call`, PostgreSQL/pgvector readiness, GROBID readiness, non-root application execution, and persistent data behavior. Control-plane benchmark results do not represent provider, PDF, GROBID, PostgreSQL, or model throughput.
 
-## Release evidence
+## Data and migrations
 
-- [ ] No credentials or authorization headers appear in logs, fixtures, or benchmark output.
-- [ ] ResearchPack import/export remains deterministic and versioned.
-- [ ] Claims and evidence retain provenance and `NOT_REPORTED` values are not guessed.
-- [ ] External-provider failures remain visible.
-- [ ] Migration version is recorded and upgrade tests pass.
+- [ ] SQLite migration tests pass and the migration ledger is idempotent.
+- [ ] PostgreSQL/pgvector schema and read-after-write behavior are verified when that deployment is released.
+- [ ] ResearchPack import/export remains versioned, bounded, and deterministic.
+- [ ] Claims and evidence retain source provenance; unavailable values are not guessed.
+
+## Publication state
+
+- [ ] Changelog is updated.
+- [ ] Version metadata is consistent.
 - [ ] Git working tree is clean.

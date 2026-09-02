@@ -7,7 +7,7 @@ const work = (paperId: string, title: string, year: number) => ({paperId,title,y
 describe('paper comparison', () => {
   it('compares verified local metadata and keeps benchmark comparability explicit', async () => {
     const db = new ResearchDb(':memory:');
-    db.upsertWork(work('a','Paper A',2020)); db.upsertWork({...work('b','Paper B',2021),venue:'NeurIPS'});
+    await db.upsertWork(work('a','Paper A',2020)); await db.upsertWork({...work('b','Paper B',2021),venue:'NeurIPS'});
     const response = await new ResearchService(db).comparePapers('a','b');
     expect(response.data.paperIds).toEqual(['a','b']);
     expect(response.data.differences).toContainEqual({field:'title',left:'Paper A',right:'Paper B'});

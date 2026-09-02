@@ -1,8 +1,8 @@
 import { author, bibtex, paperId } from '../research/citations.js';
 import type { ResearchWork } from '../models/research.js';
-import { createReliableFetcher } from '../reliability/reliability.js';
+import { createConfiguredProviderFetcher } from '../reliability/provider-fetcher.js';
 export class CrossrefProvider {
-  constructor(fetcher: typeof fetch = fetch) { this.fetcher = createReliableFetcher(fetcher, { minIntervalMs: 250 }); }
+  constructor(fetcher: typeof fetch = fetch) { this.fetcher = createConfiguredProviderFetcher(fetcher, { minIntervalMs: 250 }); }
   private readonly fetcher: typeof fetch;
   async search(query: string, limit = 10): Promise<ResearchWork[]> { const r = await this.fetcher(`https://api.crossref.org/works?query.bibliographic=${encodeURIComponent(query)}&rows=${Math.min(limit, 50)}`, { headers: { accept: 'application/json' } }); if (!r.ok) throw new Error(`Crossref request failed: ${r.status}`); const data = await r.json() as {message?: {items?: any[]}}; return (data.message?.items ?? []).map(x => { const authors = (x.author ?? []).map((a: any) => author([a.given, a.family].filter(Boolean).join(' '))); const title = x.title?.[0]; if (!title) return undefined; const year = x.published?.['date-parts']?.[0]?.[0]; const doi = x.DOI?.toLowerCase(); const work: ResearchWork = { paperId: paperId(title, authors, doi), title, authors, ...(year ? {year} : {}), ...(doi ? {doi} : {}), ...(typeof x['container-title']?.[0] === 'string' ? {venue: x['container-title'][0] as string} : {}), ...(typeof x.URL === 'string' ? {canonicalUrl: x.URL} : {}), publicationStatus: x.type === 'journal-article' ? 'journal' : 'unknown', bibtex: '', sourceProviders: ['crossref'], versions: [{versionId: `${doi ?? title}:crossref`, sourceId: 'crossref', ...(typeof x.URL === 'string' ? {canonicalUrl: x.URL} : {})}] }; work.bibtex = bibtex(work); return work; }).filter(Boolean) as ResearchWork[]; }
 }

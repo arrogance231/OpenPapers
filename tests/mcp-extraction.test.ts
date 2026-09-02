@@ -39,4 +39,14 @@ describe('MCP extraction evidence boundary', () => {
     expect(parameters.structuredContent.evidence[0].evidence).toBe('32');
     expect(parameters.content[0].text).toContain('https://example.com/paper#Training');
   });
+
+  it('validates lookup provenance using the handler summary', async () => {
+    const {server, handlers} = capture();
+    const paper = {paperId:'paper-1',title:'A verified paper',authors:[{name:'Author',normalizedName:'author'}],bibtex:'@article{paper}',sourceProviders:['fixture'],versions:[]};
+    registerTools(server as any, {getPaper:vi.fn().mockResolvedValue(paper)} as any);
+    const response = await handlers.get('get_paper')!({paper_id:'paper-1'});
+    expect(response.isError).not.toBe(true);
+    expect(response.structuredContent.data).toEqual(paper);
+    expect(response.content[0].text).toContain('A verified paper');
+  });
 });

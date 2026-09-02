@@ -37,7 +37,7 @@ async function main(): Promise<void> {
       void nodeHandler(req as any, res);
     });
     http.listen(port, host, () => console.error(`OpenPapers HTTP listening on http://${host}:${port}/mcp`));
-    const shutdown = async () => { await handler.close(); await research.flushStorage(); research.db.close?.(); http.close(); };
+    const shutdown = async () => { await handler.close(); await research.flushStorage(); await research.db.close?.(); http.close(); };
     process.once('SIGINT', () => void shutdown()); process.once('SIGTERM', () => void shutdown());
   } else {
     await serveStdio(() => createMcpServer(research));

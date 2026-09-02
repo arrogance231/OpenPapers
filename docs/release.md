@@ -2,7 +2,7 @@
 
 ## Local verification
 
-Use Node.js 24 or newer:
+Use Node.js 22.5 or newer. Node.js 24 is used by the container image:
 
 ```sh
 npm ci
@@ -29,7 +29,7 @@ HTTP mode is opt-in through `MCP_TRANSPORT=http`, `HTTP_HOST`, and `HTTP_PORT`. 
 docker compose up --build
 ```
 
-OpenPapers runs as the non-root `node` user and stores its SQLite database in the `openpapers-data` volume. GROBID health is checked before OpenPapers starts. Container startup and end-to-end GROBID checks are separate from the credential-free unit suite.
+OpenPapers runs as the non-root `node` user. The Compose deployment uses PostgreSQL/pgvector in `postgres-data`; the standalone local CLI uses SQLite. PostgreSQL and GROBID health are checked before OpenPapers starts. Container startup and end-to-end checks are separate from the credential-free unit suite.
 
 ## ResearchPacks
 

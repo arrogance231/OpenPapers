@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createReliableFetcher, RequestCache } from '../src/reliability/reliability.js';
+import { SqliteResponseCache } from '../src/reliability/durable-cache.js';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const response = (status:number, headers:Record<string,string>={}) => new Response('{}',{status,headers});
 
@@ -52,5 +56,21 @@ describe('reliability infrastructure', () => {
 
   it('evicts expired cache entries', async () => {
     let now=0; const cache=new RequestCache(10,()=>now); cache.set('x',response(200)); now=11; expect(cache.get('x')).toBeUndefined();
+  });
+
+  it('records latency histograms per provider host', async () => {
+    const fetcher=createReliableFetcher(async()=>response(200),{cacheTtlMs:0,minIntervalMs:0,now:()=>0});
+    await fetcher('https://arxiv.org/api/query');
+    const stats=(await import('../src/reliability/reliability.js')).getReliabilityStats();
+    expect(stats.providerLatency['arxiv.org']?.count).toBeGreaterThan(0);
+    expect(stats.providerLatency['arxiv.org']?.buckets.le10).toBeGreaterThan(0);
+  });
+
+  it('persists safe GET responses across durable cache instances', async () => {
+    const directory=mkdtempSync(join(tmpdir(),'openpapers-cache-')); const path=join(directory,'cache.sqlite');
+    const first=new SqliteResponseCache(path); const fetcher=createReliableFetcher(async()=>response(200,{'x-cache':'durable'}),{cacheTtlMs:60_000,durableCache:first,minIntervalMs:0});
+    await fetcher('https://example.test/durable'); await first.close?.();
+    const second=new SqliteResponseCache(path); let calls=0; const restored=createReliableFetcher(async()=>{calls++;return response(200);},{cacheTtlMs:60_000,durableCache:second,minIntervalMs:0});
+    expect((await restored('https://example.test/durable')).headers.get('x-cache')).toBe('durable'); expect(calls).toBe(0); await second.close?.(); rmSync(directory,{recursive:true,force:true});
   });
 });

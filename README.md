@@ -1,90 +1,143 @@
 # OpenPapers
 
-A provenance-first Model Context Protocol server for turning ML literature into reproducible engineering evidence. It is not an arXiv-only search wrapper: every result contains structured paper metadata, evidence IDs, author attribution, source quality, locators, and retrieval transparency.
+OpenPapers is a provenance-first Model Context Protocol (MCP) server for scholarly retrieval, paper ingestion, and reproducibility-oriented research workflows.
 
-## Status
+## Overview
 
-Phase 1–3 vertical slice: current MCP v2 SDK (spec `2026-07-28`), stdio + stateless Streamable HTTP, SQLite/FTS5 persistence, arXiv/Crossref/OpenAlex/Semantic Scholar metadata adapters, GitHub and Hugging Face discovery, canonicalization, citation-safe search, paper lookup, BibTeX, and refusal-safe training recipe output. Phase 1 citation integrity is complete: opt-in `CITATIONS.md`, evidence/source metadata validation, matching human-readable citations, and evidence-backed paper lookup/BibTeX responses. Phase 2 reliability infrastructure is complete for current external providers: shared TTL response caching, concurrent request deduplication, cumulative rate limiting, bounded 429/5xx retries with `Retry-After`, filter-aware transparent search, and reliability counters with latency/failure telemetry. Phase 3 ecosystem discovery is complete: OpenAlex author/topic enrichment, Hugging Face card paper-link reconciliation, revision-pinned repository inspection, structured scalar/section config extraction, evidence-graded GitHub linkage, and conservative attribution classification are implemented. Full-text extraction, citation graphs, library/collections, and report synthesis remain later phases.
+The project aggregates scholarly metadata and developer resources through replaceable provider adapters. It normalizes paper identities, preserves upstream identifiers and URLs, records evidence and uncertainty, and exposes bounded operations over MCP. Retrieved content is treated as untrusted data; repository code and downloaded documents are not executed.
 
-## Run
+## Features
 
-Requirements: Node.js 24+ (uses stable-enough built-in `node:sqlite`; Node 20+ SDK support otherwise).
+- Multi-provider paper search across arXiv, Crossref, OpenAlex, and Semantic Scholar.
+- DOI, arXiv, OpenAlex, and Semantic Scholar identity preservation and cross-provider reconciliation.
+- Citation/reference graph discovery with provider lineage and conservative relationship labels.
+- Bounded HTML and PDF acquisition, GROBID-backed parsing, and optional PyMuPDF/Docling fallbacks.
+- Evidence-backed heuristic facts, claims, conflicts, training parameters, and reproducibility reports.
+- Static GitHub repository discovery and revision-pinned configuration inspection.
+- Hugging Face model and dataset discovery with paper-link reconciliation.
+- SQLite/FTS5 storage, optional PostgreSQL/pgvector storage, collections, ResearchPacks, and vector retrieval.
+- MCP stdio and stateless Streamable HTTP transports.
 
-```sh
-npm install
-npm run build
-npm start                         # stdio
-MCP_TRANSPORT=http npm start      # HTTP on 127.0.0.1:8787/mcp
-npm test
-```
+## Supported sources
 
-Use `MCP_TRANSPORT=http HTTP_HOST=0.0.0.0 HTTP_PORT=8787` behind an authenticated HTTPS reverse proxy. The local HTTP handler validates Host and Origin to reduce DNS-rebinding risk. Do not expose it directly to the public internet without authentication and TLS.
+| Source | Role | Authentication |
+|---|---|---|
+| [arXiv](https://arxiv.org/) | Preprint search and metadata | Not required |
+| [Crossref](https://www.crossref.org/) | DOI and bibliographic metadata | Not required |
+| [OpenAlex](https://openalex.org/) | Open scholarly metadata and citation relationships | Not required |
+| [Semantic Scholar](https://www.semanticscholar.org/) | Paper metadata, authors, references, citations, and recommendations | Optional API key |
+| [GitHub](https://github.com/) | Repository discovery, revisions, contents, and implementation evidence | Optional token; anonymous access is rate-limited |
+| [Hugging Face](https://huggingface.co/) | Model and dataset discovery, cards, revisions, and paper links | Optional token |
 
-## MCP tools
-
-- `search_papers({query, limit})`: parallel arXiv, Crossref, OpenAlex, and best-effort Semantic Scholar retrieval with expansion, canonical deduplication, ranking rationale, provider failure transparency, and evidence.
-- `get_references({paper_id, limit})`, `get_citations({paper_id, limit})`, and `get_related_papers({paper_id, limit})`: Semantic Scholar graph retrieval with relation labels, source provenance, and evidence-backed works.
-- `resolve_author({author_id})`: Semantic Scholar author resolution with aliases and linked paper IDs.
-- Graph retrieval persists discovered works, evidence, and normalized edges in the configured SQLite database; duplicate metadata conflicts remain visible in response transparency rather than being silently discarded.
-- Known DOI and arXiv identifiers are used to reconcile graph nodes with existing canonical works before edges are stored.
-- When a root has an OpenAlex identity, graph tools merge OpenAlex reference/citation edges with Semantic Scholar results and retain per-provider edge provenance; unavailable providers are reported transparently.
-- Graph edges expose conservative relationship classes: `FOUNDATIONAL_CANDIDATE` for earlier referenced works, `FOLLOW_UP_CANDIDATE` for later citing works, `DIRECT` for chronology-supported same-direction edges, and `UNKNOWN` when chronology or direction is insufficient.
-- Cross-provider DOI/arXiv node merges retain metadata disagreements in graph transparency conflicts instead of silently selecting one provider’s title or year.
-- Phase 4 is complete. Refinement of relationship classification with richer provider metadata and live end-to-end MCP graph verification is scheduled for Phase 6.
-- Phase 5 begins with a reusable bounded paper-acquisition boundary: HTTP(S)-only, local/private host rejection, redirect validation, timeout, content-length enforcement, streamed byte limits, and lossless `Uint8Array` bodies. Parsing and paper-reading tools follow in subsequent slices.
-- Phase 5 now includes `read_paper({url})` for bounded HTML acquisition and deterministic title/heading/paragraph/reference extraction, plus GROBID-first PDF dispatch with optional fallbacks. Unknown binary documents are rejected explicitly.
-- PDF extraction uses GROBID as the primary parser through a separate Docker service. Start the integrated stack with `docker compose up --build`; OpenPapers then calls GROBID at `http://grobid:8070`. The standalone equivalent is `docker pull grobid/grobid:0.9.1-full` followed by `docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.9.1-full`, then set `GROBID_URL=http://127.0.0.1:8070` for a host OpenPapers process. The lighter `grobid/grobid:0.9.1-crf` image is available when lower memory/size is preferred; the full image is recommended for bibliography and citation-context extraction.
-- Optional PDF fallbacks are configured with `PDF_FALLBACKS=pymupdf,docling`. Install them separately (`pip install pymupdf` and `pip install docling`), then run through the checked-in `scripts/parse_pymupdf.py` and `scripts/parse_docling.py` adapters. Fallback failures are returned as warnings; OpenPapers never labels fallback output as GROBID output.
-- `search_within_paper({url, query, limit})` searches parsed document chunks and returns stable URL/section/ordinal locators for each match.
-- GROBID page-break metadata (`<pb n="..." xml:id="...">`) is preserved on PDF sections and search chunks; nested TEI divisions retain their hierarchy levels.
-- GROBID TEI extraction also exposes equations, figure captions, table text/captions, and appendix sections as explicit structured fields; unsupported or absent structures remain empty rather than inferred.
-- Bibliographic references now preserve GROBID identifiers, normalized title, author surnames, publication year, DOI, and URL identifiers when present. Figure and table records also carry the latest GROBID page number/ID.
-- GROBID table records include normalized row/cell arrays, while in-text citation links expose their bibliography target, displayed citation text, section heading, and page locator.
-- `search_within_paper` searches typed section, equation, figure, table, and reference chunks; every match reports its element kind and stable source locator.
-- GROBID citation validation reports distinct `unresolved citation target: ...` warnings when body citation links do not match extracted bibliography IDs; unresolved links remain visible in `citations`.
-- Phase 6 begins with `extract_paper_facts({url})`, a deterministic heuristic extractor for methodology, losses, datasets, benchmarks, training stages, hyperparameters, limitations, and structured equations. Facts are labeled `heuristic` and retain source URL, section, and page locators; absent details are not inferred.
-- `extract_paper_claims({url})` converts those facts into stable `DERIVED` claims, persists them in SQLite, and reports explicit conflicts when a later statement has the same semantic key but differs in content.
-- `extract_training_parameters({url})` extracts only explicitly labeled values such as learning rate, batch size, epochs, optimizer, weight decay, temperature, and gradient accumulation, retaining exact source locators and `explicit` confidence.
-- Graph responses now expose `relationshipBasis`: provider-reported references/citations are `PROVIDER_EXPLICIT`, while chronology-only classifications remain distinguishable and related edges remain `UNKNOWN`.
-- Phase 6 exposes a provider-independent async `PaperExtractor<T>` contract and `ResearchService.extractWith(...)`; the default deterministic extractor implements it, while alternate extractors can be injected without coupling the service to an LLM or vendor.
-- `extract_training_recipe_from_url({url})` projects only explicitly extracted values into typed `Reported<T>` recipe fields; all absent fields remain `NOT_REPORTED`.
-- Live HTTP MCP verification confirmed initialization, tool discovery, and graph-tool error transparency. A bounded Semantic Scholar request returned HTTP 429 in `providerFailures` rather than fabricated graph data.
-- Parsed documents are persisted in SQLite by acquired URL and SHA-256 content hash, so unchanged papers reuse parsed output without re-running GROBID or a configured fallback. Changed bytes receive a separate cache entry.
-- Acquisition rejects archive/compressed payloads before parsing, and its timeout covers streamed response-body reads. Fallback subprocesses have bounded output, timeouts, injected runners for deterministic tests, and required-output validation.
-- `find_implementations({method, paper_id, limit})`: static GitHub repository discovery from a method or verified local paper; paper-linked searches include README/author-overlap assessments, conservative attribution classification including organization-owner claims, formal evidence records, commit/blob and line locators when available, while unsupported official claims remain `UNKNOWN`.
-- `find_models({query, limit})`: Hugging Face model discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
-- `find_datasets({query, limit})`: Hugging Face dataset discovery with revisions, card metadata, normalized arXiv/DOI links, and separate local reconciliation status.
-- `find_repository_configs({owner, repo, ref})`: discover common root-level training/config files and resolve an optional ref to a commit SHA without recursive crawling.
-- `get_repository_config({owner, repo, path, ref})`: static, line-numbered GitHub file inspection with blob provenance; never executes content.
-- `get_paper({paper_id})`: canonical metadata by paper ID, DOI, or arXiv ID.
-- `extract_training_recipe({paper_id})`: typed reproducibility fields; unknowns are `NOT_REPORTED`, never guessed.
-- `get_bibtex({paper_id})`: generated canonical BibTeX from known fields only.
-- `research_topic({topic, objective, depth, limit})`: cited retrieval dossier scaffold with explicit synthesis labeling.
-
-Example agent flow: search → get paper → extract recipe → verify claims before implementation. The tool response has both `content` text and `structuredContent`.
-
-## Provenance contract
-
-A material claim must carry an evidence record with source ID, complete authors, title, identifiers, source quality (`A` original paper through `E` secondary explanation), evidence type (`DIRECT`, `CODE_VERIFIED`, `DERIVED`, `CONFLICTING`, etc.), and a locator where available. Missing configuration is represented by `{ "value": null, "status": "NOT_REPORTED" }`.
-
-Remote paper, README, model-card, and repository content is untrusted data. The server does not execute repository code.
+Provider selection depends on the requested identifier, query, and available metadata. Results may be cross-referenced across providers; no provider is authoritative for every field.
 
 ## Architecture
 
-`MCP tools → tool modules → ResearchService/providers → canonicalization/ranking → SQLite FTS5 → citation objects`
+```text
+MCP transport -> tool modules -> ResearchService -> provider adapters
+                                      |                 |
+                                      v                 v
+                              storage/retrieval     external APIs
+```
 
-Provider adapters are dependency-injected and can be replaced with Semantic Scholar, OpenAlex, Hugging Face, and GitHub implementations without changing MCP handlers. SQLite is deliberately behind `ResearchDb`; PostgreSQL/vector retrieval can be added behind the same service boundary.
+See [docs/architecture.md](docs/architecture.md), [docs/providers.md](docs/providers.md), and [docs/extending.md](docs/extending.md).
+
+## Installation
+
+Requirements: Node.js 22.5 or newer. Node.js 24 is used by the container image.
+
+```sh
+npm ci
+npm run build
+```
+
+For the Docker deployment, install Docker Desktop or another Docker Engine with Compose support and run:
+
+```sh
+docker compose up --build --wait
+```
+
+The Compose profile starts OpenPapers, PostgreSQL with pgvector, and GROBID. See [docs/installation.md](docs/installation.md) for SQLite, PostgreSQL, and GROBID options.
 
 ## Configuration
 
-Copy `.env.example` to `.env`. Optional API keys are never logged or committed. Semantic Scholar graph calls work through the injected provider boundary and remain subject to shared reliability controls; anonymous usage is rate-limited and an API key may be configured for approved higher-volume access. The current service does not execute third-party code.
-
-## Development
+Copy the example file before configuring optional integrations:
 
 ```sh
-npm run lint
-npm run build
-npm test
+cp .env.example .env
 ```
 
-See `SECURITY.md`, `CONTRIBUTING.md`, and `docs/architecture.md`.
+The local default uses SQLite at `./data/research.sqlite`. Important variables are documented in [docs/configuration.md](docs/configuration.md). `.env` is ignored by Git and must never contain committed credentials.
+
+## Quick start
+
+Start the stdio server after building:
+
+```sh
+npm start
+```
+
+To start the HTTP transport locally:
+
+```sh
+MCP_TRANSPORT=http npm start
+```
+
+The endpoint is `http://127.0.0.1:8787/mcp`. Keep it on loopback unless a trusted reverse proxy provides authentication and TLS.
+
+## MCP interface
+
+The server currently registers 36 MCP tools, including:
+
+- Retrieval: `search_papers`, `get_paper`, `get_bibtex`, `research_method`, `research_topic`.
+- Graphs: `get_references`, `get_citations`, `get_related_papers`, `resolve_author`.
+- Documents: `read_paper`, `search_within_paper`, `extract_paper_facts`, `extract_paper_claims`, `extract_training_parameters`.
+- Reproducibility: `extract_training_recipe`, `extract_training_recipe_from_url`, `build_research_report`, `compare_paper_to_code`.
+- Ecosystem: `find_implementations`, `find_models`, `find_datasets`, `find_repository_configs`, `get_repository_config`.
+- Library: collections, ResearchPacks, refresh operations, and `vector_search`.
+
+Tool schemas are bounded with Zod. Responses expose both human-readable content and structured data where applicable. See [docs/usage.md](docs/usage.md) for representative calls.
+
+## Data sources, provenance, and citations
+
+Material claims carry evidence records containing source IDs, authors, titles, persistent identifiers, source quality, evidence type, and locators when available. Provider failures, conflicts, unavailable values, and heuristic derivations remain explicit. Generated summaries are not original academic sources and should be checked against the cited records.
+
+The repository license applies to this project's source code only. Papers, abstracts, metadata, API responses, datasets, model weights, model cards, and GitHub repositories remain subject to their respective licenses and service terms. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) and [docs/limitations.md](docs/limitations.md).
+
+## Development and testing
+
+```sh
+npm ci
+npm run lint
+npm run architecture-check
+npm run build
+npm test
+npm run check
+```
+
+Contributors should read [CONTRIBUTING.md](CONTRIBUTING.md). Live provider, Docker, and model workflow checks are separate from credential-free tests; [docs/reproducibility.md](docs/reproducibility.md) describes the distinction.
+
+## Limitations
+
+- Anonymous provider access can be rate-limited or unavailable.
+- Title-only searches can miss or mis-rank a canonical record; identifier follow-up is the reliable fallback when a DOI or provider-native identifier is known.
+- PDF layout fidelity depends on the TEI returned by GROBID. PDF fallbacks are opt-in.
+- Heuristic extraction does not establish independently verified facts.
+- PostgreSQL/pgvector and GROBID require external services.
+
+See [docs/limitations.md](docs/limitations.md) for details and the deferred retrieval-ranking roadmap.
+
+## License
+
+OpenPapers is licensed under the [Apache License, Version 2.0](LICENSE.md).
+The license applies to this project's source code only. Papers, abstracts,
+metadata, API responses, datasets, model weights, model cards, and GitHub
+repositories remain subject to their respective licenses and service terms.
+
+## Acknowledgements
+
+OpenPapers builds on scholarly infrastructure from Semantic Scholar, OpenAlex, arXiv, and Crossref, and developer ecosystem infrastructure from GitHub and Hugging Face. It also uses the Model Context Protocol SDK, PostgreSQL/pgvector, GROBID, Node.js, TypeScript, Zod, and Vitest. These projects and services remain the property of their respective maintainers. See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for official links.
+
+## Citing this project
+
+A citation record will be added when the project has a stable public authorship and release identity. Do not cite generated research responses as if they were original sources; cite the underlying papers and datasets referenced by the response.

@@ -5,13 +5,13 @@ import { author, bibtex, paperId } from '../src/research/citations.js';
 import type { ResearchWork } from '../src/models/research.js';
 
 describe('ResearchPack import',()=>{
-  it('restores a validated pack into a local collection without remote calls',()=>{
+  it('restores a validated pack into a local collection without remote calls', async () =>{
     const sourceDb=new ResearchDb(':memory:'); const authors=[author('Alice Smith')];
     const paper:ResearchWork={paperId:paperId('Paper A',authors,undefined,'2501.00001'),title:'Paper A',authors,year:2025,abstract:'A study',arxivId:'2501.00001',publicationStatus:'preprint',bibtex:'',sourceProviders:['arxiv'],versions:[]}; paper.bibtex=bibtex(paper);
     const pack={format:'openpapers.research-pack.v1' as const,collection:{id:'ignored',name:'restored'},papers:[paper],evidence:[]};
-    const targetDb=new ResearchDb(':memory:'); const collection=new ResearchService(targetDb).importResearchPack(pack);
-    expect(collection.name).toBe('restored'); expect(targetDb.getWork(paper.paperId)).toEqual(paper); expect(targetDb.getCollection(collection.id)?.paperIds).toEqual([paper.paperId]); sourceDb.close(); targetDb.close();
+    const targetDb=new ResearchDb(':memory:'); const collection=await new ResearchService(targetDb).importResearchPack(pack);
+    expect(collection.name).toBe('restored'); expect(await targetDb.getWork(paper.paperId)).toEqual(paper); expect((await targetDb.getCollection(collection.id))?.paperIds).toEqual([paper.paperId]); await sourceDb.close(); await targetDb.close();
   });
-  it('rejects an unsupported pack format',()=>{ expect(()=>new ResearchService(new ResearchDb(':memory:')).importResearchPack({format:'unknown'} as any)).toThrow('unsupported ResearchPack format'); });
-  it('rejects malformed paper metadata before persistence',()=>{ const db=new ResearchDb(':memory:'); expect(()=>new ResearchService(db).importResearchPack({format:'openpapers.research-pack.v1',collection:{id:'ignored',name:'bad'},papers:[{paperId:'paper-a',title:'A'}],evidence:[]} as any)).toThrow('invalid ResearchPack paper'); db.close(); });
+  it('rejects an unsupported pack format', async () =>{ await expect(new ResearchService(new ResearchDb(':memory:')).importResearchPack({format:'unknown'} as any)).rejects.toThrow('unsupported ResearchPack format'); });
+  it('rejects malformed paper metadata before persistence', async () =>{ const db=new ResearchDb(':memory:'); await expect(new ResearchService(db).importResearchPack({format:'openpapers.research-pack.v1',collection:{id:'ignored',name:'bad'},papers:[{paperId:'paper-a',title:'A'}],evidence:[]} as any)).rejects.toThrow('invalid ResearchPack paper'); await db.close(); });
 });

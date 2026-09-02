@@ -2,17 +2,16 @@
 
 ## Current vertical slice
 
-The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local agents. `createMcpHandler` plus `toNodeHandler` provides stateless Streamable HTTP. ResearchService executes bounded provider calls, canonicalizes by normalized title/authors, merges source versions, ranks deterministically, persists metadata in SQLite FTS5, and creates citation-linked evidence.
+The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local MCP clients. `createMcpHandler` plus `toNodeHandler` provides stateless Streamable HTTP. ResearchService executes bounded provider calls, reconciles DOI/arXiv identity before metadata fallback, merges source versions, ranks deterministically, persists metadata in SQLite FTS5, and creates citation-linked evidence.
 
 ## Phase plan
 
 ### Phase 1 — Citation policy and integrity foundation (complete)
 - Adopt `OpenPapers` naming everywhere.
-- Add opt-in `CITATIONS.md` workspace instruction, restricted to that file.
 - Add citation-integrity data types and validator: factual output must reference existing evidence IDs, sources, authors, and claimed locators.
 - Add tests for unsupported claims, missing evidence, and valid cited responses.
 - No external API keys required; use deterministic fixtures.
-- Acceptance: `CITATIONS.md` provides the opt-in workspace policy; citation objects preserve source metadata and locators; MCP responses are rejected when evidence is absent, unresolved, metadata-mismatched, or not cited in the human-readable summary.
+- Acceptance: citation objects preserve source metadata and locators; MCP responses are rejected when evidence is absent, unresolved, metadata-mismatched, or not cited in the human-readable summary.
 
 ### Phase 2 — Reliable retrieval infrastructure
 - Add shared in-memory response caching with TTL and concurrent request deduplication, with authorization/cache-control safety.
@@ -37,7 +36,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Implemented: graph edges persist a conservative relationship class (`FOUNDATIONAL_CANDIDATE`, `FOLLOW_UP_CANDIDATE`, `DIRECT`, or `UNKNOWN`) with a migration for existing SQLite databases; labels are candidates, not unsupported causal claims.
 - Implemented: combine Semantic Scholar/OpenAlex graph data with DOI/arXiv/publication-lineage reconciliation.
 - Implemented: conservative foundational/follow-up candidate labels and edge-level conflict-aware graph provenance.
-- Phase 4 acceptance: live provider smoke checks succeeded with configured credentials; deterministic graph, persistence, provenance, and failure-transparency coverage is complete.
+- Phase 4 acceptance: deterministic graph, persistence, provenance, and failure-transparency coverage is complete; live provider smoke checks are optional and environment-dependent.
 
 ### Phase 5 — Structured paper ingestion
 - Implemented first slice: `PaperAcquirer` provides bounded byte-preserving HTTP acquisition with HTTP(S)-only validation, private/local host rejection, redirect revalidation and limits, timeout cancellation, declared-size checks, and streamed body limits.
@@ -82,12 +81,12 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Added bounded `build_research_report` service/MCP support with `literature_review`, `implementation`, and `reproducibility` modes; cited facts, recommendations, and year-sorted paper timelines are separate fields.
 - Added deterministic paper-versus-code reproducibility comparison for explicit numeric recipe fields, preserving paper source URLs and revision-pinned code line locators; absent values remain unavailable rather than conflicts.
 
-### Phase 9 — Library and release engineering
-- Add local library, collections, ResearchPacks, refresh/remove tools, migrations, Postgres adapter, vector-retrieval interface, Docker hardening, and release documentation.
-- Add real-paper integration fixtures and end-to-end Qwen/tool-calling workflow tests.
-- Phase 9 collection foundation: SQLite-backed named collections with deterministic IDs, idempotent paper membership, service validation, bounded MCP create/list/add operations, remove-paper/delete-collection operations, provider-aware paper/collection refresh with per-item outcomes, deterministic ResearchPack export/import, schema migration version tracking, hardened Docker runtime ownership/health gating and verified HTTP Compose startup, a deterministic injectable vector-retrieval interface, and release/deployment documentation.
+### Phase 9 — Library and release engineering (complete)
+- Implemented local library, collections, ResearchPacks, refresh/remove tools, migrations, PostgreSQL/pgvector adapter, vector-retrieval interface, Docker hardening, and release documentation.
+- Implemented real-paper integration fixtures and end-to-end Qwen/tool-calling workflow tests.
+- Phase 9 is complete: SQLite-backed named collections with deterministic IDs, idempotent paper membership, service validation, bounded MCP collection operations, provider-aware refresh, deterministic ResearchPack export/import, schema migration tracking, hardened Docker runtime ownership/health gating, PostgreSQL/pgvector persistence, a deterministic injectable vector-retrieval interface, real-paper fixtures, Qwen workflow coverage, and release/deployment documentation.
 
-### Phase 10 — Maintainability, modularity, and contributor audit
+### Phase 10 — Maintainability, modularity, and contributor audit (complete)
 - Review every current subsystem: domain models, provider adapters, rate limiting, caching boundaries, persistence, research orchestration, citation validation, MCP transports, and tool modules.
 - Identify oversized modules, duplicated policy, hidden coupling, unclear public contracts, and provider-specific behavior leaking into shared layers.
 - Define and document stable extension interfaces for providers, fetchers, storage backends, extractors, ranking strategies, provenance validators, and MCP tool modules.
@@ -98,7 +97,19 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 - Improve contributor ergonomics: subsystem map, examples, local live-test instructions, debugging guidance, issue templates, and focused contribution tasks.
 - Review CI for deterministic tests, optional credential-free integration tests, lint/build/test gates, and security checks.
 - Produce a maintainability report with prioritized follow-up issues and a documented decision log for intentional non-modular areas.
-- Acceptance criterion: a new provider and a new MCP tool can be added with isolated files, fixtures, and registration changes, without editing unrelated subsystems or transport code.
+- Implemented `npm run architecture-check`, which audits dependency direction and the complete public MCP registration inventory. Added the maintainability report in `docs/maintainability.md`, contributor extension guidance, and CI coverage for the architecture gate.
+- Phase 10 acceptance: provider and MCP registration seams are documented and checked; new providers/tools can be fixture-tested and registered without transport changes. Remaining modularity items are explicitly recorded as non-blocking optimizations in the maintainability report.
+
+## Deferred roadmap items
+
+### Retrieval identity and exact-title ranking
+
+- Improve title-query retrieval for canonical works such as `Attention Is All You Need` so an exact-title request preferentially returns the identifier-resolved 2017 arXiv record rather than same-title or misleading metadata records.
+- Add provider-native identifier expansion/probing for exact scholarly identifiers when title search does not return a canonical match.
+- Add deterministic ranking signals for exact normalized title, canonical identifier agreement, publication-year consistency, author overlap, and provider confidence; keep conflicting records visible instead of silently replacing them.
+- Add live and fixture regressions for title-only, punctuation/case variants, same-title conflicting records, missing-provider results, and fallback lookup through `1706.03762`.
+- Acceptance: title search either ranks the canonical record first when available or clearly reports that canonical identity was not resolved; identifier fallback finds the record; evidence, references, URLs, and transparency remain internally consistent; provider failures remain explicit.
+
 ## Phase 1 implementation scope
 
-Phase 1 deliberately does not require external provider credentials. It will establish the invariant that makes later retrieval and extraction safe: no material research assertion leaves the service without resolvable evidence. `CITATIONS.md` is a workspace convention for downstream coding agents; the server’s machine-enforced equivalent is the citation-integrity validator.
+Phase 1 deliberately does not require external provider credentials. It establishes the invariant that makes later retrieval and extraction safe: no material research assertion leaves the service without resolvable evidence. The machine-enforced boundary is the citation-integrity validator.

@@ -1,6 +1,6 @@
 import { author, bibtex, normalizeArxivId, normalizeDoi, paperId } from '../research/citations.js';
 import type { ResearchWork } from '../models/research.js';
-import { createReliableFetcher } from '../reliability/reliability.js';
+import { createConfiguredProviderFetcher } from '../reliability/provider-fetcher.js';
 
 export interface SemanticScholarPaper { paperId?: string; title?: string; authors?: Array<{authorId?: string|null; name?: string}>; year?: number; venue?: string; citationCount?: number; externalIds?: {ArXiv?: string; DOI?: string; [key:string]: string|undefined}; url?: string; openAccessPdf?: {url?: string|null}; }
 export interface SemanticScholarAuthor { authorId?: string; name?: string; aliases?: string[]; papers?: Array<{paperId?: string|null}>; }
@@ -8,7 +8,7 @@ const FIELDS = 'paperId,title,authors,year,venue,externalIds,url,openAccessPdf,c
 
 export function mapSemanticScholarPaper(x: SemanticScholarPaper): ResearchWork | undefined { if (!x.title || !x.paperId) return undefined; const authors = (x.authors ?? []).filter(a => a.name).map(a => author(a.name!)); const authorIds = (x.authors ?? []).map(a => a.authorId ?? undefined).filter((id): id is string => Boolean(id)); const arxiv = x.externalIds?.ArXiv ? normalizeArxivId(x.externalIds.ArXiv) : undefined; const doi = x.externalIds?.DOI ? normalizeDoi(x.externalIds.DOI) : undefined; const work: ResearchWork = { paperId: paperId(x.title, authors, doi, arxiv), title:x.title, authors, ...(authorIds.length ? {authorIds} : {}), ...(x.year ? {year:x.year} : {}), ...(x.venue ? {venue:x.venue} : {}), ...(doi ? {doi} : {}), ...(arxiv ? {arxivId:arxiv} : {}), semanticScholarId:x.paperId, ...(x.url ? {canonicalUrl:x.url} : {}), ...(x.openAccessPdf?.url ? {pdfUrl:x.openAccessPdf.url} : {}), ...(x.citationCount !== undefined ? {citationCount:x.citationCount} : {}), publicationStatus:'unknown', bibtex:'', sourceProviders:['semantic_scholar'], versions:[{versionId:`${x.paperId}:semantic_scholar`,sourceId:'semantic_scholar', ...(x.url ? {canonicalUrl:x.url} : {}), ...(x.openAccessPdf?.url ? {pdfUrl:x.openAccessPdf.url} : {})}] }; work.bibtex=bibtex(work); return work; }
 export class SemanticScholarProvider {
-  constructor(fetcher: typeof fetch = fetch, private readonly apiKey = process.env.SEMANTIC_SCHOLAR_API_KEY) { this.fetcher=createReliableFetcher(fetcher,{minIntervalMs:1000}); }
+  constructor(fetcher: typeof fetch = fetch, private readonly apiKey = process.env.SEMANTIC_SCHOLAR_API_KEY) { this.fetcher=createConfiguredProviderFetcher(fetcher,{minIntervalMs:1000}); }
   private readonly fetcher: typeof fetch;
   async search(query:string, limit=10):Promise<ResearchWork[]> { const url = new URL('https://api.semanticscholar.org/graph/v1/paper/search'); url.searchParams.set('query',query); url.searchParams.set('limit',String(Math.min(limit,100))); url.searchParams.set('fields',FIELDS); const data=await this.request(url); return data && Array.isArray(data.data) ? data.data.map(mapSemanticScholarPaper).filter(Boolean) as ResearchWork[] : []; }
   async getPaper(id:string):Promise<ResearchWork|undefined> { const url = new URL(`https://api.semanticscholar.org/graph/v1/paper/${encodeURIComponent(id)}`); url.searchParams.set('fields',FIELDS); const data=await this.request(url); return data ? mapSemanticScholarPaper(data as SemanticScholarPaper) : undefined; }
