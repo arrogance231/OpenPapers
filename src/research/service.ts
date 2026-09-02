@@ -28,6 +28,7 @@ export interface MethodComparison { methods: [string, string]; leftResults: Rese
 export interface PaperComparison { paperIds: [string, string]; differences: Array<{field:string; left:string|null; right:string|null}>; benchmarkComparability:'COMPARABLE'|'NOT_COMPARABLE'|'UNKNOWN'; }
 export class ResearchService {
   constructor(public readonly db:ResearchStore = new ResearchDb(), private readonly arxiv = new ArxivProvider(), private readonly crossref = new CrossrefProvider(), private readonly openalex = new OpenAlexProvider(), private readonly semanticScholar = new SemanticScholarProvider(), private readonly acquirer = new PaperAcquirer(), private readonly pdfParser = new PdfParserChain(new GrobidClient(), createConfiguredPdfFallbacks())) {}
+  async flushStorage():Promise<void> { const flush=(this.db as ResearchStore & {flush?:()=>Promise<void>}).flush; if(flush) await flush(); }
   createCollection(name:string):Collection { return this.db.createCollection(name); }
   listCollections():Collection[] { return this.db.listCollections(); }
   addToCollection(collectionId:string,paperId:string):void { if(!this.db.getCollection(collectionId)) throw new Error('NOT_FOUND: collection does not exist'); if(!this.db.getWork(paperId)) throw new Error('NOT_FOUND: paper does not exist'); this.db.addToCollection(collectionId,paperId); }
