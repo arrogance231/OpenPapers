@@ -19,6 +19,7 @@ import type { PaperExtractor } from '../extraction/extractor.js';
 import type { ConfigField } from './config-extraction.js';
 import { compareRecipeToConfig, type ReproducibilityComparison } from './reproducibility.js';
 import type { ResearchPack } from './research-pack.js';
+import type { VectorMatch, VectorRetriever } from '../retrieval/vector.js';
 
 const missing = <T>(): Reported<T> => ({ value: null, status: 'NOT_REPORTED' });
 export interface SearchFilters { yearFrom?: number; yearTo?: number; author?: string; venue?: string; topic?: string; }
@@ -27,7 +28,10 @@ export interface ResearchReport { query:string; mode:'literature_review'|'implem
 export interface MethodComparison { methods: [string, string]; leftResults: ResearchWork[]; rightResults: ResearchWork[]; overlap: string[]; benchmarkComparability:'COMPARABLE'|'NOT_COMPARABLE'|'UNKNOWN'; }
 export interface PaperComparison { paperIds: [string, string]; differences: Array<{field:string; left:string|null; right:string|null}>; benchmarkComparability:'COMPARABLE'|'NOT_COMPARABLE'|'UNKNOWN'; }
 export class ResearchService {
-  constructor(public readonly db:ResearchStore = new ResearchDb(), private readonly arxiv = new ArxivProvider(), private readonly crossref = new CrossrefProvider(), private readonly openalex = new OpenAlexProvider(), private readonly semanticScholar = new SemanticScholarProvider(), private readonly acquirer = new PaperAcquirer(), private readonly pdfParser = new PdfParserChain(new GrobidClient(), createConfiguredPdfFallbacks())) {}
+  private vectorRetriever:VectorRetriever|undefined;
+  constructor(public readonly db:ResearchStore = new ResearchDb(), private readonly arxiv = new ArxivProvider(), private readonly crossref = new CrossrefProvider(), private readonly openalex = new OpenAlexProvider(), private readonly semanticScholar = new SemanticScholarProvider(), private readonly acquirer = new PaperAcquirer(), private readonly pdfParser = new PdfParserChain(new GrobidClient(), createConfiguredPdfFallbacks()), vectorRetriever?:VectorRetriever) { this.vectorRetriever=vectorRetriever; }
+  setVectorRetriever(retriever:VectorRetriever):void { this.vectorRetriever=retriever; }
+  async vectorSearch(query:string,limit=10):Promise<VectorMatch[]> { if(!this.vectorRetriever) throw new Error('vector retrieval is not configured'); return this.vectorRetriever.search(query,limit); }
   async flushStorage():Promise<void> { const flush=(this.db as ResearchStore & {flush?:()=>Promise<void>}).flush; if(flush) await flush(); }
   async deleteCollectionDurable(collectionId:string):Promise<void> { if(!this.db.getCollection(collectionId)) throw new Error('NOT_FOUND: collection does not exist'); const transactional=(this.db as ResearchStore & {deleteCollectionTransactional?:(id:string)=>Promise<void>}).deleteCollectionTransactional; if(transactional) await transactional.call(this.db,collectionId); else { this.db.deleteCollection(collectionId); await this.flushStorage(); } }
   async importResearchPackDurable(pack:ResearchPack):Promise<Collection> { const transactional=(this.db as ResearchStore & {importResearchPackTransactional?:(value:ResearchPack)=>Promise<Collection>}).importResearchPackTransactional; if(transactional) { if(pack.format!=='openpapers.research-pack.v1'||!pack.collection||typeof pack.collection.name!=='string'||!Array.isArray(pack.papers)||!Array.isArray(pack.evidence)) throw new Error('invalid ResearchPack structure'); return transactional.call(this.db,pack); } const collection=this.importResearchPack(pack); await this.flushStorage(); return collection; }
