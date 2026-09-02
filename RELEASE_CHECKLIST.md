@@ -4,21 +4,21 @@ Use this checklist for a release candidate. Mark items only after running them a
 
 ## Automated gates
 
-- [ ] `npm ci --no-audit --no-fund`
-- [ ] `npm run lint`
-- [ ] `npm run architecture-check`
-- [ ] `npm run build`
-- [ ] `npm test`
-- [ ] `npm run check`
-- [ ] `git diff --check`
+- [x] `npm ci --no-audit --no-fund`
+- [x] `npm run lint`
+- [x] `npm run architecture-check`
+- [x] `npm run build`
+- [x] `npm test`
+- [x] `npm run check`
+- [x] `git diff --check`
 
 ## Documentation and security
 
-- [ ] README, provider documentation, configuration examples, and limitations match the implementation.
-- [ ] `.env.example` contains placeholders only.
-- [ ] No credentials, authorization headers, downloaded research data, or private repository content are present.
-- [ ] External provider failures and provenance behavior remain documented.
-- [ ] Dependency and upstream license obligations have been reviewed.
+- [x] README, provider documentation, configuration examples, and limitations match the implementation.
+- [x] `.env.example` contains placeholders only.
+- [x] No credentials, authorization headers, downloaded research data, or private repository content are present.
+- [x] External provider failures and provenance behavior remain documented.
+- [x] Direct dependency license metadata and upstream attribution documentation reviewed.
 - [x] Apache-2.0 is selected and `LICENSE.md` is present; review third-party notices separately.
 
 ## Runtime gates
@@ -37,15 +37,24 @@ docker compose down
 
 Verify MCP initialization, `tools/list`, at least one bounded `tools/call`, PostgreSQL/pgvector readiness, GROBID readiness, non-root application execution, and persistent data behavior. Control-plane benchmark results do not represent provider, PDF, GROBID, PostgreSQL, or model throughput.
 
+Latest verification: Compose configuration/build/start passed; all three services became healthy; GROBID returned `true`; MCP initialize, `tools/list` (36 tools), adversarial search/lookup, and create/list collection read-after-write passed; the application ran as `uid=1000(node)`; `/app/data` was writable; pgvector was present; and the 30-run benchmark completed with HTTP 200 responses. Benchmark medians were initialize 21.83 ms, `tools/list` 16.22 ms, and `tools/call` 13.02 ms.
+
+- [x] Compose configuration and image build
+- [x] PostgreSQL and GROBID health checks
+- [x] MCP initialization, tool inventory, and bounded calls
+- [x] Non-root runtime and writable persistent data path
+- [x] PostgreSQL/pgvector extension and application read-after-write
+- [x] 30-run MCP control-plane benchmark
+
 ## Data and migrations
 
-- [ ] SQLite migration tests pass and the migration ledger is idempotent.
-- [ ] PostgreSQL/pgvector schema and read-after-write behavior are verified when that deployment is released.
-- [ ] ResearchPack import/export remains versioned, bounded, and deterministic.
-- [ ] Claims and evidence retain source provenance; unavailable values are not guessed.
+- [x] SQLite migration tests pass and the migration ledger is idempotent.
+- [x] PostgreSQL/pgvector schema and read-after-write behavior are verified for the Compose deployment.
+- [x] ResearchPack import/export remains versioned, bounded, and deterministic.
+- [x] Claims and evidence retain source provenance; unavailable values are not guessed.
 
 ## Publication state
 
-- [ ] Changelog is updated.
-- [ ] Version metadata is consistent.
-- [ ] Git working tree is clean.
+- [x] Changelog is updated for the current unreleased baseline.
+- [x] Version metadata is consistent between `package.json` and `package-lock.json` (`0.1.0`, Apache-2.0, Node.js >=22.5).
+- [ ] Git working tree is clean after this checklist update and commit.
