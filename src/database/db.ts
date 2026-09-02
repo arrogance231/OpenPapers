@@ -4,10 +4,11 @@ import type { ResearchWork, Evidence, GraphEdge } from '../models/research.js';
 import type { ParsedDocument } from '../ingestion/document.js';
 import type { PaperClaim, ClaimConflict } from '../extraction/claims.js';
 import { runMigrations } from './migrations.js';
+import type { ResearchStore } from './store.js';
 
 export interface Collection { id:string; name:string; paperIds:string[]; }
 
-export class ResearchDb {
+export class ResearchDb implements ResearchStore {
   private db: DatabaseSync;
   constructor(path = process.env.RESEARCH_DB_PATH ?? ':memory:') { this.db = new DatabaseSync(path); this.db.exec('PRAGMA journal_mode = WAL;'); runMigrations(this.db); }
   schemaVersion():number { const row=this.db.prepare('SELECT COALESCE(MAX(version),0) AS version FROM schema_migrations').get() as {version:number}; return row.version; }
