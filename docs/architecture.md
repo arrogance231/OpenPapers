@@ -85,7 +85,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 ### Phase 9 — Library and release engineering
 - Add local library, collections, ResearchPacks, refresh/remove tools, migrations, Postgres adapter, vector-retrieval interface, Docker hardening, and release documentation.
 - Add real-paper integration fixtures and end-to-end Qwen/tool-calling workflow tests.
-- Phase 9 collection foundation: SQLite-backed named collections with deterministic IDs, idempotent paper membership, service validation, bounded MCP create/list/add operations, remove-paper/delete-collection operations, deterministic ResearchPack export/import, schema migration version tracking, hardened Docker runtime ownership/health gating (Compose CLI validation pending an installed Docker executable), a deterministic injectable vector-retrieval interface, and release/deployment documentation.
+- Phase 9 collection foundation: SQLite-backed named collections with deterministic IDs, idempotent paper membership, service validation, bounded MCP create/list/add operations, remove-paper/delete-collection operations, provider-aware paper/collection refresh with per-item outcomes, deterministic ResearchPack export/import, schema migration version tracking, hardened Docker runtime ownership/health gating (Compose CLI validation pending an installed Docker executable), a deterministic injectable vector-retrieval interface, and release/deployment documentation.
 
 ### Phase 10 — Maintainability, modularity, and contributor audit
 - Review every current subsystem: domain models, provider adapters, rate limiting, caching boundaries, persistence, research orchestration, citation validation, MCP transports, and tool modules.
