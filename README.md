@@ -1,4 +1,18 @@
-# OpenPapers
+<p align="center">
+  <img src="assets/openpapers-icon.png" alt="OpenPapers icon" width="180">
+</p>
+
+<h1 align="center">OpenPapers</h1>
+
+<p align="center">
+  Provenance-first scholarly research infrastructure for MCP clients.
+</p>
+
+<p align="center">
+  <a href="https://github.com/arrogance231/openpapers/actions/workflows/ci.yml"><img src="https://github.com/arrogance231/openpapers/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+  <a href="LICENSE.md"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="Apache-2.0 license"></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D22.5-339933.svg" alt="Node.js 22.5 or newer"></a>
+</p>
 
 OpenPapers is a provenance-first Model Context Protocol (MCP) server for scholarly retrieval, paper ingestion, and reproducibility-oriented research workflows.
 
