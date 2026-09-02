@@ -1,4 +1,16 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: openpapers
+      POSTGRES_USER: openpapers
+      POSTGRES_PASSWORD: openpapers-local-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openpapers -d openpapers"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
   openpapers:
     build: .
     environment:
@@ -10,6 +22,8 @@ services:
     ports:
       - "8787:8787"
     depends_on:
+      postgres:
+        condition: service_healthy
       grobid:
         condition: service_healthy
     volumes:
