@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import { ResearchDb } from '../src/database/db.js';
 import { author, bibtex, paperId } from '../src/research/citations.js';
 import type { ResearchWork } from '../src/models/research.js';
@@ -62,5 +63,10 @@ describe('research database', () => {
     const first=new ResearchDb(path); expect(first.schemaVersion()).toBe(1); first.close();
     const second=new ResearchDb(path); expect(second.schemaVersion()).toBe(1); second.close();
     rmSync(directory,{recursive:true,force:true});
+  });
+  it('upgrades a legacy graph schema through the ordered migration', () => {
+    const directory=mkdtempSync(join(tmpdir(),'openpapers-')); const path=join(directory,'legacy.sqlite');
+    const legacy=new DatabaseSync(path); legacy.exec('CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY); CREATE TABLE graph_edges (source_paper_id TEXT NOT NULL,target_paper_id TEXT NOT NULL,relation TEXT NOT NULL,provider TEXT NOT NULL,evidence_id TEXT NOT NULL,retrieved_at TEXT NOT NULL,PRIMARY KEY(source_paper_id,target_paper_id,relation,provider));'); legacy.close();
+    const db=new ResearchDb(path); expect(db.schemaVersion()).toBe(1); db.upsertGraphEdge({sourcePaperId:'a',targetPaperId:'b',relation:'reference',relationshipClass:'DIRECT',provider:'legacy',evidenceId:'e',retrievedAt:'2026-01-01T00:00:00.000Z'}); expect(db.getGraphEdges()).toHaveLength(1); db.close(); rmSync(directory,{recursive:true,force:true});
   });
 });
