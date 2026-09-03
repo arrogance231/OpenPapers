@@ -1,10 +1,10 @@
 # Evaluation status
 
-OpenPapers currently has deterministic unit and adversarial tests, but it does not yet ship a gold scholarly-quality evaluation dataset. Existing `scripts/mcp-benchmark.mjs` measures operational MCP latency and is not a retrieval-quality benchmark.
+OpenPapers has deterministic unit/adversarial tests and a separate offline evaluation harness. `scripts/mcp-benchmark.mjs` measures operational MCP latency; `npm run eval:baseline` measures retrieval, identity, extraction, and citation-quality fixtures.
 
-The next evaluation slice must add independently traceable gold annotations for canonical identity, Recall@K, MRR, training-configuration fields, paper/code agreement, provider-failure transparency, PDF structure, end-to-end research tasks, and citation correctness. Results must record commit, timestamp, dataset version, provider configuration, and embedding model. Retrieval changes must report canonical identity accuracy alongside ranking metrics.
+The current harness includes versioned identity, retrieval-query, extraction, and citation datasets. Paper/code agreement, provider-failure transparency, PDF structure, and end-to-end research-task benchmarks remain future evaluation slices. Results record commit, timestamp, dataset version, provider configuration, and embedding model. Retrieval changes report canonical identity accuracy alongside ranking metrics.
 
-Until that layer exists, no retrieval or citation-quality improvement is claimed from the deterministic test suite.
+The fixture results are engineering evidence, not a claim of live-provider or scientific benchmark superiority.
 
 ## Exploratory baseline
 
@@ -32,7 +32,7 @@ Paper/code agreement and end-to-end task accuracy remain `NOT_YET_MEASURED`. The
 
 ## Baseline V1
 
-The clean baseline is `evals/results/baseline-v1-edadc8a31da6.json`. It records commit `edadc8a31da6`, `workingTreeDirty: false`, the versioned offline datasets, and the same measured values above. This is the reference for retrieval experiments. The query set is intentionally still small and is expanded before ranking changes.
+The clean baseline is `evals/results/baseline-v1-edadc8a31da6.json`. It records commit `edadc8a31da6`, `workingTreeDirty: false`, and the original versioned offline datasets. It remains the historical reference for retrieval experiments; the expanded 44-query set is measured separately in the R-001 and final artifacts.
 
 ## Post-citation evaluation
 
