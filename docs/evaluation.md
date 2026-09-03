@@ -47,3 +47,7 @@ The clean baseline is `evals/results/baseline-v1-edadc8a31da6.json`. It records 
 | Missing-source rate | 0.2 |
 
 The negative cases are intentionally retained in the result and do not represent production citation errors; they measure whether the validator detects those conditions.
+
+## Latest milestone result
+
+`evals/results/final-milestone-1345a425ed06.json` is the latest clean-tree evaluation artifact. It records the post-R001 retrieval implementation, citation metrics, and 119-case identity guardrails from commit `1345a425ed06`.
