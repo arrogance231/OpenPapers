@@ -3,9 +3,8 @@ import { makeEvidence } from '../dist/research/citations.js';
 
 const url=process.env.DATABASE_URL ?? 'postgresql://openpapers:openpapers-local-only@127.0.0.1:55432/openpapers';
 const store=PostgresResearchStore.fromConfig(url);
-await store.initialize();
-const suffix=Date.now().toString();
-const failedId=`rollback-${suffix}`;
+await store.initialize();if(await store.schemaVersion()!==2)throw new Error('schema migration version mismatch');
+const suffix=Date.now().toString();const failedId=`rollback-${suffix}`;
 await store.withTransaction(async tx=>{await tx('INSERT INTO works(paper_id,payload) VALUES($1,$2)',[failedId,{paperId:failedId,title:'rollback'}]);throw new Error('intentional rollback');}).then(()=>{throw new Error('rollback unexpectedly committed');}).catch(error=>{if(error.message!=='intentional rollback')throw error;});
 if(await store.getWork(failedId))throw new Error('rolled-back work remained visible');
 const a=`integration-a-${suffix}`;const b=`integration-b-${suffix}`;
