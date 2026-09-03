@@ -4,7 +4,7 @@
 
 `evals/results/baseline-v1-edadc8a31da6.json` is the clean Baseline V1 for the original 12-query / 12-work fixture set. It was generated from commit `edadc8a31da6` with `workingTreeDirty: false`.
 
-The expanded pre-optimization fixture set uses 23 works and 44 realistic discovery queries. Its current result is `evals/results/preopt-expanded-03324d4b4948-3.json`; the dedicated diagnostics are `evals/results/preopt-expanded-03324d4b4948-failures.json`. This expanded result is intentionally not a replacement for Baseline V1 because it uses a new dataset version and was generated from a dirty development tree.
+The expanded pre-optimization fixture set uses 23 works and 44 realistic discovery queries. Its measured values are retained below as historical run evidence; the uncommitted intermediate artifact was not treated as a release result. The committed final result and diagnostics are `evals/results/final-milestone-1345a425ed06.json` and `evals/results/final-milestone-1345a425ed06-failures.json`.
 
 Expanded pre-optimization metrics:
 
@@ -33,7 +33,7 @@ The expanded diagnostics contain 89 relevant judgments:
 
 This supports a ranking-depth hypothesis for this fixture, but it does not establish that live provider omission is unimportant. The offline provider returns the complete fixture corpus by design; live-provider omission remains unmeasured here.
 
-The current score explanation records only the implemented text-containment, citation-count, and arXiv-source contributions. Provider-native score is explicitly unavailable in the fixture. Duplicate collapse is not present in this corpus and is recorded as such rather than inferred.
+The score explanation records the implemented text-containment, citation-count, arXiv-source, title-token-overlap, and text-token-overlap contributions. Provider-native score is explicitly unavailable in the fixture. Duplicate collapse is not present in this corpus and is recorded as such rather than inferred.
 
 ## Experiment discipline
 
