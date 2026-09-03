@@ -21,6 +21,9 @@
     "architecture-check": "node scripts/verify-architecture.mjs",
     "check": "npm run lint && npm run architecture-check && npm run build && npm test",
     "eval:baseline": "npm run build && node evals/runners/run-baseline.mjs",
+    "eval:research": "npm run build && node evals/runners/run-research-tasks.mjs",
+    "eval:pdf": "npm run build && node evals/runners/run-pdf.mjs",
+    "eval:providers": "npm run build && node evals/runners/run-provider-degradation.mjs",
     "test:postgres": "npm run build && node scripts/postgres-integration.mjs",
     "package:dry-run": "npm pack --dry-run",
     "prepack": "npm run build"

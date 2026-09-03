@@ -1,0 +1,12 @@
+{
+  "version":"retrieval-holdout-v1",
+  "status":"untouched-checkpoint",
+  "policy":"Independent queries are held out from ranking development. They are not used for tuning and are evaluated only at milestone checkpoints.",
+  "queries":[
+    {"query":"parameter efficient fine tuning with low rank adapters","relevant":["lora"],"rationale":"Independent wording for LoRA."},
+    {"query":"preference optimization without a reference model","relevant":["orpo"],"rationale":"Independent method formulation."},
+    {"query":"memory efficient exact attention IO awareness","relevant":["flashattention"],"rationale":"Independent systems description."},
+    {"query":"self generated instructions for language model alignment","relevant":["self-instruct"],"rationale":"Independent task wording."},
+    {"query":"sparse mixture of experts routing language model","relevant":["mixtral"],"rationale":"Independent architecture wording."}
+  ]
+}

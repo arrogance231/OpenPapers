@@ -1,0 +1,9 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://openpapers.dev/schemas/research-task.v1.json",
+  "title":"OpenPapers end-to-end research task",
+  "type":"object",
+  "required":["taskId","query","category","arxivId","expectedStatus","expectedAnswer","expectedSources","expectedLocators","evidenceHtml","annotationNotes"],
+  "properties":{"taskId":{"type":"string"},"query":{"type":"string","minLength":1},"category":{"type":"string"},"arxivId":{"type":"string"},"expectedStatus":{"enum":["SUPPORTED","PARTIALLY_SUPPORTED","CONFLICTING","UNKNOWN","NOT_REPORTED"]},"expectedAnswer":{"type":"object"},"expectedSources":{"type":"array","items":{"type":"string"}},"expectedLocators":{"type":"array","items":{"type":"object"}},"evidenceHtml":{"type":"string"},"annotationNotes":{"type":"string"}},
+  "additionalProperties":true
+}

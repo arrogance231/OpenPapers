@@ -2,7 +2,7 @@
 
 OpenPapers has deterministic unit/adversarial tests and a separate offline evaluation harness. `scripts/mcp-benchmark.mjs` measures operational MCP latency; `npm run eval:baseline` measures retrieval, identity, extraction, and citation-quality fixtures.
 
-The current harness includes versioned identity, retrieval-query, extraction, citation, and paper/code datasets. Provider-failure transparency, PDF structure, and end-to-end research-task benchmarks remain future evaluation slices. Results record commit, timestamp, dataset version, provider configuration, and embedding model. Retrieval changes report canonical identity accuracy alongside ranking metrics.
+The current harness includes versioned identity, retrieval-query, extraction, citation, paper/code, end-to-end research-task, and PDF structure datasets. Deterministic provider degradation is measured separately. Results record commit, timestamp, dataset version, provider configuration, and embedding model. Retrieval changes report canonical identity accuracy alongside ranking metrics.
 
 The fixture results are engineering evidence, not a claim of live-provider or scientific benchmark superiority.
 
@@ -63,6 +63,16 @@ The latest clean evidence-milestone run is `evals/results/evidence-milestone-533
 This is a curated comparator benchmark, not a production estimate and not yet an end-to-end automatic paper/code extraction score. Several repository snapshots are later than the paper and are explicitly marked temporally unaligned. Gold annotations must be independently corrected and versioned rather than changed to improve OpenPapers metrics.
 
 See [the evidence-completeness plan](evidence-completeness-plan.md) for the ordered remaining evaluation work.
+
+## End-to-end research tasks
+
+`evals/datasets/research-tasks-v1.json` contains 15 independently curated, deterministic research questions. It includes reported values, appendix-only and repository-only evidence, source conflicts, temporal uncertainty, ambiguous scope, and explicit `NOT_REPORTED` versus `UNKNOWN` cases. `npm run eval:research` exercises the actual search, HTML parser, and explicit parameter extractor and writes per-task diagnostics. This is a measured integration boundary, not a claim that OpenPapers currently answers every field automatically. Unsupported fields remain visible as extraction failures.
+
+The baseline at commit `82f1044f1285` reports work/identifier accuracy `0.5333`, answer correctness `0.4667`, evidence-source accuracy `0.8667`, locator accuracy `1.0`, support-status accuracy `0.7333`, correct `UNKNOWN` `1.0`, correct `NOT_REPORTED` `1.0`, false `UNKNOWN` `0.2667`, false `NOT_REPORTED` `0.0`, fabricated-answer rate `0.0667`, and conflict precision/recall `1.0/1.0` across 15 tasks. These synthetic fixture values are baseline evidence only.
+
+`evals/datasets/pdf-v1.json` and `npm run eval:pdf` measure title, section, page, reference, appendix, equation, table, and warning recovery on five TEI fixtures. GROBID/TEI parsing passes the fixture corpus; PyMuPDF and Docling are recorded as not configured in this deterministic run. This does not measure live PDF acquisition or parser-service availability.
+
+`npm run eval:providers` injects outages for scholarly providers and records transparent failure, retained evidence, false absence, and all-down uncertainty behavior. GitHub/Hugging Face are ecosystem adapters rather than members of the current scholarly search fan-out and therefore remain a separate integration gap.
 
 ## Latest milestone result
 
