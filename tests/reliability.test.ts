@@ -4,10 +4,17 @@ import { SqliteResponseCache } from '../src/reliability/durable-cache.js';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createStructuredLogger, redactUrl } from '../src/reliability/logger.js';
 
 const response = (status:number, headers:Record<string,string>={}) => new Response('{}',{status,headers});
 
 describe('reliability infrastructure', () => {
+  it('redacts credentials from structured provider URLs', () => {
+    expect(redactUrl('https://api.example.test/search?query=paper&api_key=SECRET')).toBe('https://api.example.test/search?query=paper&api_key=%5BREDACTED%5D');
+    const lines:string[]=[];
+    createStructuredLogger({sink:line=>lines.push(line)}).error('provider_request_failed',{url:'https://x.test/?token=SECRET',provider:'x'});
+    expect(lines.join('\n')).not.toContain('SECRET');
+  });
   it('deduplicates concurrent GET requests and caches the response', async () => {
     let calls=0;
     const fetcher=createReliableFetcher(async () => { calls++; return response(200); }, {cacheTtlMs:10_000, minIntervalMs:0, sleep:async()=>{}});
@@ -47,11 +54,42 @@ describe('reliability infrastructure', () => {
     expect(calls).toBe(2);
   });
 
-  it('serializes concurrent requests through the shared limiter', async () => {
+  it('serializes concurrent requests for the same host through the limiter', async () => {
     let clock=0; const starts:number[]=[]; const sleep=async (ms:number)=>{clock+=ms;};
-    const make=()=>createReliableFetcher(async()=>{starts.push(clock); return response(200);},{cacheTtlMs:0,minIntervalMs:100,sleep,now:()=>clock});
-    await Promise.all([make()('https://example.test/one'),make()('https://example.test/two')]);
+    const fetcher=createReliableFetcher(async()=>{starts.push(clock);return response(200);},{cacheTtlMs:0,minIntervalMs:100,sleep,now:()=>clock});
+    await Promise.all([fetcher('https://example.test/one'),fetcher('https://example.test/two')]);
     expect(starts[1]-starts[0]).toBeGreaterThanOrEqual(100);
+  });
+
+  it('does not serialize unrelated provider hosts', async () => {
+    let clock=0; const starts:string[]=[];
+    const sleep=async (ms:number)=>{ clock+=ms; };
+    const fetcher=createReliableFetcher(async (input)=>{ starts.push(new URL(input.toString()).hostname); return response(200); },{cacheTtlMs:0,minIntervalMs:100,sleep,now:()=>clock});
+    await Promise.all([fetcher('https://arxiv.org/a'),fetcher('https://api.openalex.org/b')]);
+    expect(starts).toEqual(['arxiv.org','api.openalex.org']);
+    expect(clock).toBe(0);
+  });
+
+  it('does not cache cookie-bearing or secret-query requests', async () => {
+    let calls=0;
+    const fetcher=createReliableFetcher(async()=>{calls++;return response(200);},{minIntervalMs:0});
+    await fetcher('https://example.test/a?api_key=secret'); await fetcher('https://example.test/a?api_key=secret');
+    await fetcher('https://example.test/b',{headers:{cookie:'session=secret'}}); await fetcher('https://example.test/b',{headers:{cookie:'session=secret'}});
+    expect(calls).toBe(4);
+  });
+
+  it('does not cache responses with Set-Cookie or Vary authorization', async () => {
+    let calls=0;
+    const fetcher=createReliableFetcher(async()=>{calls++;return response(200,{'set-cookie':'session=secret',vary:'Authorization'});},{minIntervalMs:0});
+    await fetcher('https://example.test/a'); await fetcher('https://example.test/a');
+    expect(calls).toBe(2);
+  });
+
+  it('degrades to upstream fetch when the durable cache record is corrupt', async () => {
+    let calls=0; const durable={get:async()=>({status:200,headers:'{bad}',body:'{}',expiresAt:Date.now()+10000}),set:async()=>{}};
+    const fetcher=createReliableFetcher(async()=>{calls++;return response(200);},{minIntervalMs:0,durableCache:durable as never});
+    await expect(fetcher('https://example.test/corrupt')).resolves.toBeInstanceOf(Response);
+    expect(calls).toBe(1);
   });
 
   it('evicts expired cache entries', async () => {

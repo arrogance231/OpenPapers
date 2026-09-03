@@ -5,7 +5,7 @@ import { serveStdio } from '@modelcontextprotocol/server/stdio';
 import { toNodeHandler, localhostHostValidation, localhostOriginValidation } from '@modelcontextprotocol/node';
 import { ResearchService } from '../research/service.js';
 import { PostgresResearchStore } from '../database/postgres.js';
-import { PostgresVectorRetriever } from '../retrieval/vector.js';
+import { HashEmbeddingProvider, PostgresVectorRetriever } from '../retrieval/vector.js';
 import { registerTools } from './tools.js';
 
 export function createMcpServer(research = new ResearchService()): McpServer {
@@ -21,7 +21,7 @@ export function createHttpHandler(research = new ResearchService()) {
 async function main(): Promise<void> {
   const postgres = process.env.DATABASE_BACKEND === 'postgres' ? PostgresResearchStore.fromConfig() : undefined;
   const research = new ResearchService(postgres ?? undefined);
-  if(postgres) research.setVectorRetriever(new PostgresVectorRetriever(postgres!,async text=>{const values=Array.from({length:64},()=>0);for(const token of text.toLowerCase().split(/\W+/).filter(Boolean)){let hash=2166136261;for(const char of token){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}const slot=Math.abs(hash)%64;values[slot]=(values[slot]??0)+1;}return values;}));
+  if(postgres) research.setVectorRetriever(new PostgresVectorRetriever(postgres,new HashEmbeddingProvider()));
   if (research.db instanceof PostgresResearchStore) await research.db.initialize();
   const mode = process.env.MCP_TRANSPORT ?? 'stdio';
   if (mode === 'http') {
@@ -45,4 +45,4 @@ async function main(): Promise<void> {
   }
 }
 
-if (process.argv[1]?.replaceAll('\\', '/').endsWith('dist/mcp/server.js')) void main();
+if (process.argv[1]?.replaceAll('\\', '/').endsWith('/mcp/server.js') || process.argv[1]?.replaceAll('\\', '/').endsWith('/mcp/server.ts')) void main();

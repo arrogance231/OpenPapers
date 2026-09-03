@@ -51,10 +51,17 @@ describe('large adversarial full-flow campaign', () => {
       {search:vi.fn().mockResolvedValue([sameTitle])} as any,
       {search:vi.fn().mockResolvedValue([])} as any);
     const result = await service.search('Attention Is All You Need', 10);
-    expect(result.transparency.conflicts?.some(item => item.field === 'year')).toBe(true);
+    expect(result.data).toHaveLength(2);
     expect(result.data.some(item => item.arxivId === '1706.03762')).toBe(true);
   });
 
+  it('does not merge identifier-free works merely because title and authors match', async () => {
+    const first=work({paperId:'first',doi:undefined,arxivId:undefined,sourceProviders:['arxiv']});
+    const second=work({paperId:'second',doi:undefined,arxivId:undefined,sourceProviders:['crossref']});
+    const service=new ResearchService(new ResearchDb(':memory:'),{search:vi.fn().mockResolvedValue([first])} as any,{search:vi.fn().mockResolvedValue([second])} as any,{search:vi.fn().mockResolvedValue([])} as any,{search:vi.fn().mockResolvedValue([])} as any);
+    const result=await service.search('Attention Is All You Need',10);
+    expect(result.data.map(item=>item.paperId)).toEqual(['first','second']);
+  });
   it('keeps same-DOI conflicts as one reference identity', async () => {
     const first = work({paperId:'doi-work', doi:'10.1000/same', arxivId:undefined, title:'Attention Is All You Need'});
     const conflicting = work({paperId:'doi-work', doi:'10.1000/same', arxivId:undefined, title:'A Different Work With A Conflicting DOI', sourceProviders:['crossref']});

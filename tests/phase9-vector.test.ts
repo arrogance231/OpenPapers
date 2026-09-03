@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { InMemoryVectorRetriever, PostgresVectorRetriever } from '../src/retrieval/vector.js';
 
 describe('vector retrieval interface',()=>{
+  it('rejects malformed, non-finite, zero, and mismatched embeddings', async()=>{
+    const store={upsertVector:async()=>{},searchVectorsSql:async()=>[]};
+    await expect(new PostgresVectorRetriever(store,{dimensions:2,embed:async()=>[1]}).index([{id:'a',text:'x'}])).rejects.toThrow(/dimension/);
+    await expect(new PostgresVectorRetriever(store,{dimensions:2,embed:async()=>[NaN,1]}).index([{id:'a',text:'x'}])).rejects.toThrow(/finite/);
+    await expect(new PostgresVectorRetriever(store,{dimensions:2,embed:async()=>[0,0]}).index([{id:'a',text:'x'}])).rejects.toThrow(/zero/);
+  });
   it('indexes and deterministically ranks lexical vectors',async()=>{
     const retriever=new InMemoryVectorRetriever();
     await retriever.index([{id:'a',text:'knowledge distillation student teacher',metadata:{paperId:'paper-a'}},{id:'b',text:'image segmentation benchmark',metadata:{paperId:'paper-b'}}]);

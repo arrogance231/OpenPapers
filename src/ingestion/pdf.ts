@@ -34,7 +34,7 @@ export class CommandPdfFallback implements PdfFallback {
       const result = await this.runner(this.command, [this.script, path], {maxBuffer:25 * 1024 * 1024, windowsHide:true, timeout:this.timeoutMs});
       let parsed: Omit<ParsedDocument, 'url' | 'format'>;
       try { parsed = JSON.parse(result.stdout) as Omit<ParsedDocument, 'url' | 'format'>; } catch { throw new Error('invalid PDF parser output: malformed JSON'); }
-      if (!parsed || !Array.isArray(parsed.sections) || !Array.isArray(parsed.references) || !Array.isArray(parsed.warnings)) throw new Error('invalid PDF parser output: missing required arrays');
+      if (!parsed || !Array.isArray(parsed.sections) || !Array.isArray(parsed.references) || !Array.isArray(parsed.warnings) || !parsed.sections.every(section => Boolean(section) && typeof section === 'object' && typeof (section as {text?:unknown}).text === 'string' && typeof (section as {heading?:unknown}).heading === 'string') || !parsed.references.every(reference => Boolean(reference) && typeof reference === 'object' && typeof (reference as {text?:unknown}).text === 'string') || !parsed.warnings.every(warning => typeof warning === 'string')) throw new Error('invalid PDF parser output: malformed fields');
       return {format:'pdf',url:filename,...parsed};
     } finally { await rm(directory, {recursive:true,force:true}); }
   }

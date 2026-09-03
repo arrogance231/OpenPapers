@@ -5,6 +5,8 @@ describe('bounded paper acquisition', () => {
   it('rejects unsafe local targets before fetching', async () => {
     const fetcher = async () => { throw new Error('must not fetch'); };
     await expect(new PaperAcquirer(fetcher).acquire('http://127.0.0.1/paper')).rejects.toThrow('unsafe host');
+    await expect(new PaperAcquirer(fetcher).acquire('http://169.254.169.254/latest/meta-data')).rejects.toThrow('unsafe host');
+    await expect(new PaperAcquirer(fetcher).acquire('http://[::ffff:127.0.0.1]/paper')).rejects.toThrow('unsafe host');
   });
 
   it('rejects declared bodies over the configured limit', async () => {

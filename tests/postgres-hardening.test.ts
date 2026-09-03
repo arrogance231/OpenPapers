@@ -7,7 +7,22 @@ describe('PostgreSQL hardening contracts', () => {
     const query = vi.fn().mockRejectedValueOnce(new Error('write failed'));
     const store = PostgresResearchStore.fromQueryClient({ query, close: vi.fn(async () => undefined) } as any);
     await expect(store.upsertWork({ paperId: 'paper-1', title: 'Test' } as any)).rejects.toThrow('write failed');
-    await expect(store.flush()).rejects.toThrow('write failed');
+    await expect(store.flush()).resolves.toBeUndefined();
+  });
+
+  it('does not expose a work from the local mirror when its durable write fails', async () => {
+    const query = vi.fn().mockRejectedValueOnce(new Error('write failed'));
+    const store = PostgresResearchStore.fromQueryClient({ query, close: vi.fn(async () => undefined) } as any);
+    await expect(store.upsertWork({ paperId: 'paper-1', title: 'Test' } as any)).rejects.toThrow('write failed');
+    await expect(store.getWork('paper-1')).resolves.toBeUndefined();
+  });
+
+  it('allows later writes after an earlier queued write fails', async () => {
+    const query = vi.fn().mockRejectedValueOnce(new Error('write failed')).mockResolvedValue({ rows: [] });
+    const store = PostgresResearchStore.fromQueryClient({ query, close: vi.fn(async () => undefined) } as any);
+    await expect(store.upsertWork({ paperId: 'paper-1', title: 'Test' } as any)).rejects.toThrow('write failed');
+    await expect(store.upsertWork({ paperId: 'paper-2', title: 'Test 2' } as any)).resolves.toBeUndefined();
+    await expect(store.getWork('paper-2')).resolves.toMatchObject({paperId:'paper-2'});
   });
 
   it('uses SQL cosine distance for vector ranking', async () => {

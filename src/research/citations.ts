@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import type { Author, Evidence, EvidenceType, Identifier, Locator, ResearchWork, SourceQuality } from '../models/research.js';
 
-export function normalizeDoi(value: string): string { return value.trim().replace(/^https?:\/\/(doi\.org\/)?/i, '').replace(/^doi:\s*/i, '').toLowerCase().replace(/[.]$/, ''); }
+export function normalizeDoi(value: string): string { return value.trim().replace(/^https?:\/\/(?:doi\.org|dx\.doi\.org)\//i, '').replace(/^doi:\s*/i, '').toLowerCase().replace(/[.,;:]+$/, ''); }
 export function normalizeArxivId(value: string): string { return value.trim().replace(/^https?:\/\/(arxiv\.org\/abs\/|export\.arxiv\.org\/api\/query\?id_list=)/i, '').replace(/^arxiv:/i, '').replace(/v\d+$/i, ''); }
 export function normalizeAuthorName(name: string): string { return name.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N} ]/gu, ' ').replace(/\s+/g, ' ').trim().toLowerCase(); }
 export function author(name: string, orcid?: string): Author { return orcid ? { name, normalizedName: normalizeAuthorName(name), orcid } : { name, normalizedName: normalizeAuthorName(name) }; }

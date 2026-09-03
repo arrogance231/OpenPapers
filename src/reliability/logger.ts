@@ -1,0 +1,9 @@
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+export type LogFields = Record<string, unknown>;
+export interface StructuredLogger { debug(event:string,fields?:LogFields):void; info(event:string,fields?:LogFields):void; warn(event:string,fields?:LogFields):void; error(event:string,fields?:LogFields):void; }
+export interface LoggerOptions { minLevel?:LogLevel; sink?: (line:string)=>void; now?:()=>string; }
+const levels:Record<LogLevel,number>={debug:10,info:20,warn:30,error:40};
+const secretKey=/(authorization|cookie|set-cookie|token|secret|password|passwd|api[_-]?key|credential|signature)/i;
+export function redactUrl(value:string):string { try { const url=new URL(value); for(const key of [...url.searchParams.keys()]) if(secretKey.test(key)) url.searchParams.set(key,'[REDACTED]'); return url.toString(); } catch { return '[INVALID_URL]'; } }
+function sanitize(value:unknown,key=''):unknown { if(secretKey.test(key))return '[REDACTED]'; if(typeof value==='string'&&/^https?:\/\//i.test(value))return redactUrl(value); if(Array.isArray(value))return value.map(item=>sanitize(item)); if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([childKey,child])=>[childKey,sanitize(child,childKey)])); return value; }
+export function createStructuredLogger(options:LoggerOptions={}):StructuredLogger { const min=levels[options.minLevel??'info']; const sink=options.sink??(line=>process.stderr.write(`${line}\n`)); const now=options.now??(()=>new Date().toISOString()); const write=(level:LogLevel,event:string,fields:LogFields={})=>{if(levels[level]<min)return; sink(JSON.stringify({timestamp:now(),level,event,...(sanitize(fields) as Record<string,unknown>)}));}; return {debug:(event,fields)=>write('debug',event,fields),info:(event,fields)=>write('info',event,fields),warn:(event,fields)=>write('warn',event,fields),error:(event,fields)=>write('error',event,fields)}; }

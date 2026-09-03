@@ -49,6 +49,10 @@ describe('structured document parsing', () => {
     const fallback = new CommandPdfFallback('pymupdf','python','script.py', async () => ({stdout:'{"format":"html"}',stderr:''}));
     await expect(fallback.extract(new Uint8Array([37,80,68,70]), 'paper.pdf')).rejects.toThrow('invalid PDF parser output');
   });
+  it('rejects fallback output with malformed section elements', async () => {
+    const fallback = new CommandPdfFallback('pymupdf','python','script',async()=>({stdout:JSON.stringify({sections:[null],references:[],warnings:[]}),stderr:''}));
+    await expect(fallback.extract(new Uint8Array([1]),'paper.pdf')).rejects.toThrow(/invalid PDF parser output/);
+  });
   it('creates stable source-located chunks and searches them', () => {
     const parsed = parseDocument({url:'https://example.com/paper.html',contentType:'text/html',bytes:html.byteLength,body:html});
     const chunks = chunkDocument(parsed, 20);
