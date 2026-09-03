@@ -7,8 +7,9 @@ import { ResearchService, explainRanking } from '../../dist/research/service.js'
 import { author, makeEvidence, normalizeDoi, paperId } from '../../dist/research/citations.js';
 import { parseDocument } from '../../dist/ingestion/document.js';
 import { extractTrainingParameters } from '../../dist/extraction/parameters.js';
-import { validateCitationIntegrity } from '../../dist/research/verification.js';
-import { rankingMetrics, aggregateRanking, identityMetrics, extractionMetrics, citationMetrics } from '../metrics/metrics.mjs';
+import { validateCitationIntegrity, classifyEvidenceSupport } from '../../dist/research/verification.js';
+import { rankingMetrics, aggregateRanking, identityMetrics, extractionMetrics, citationMetrics, citationSupportMetrics } from '../metrics/metrics.mjs';
+import { paperCodeMetrics } from '../metrics/paper-code.mjs';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
 const load=name=>JSON.parse(readFileSync(join(root,'evals/datasets',name),'utf8'));
@@ -16,6 +17,7 @@ const canonical=load('canonical-retrieval-v1.json');
 const retrieval=load('retrieval-v1.json');
 const extraction=load('extraction-v1.json');
 const citation=load('citation-v1.json');
+const paperCode=load('paper-code-v1.json');
 const abstracts={
   'attention-is-all-you-need':'Transformer architecture, self-attention, encoder decoder sequence modeling, and efficient language understanding.',
   bert:'Bidirectional transformer pretraining for language understanding and representation learning.',
@@ -73,7 +75,35 @@ function evaluateCitation(){
   return {dataset:citation.version,metrics:citationMetrics(rows),cases:rows};
 }
 
+function comparePaperCodeField(field){
+  if(field.comparisonEligible===false||field.paper?.status==='UNKNOWN'||field.code?.status==='UNKNOWN')return 'UNKNOWN';
+  const paperPresent=field.paper?.value!==null&&field.paper?.value!==undefined;
+  const codePresent=field.code?.value!==null&&field.code?.value!==undefined;
+  if(!paperPresent&&!codePresent)return 'UNKNOWN';
+  if(!paperPresent)return 'MISSING_IN_PAPER';
+  if(!codePresent)return 'MISSING_IN_CODE';
+  const paperValue=String(field.paper.value).trim(); const codeValue=String(field.code.value).trim();
+  if(paperValue===codeValue)return 'MATCH';
+  const paperNumber=Number(paperValue); const codeNumber=Number(codeValue);
+  return Number.isFinite(paperNumber)&&Number.isFinite(codeNumber)&&paperNumber===codeNumber?'MATCH':'CONFLICT';
+}
+function evaluatePaperCode(){
+  const rows=[]; const failures=[];
+  for(const item of paperCode.cases)for(const field of item.fields){
+    const predicted=comparePaperCodeField(field); const row={caseId:item.caseId,field:field.name,expected:field.expected,predicted,paperValue:field.paper?.value??null,codeValue:field.code?.value??null}; rows.push(row);
+    if(predicted!==field.expected)failures.push({...row,category:predicted==='MATCH'?'false_agreement':predicted==='CONFLICT'?'false_conflict':'comparison_or_annotation_mismatch',paperEvidence:field.paper,codeEvidence:field.code,repository:item.repository,officialLinkage:item.officialLinkage,annotationNote:field.annotationNote});
+  }
+  return {dataset:paperCode.version,cases:paperCode.cases.length,fields:rows.length,repositoryRevisionPolicy:paperCode.repositoryRevisionPolicy,metrics:paperCodeMetrics(rows),rows,failures};
+}
+
+function evaluateCitationSupport(){
+  const rows=citation.supportCases.map(item=>{const evidence={evidenceId:item.id,sourceId:'paper-1',authors:[author('Author One')],title:'Evaluation Paper',identifiers:{},evidence:item.evidence,citationText:'[Author One, 2024]'};const classified=classifyEvidenceSupport(item.claim,evidence);return {id:item.id,expected:item.expected,predicted:classified.status,basis:classified.basis};});
+  return {dataset:citation.version,kind:'deterministic-heuristic-support-classification',metrics:citationSupportMetrics(rows),rows};
+}
+
 const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const dirty=execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim().length>0;
-const result={schemaVersion:'openpapers.evaluation-result.v1',kind:'offline-baseline',commit,timestamp:new Date().toISOString(),workingTreeDirty:dirty,configuration:{providerMode:'offline-fixture',embeddingModel:'NOT_APPLICABLE',liveProviders:false},datasets:{canonical:canonical.version,retrieval:retrieval.version,extraction:extraction.version,citation:citation.version},identity:evaluateIdentity(),retrieval:await evaluateRetrieval(),extraction:evaluateExtraction(),citation:evaluateCitation(),paperCodeAgreement:'NOT_YET_MEASURED',endToEndTasks:'NOT_YET_MEASURED'};
-const outputDir=join(root,'evals/results');mkdirSync(outputDir,{recursive:true});const prefix=process.env.EVAL_PREFIX??'baseline-v1';let output=join(outputDir,`${prefix}-${commit.slice(0,12)}.json`);let suffix=2;while(existsSync(output))output=join(outputDir,`${prefix}-${commit.slice(0,12)}-${suffix++}.json`);writeFileSync(output,JSON.stringify(result,null,2)+'\n');const diagnostics=result.retrieval.perQuery.flatMap(row=>row.diagnostics);const categories={not_retrieved:diagnostics.filter(row=>row.failure==='not_retrieved').length,ranked_below_k:diagnostics.filter(row=>row.failure==='ranked_below_k').length,returned:diagnostics.filter(row=>row.failure===null).length};let failureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-failures.json`);let failureSuffix=2;while(existsSync(failureOutput))failureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-failures-${failureSuffix++}.json`);writeFileSync(failureOutput,JSON.stringify({schemaVersion:'openpapers.retrieval-failure-report.v1',kind:'offline-fixture',commit,timestamp:result.timestamp,workingTreeDirty:dirty,dataset:retrieval.version,categories,totalRelevant:diagnostics.length,diagnostics:result.retrieval.perQuery.map(row=>({query:row.query,gold:row.diagnostics}))},null,2)+'\n');console.log(JSON.stringify({output,failureOutput,identity:result.identity.metrics,retrieval:result.retrieval.aggregate,citation:result.citation.metrics},null,2));
+const paperCodeResult=evaluatePaperCode();
+const citationSupport=evaluateCitationSupport();
+const result={schemaVersion:'openpapers.evaluation-result.v1',kind:'offline-baseline',commit,timestamp:new Date().toISOString(),workingTreeDirty:dirty,configuration:{providerMode:'offline-fixture',embeddingModel:'NOT_APPLICABLE',liveProviders:false},datasets:{canonical:canonical.version,retrieval:retrieval.version,extraction:extraction.version,citation:citation.version,paperCode:paperCode.version},identity:evaluateIdentity(),retrieval:await evaluateRetrieval(),extraction:evaluateExtraction(),citation:evaluateCitation(),citationSupport,paperCodeAgreement:paperCodeResult,endToEndTasks:'NOT_YET_MEASURED'};
+const outputDir=join(root,'evals/results');mkdirSync(outputDir,{recursive:true});const prefix=process.env.EVAL_PREFIX??'baseline-v1';let output=join(outputDir,`${prefix}-${commit.slice(0,12)}.json`);let suffix=2;while(existsSync(output))output=join(outputDir,`${prefix}-${commit.slice(0,12)}-${suffix++}.json`);writeFileSync(output,JSON.stringify(result,null,2)+'\n');const diagnostics=result.retrieval.perQuery.flatMap(row=>row.diagnostics);const categories={not_retrieved:diagnostics.filter(row=>row.failure==='not_retrieved').length,ranked_below_k:diagnostics.filter(row=>row.failure==='ranked_below_k').length,returned:diagnostics.filter(row=>row.failure===null).length};let failureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-failures.json`);let failureSuffix=2;while(existsSync(failureOutput))failureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-failures-${failureSuffix++}.json`);writeFileSync(failureOutput,JSON.stringify({schemaVersion:'openpapers.retrieval-failure-report.v1',kind:'offline-fixture',commit,timestamp:result.timestamp,workingTreeDirty:dirty,dataset:retrieval.version,categories,totalRelevant:diagnostics.length,diagnostics:result.retrieval.perQuery.map(row=>({query:row.query,gold:row.diagnostics}))},null,2)+'\n');const paperCodeFailureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-paper-code-failures.json`);writeFileSync(paperCodeFailureOutput,JSON.stringify({schemaVersion:'openpapers.paper-code-failure-report.v1',kind:'offline-curated-gold',commit,timestamp:result.timestamp,workingTreeDirty:dirty,dataset:paperCode.version,totalFields:paperCodeResult.fields,failures:paperCodeResult.failures},null,2)+'\n');console.log(JSON.stringify({output,failureOutput,paperCodeFailureOutput,identity:result.identity.metrics,retrieval:result.retrieval.aggregate,citation:result.citation.metrics,paperCode:paperCodeResult.metrics},null,2));

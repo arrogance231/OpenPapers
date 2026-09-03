@@ -7,5 +7,12 @@
     {"id":"unsupported-empty","expectedValid":false,"claim":"The training recipe is known.","source":"paper-1","summary":"The training recipe is known.","emptyEvidence":true},
     {"id":"invalid-locator","expectedValid":false,"claim":"The method is reported on page zero.","source":"paper-1","summary":"The method is reported [Author One, 2024].","invalidLocator":true},
     {"id":"wrong-work","expectedValid":false,"claim":"The other paper reports this method.","source":"paper-1","summary":"The other paper reports this method [Author One, 2024].","wrongWork":true}
+  ],
+  "supportCases": [
+    {"id":"support-exact","expected":"SUPPORTED","claim":"the optimizer is AdamW","evidence":"The optimizer is AdamW."},
+    {"id":"support-partial","expected":"PARTIALLY_SUPPORTED","claim":"the optimizer is AdamW with weight decay","evidence":"The optimizer is AdamW."},
+    {"id":"support-unsupported","expected":"UNSUPPORTED","claim":"the optimizer is SGD","evidence":"The paper reports a dataset."},
+    {"id":"support-contradicted","expected":"CONTRADICTED","claim":"the paper uses AdamW","evidence":"The paper does not use AdamW."},
+    {"id":"support-unknown","expected":"UNKNOWN","claim":"the paper reports batch size 128","evidence":"No relevant value is available."}
   ]
 }

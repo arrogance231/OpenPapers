@@ -11,11 +11,12 @@
     "timestamp":{"type":"string","format":"date-time"},
     "workingTreeDirty":{"type":"boolean"},
     "configuration":{"type":"object","required":["providerMode","embeddingModel","liveProviders"]},
-    "datasets":{"type":"object","required":["canonical","retrieval","extraction","citation"]},
+    "datasets":{"type":"object","required":["canonical","retrieval","extraction","citation","paperCode"]},
     "identity":{"type":"object"},
     "retrieval":{"type":"object"},
     "extraction":{"type":"object"},
     "citation":{"type":"object"},
+    "citationSupport":{"type":"object"},
     "paperCodeAgreement":{},
     "endToEndTasks":{}
   },

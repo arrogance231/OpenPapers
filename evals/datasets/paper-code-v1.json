@@ -1,0 +1,120 @@
+{
+  "version": "paper-code-v1",
+  "status": "curated-seed",
+  "annotationPolicy": "Each item links a paper to an author or project-owned repository using an identifier-bearing project README or official organization context. Repository revisions are resolved commit SHAs, never branch names. Values are limited to explicitly labeled source text; ambiguous experiment/default scope is UNKNOWN. Gold labels are not changed to match OpenPapers output.",
+  "repositoryRevisionPolicy": "The recorded commit is the HEAD resolved on 2026-09-03. It is an evaluation snapshot, not an assertion that it is publication-era code. Temporal alignment is recorded per case.",
+  "cases": [
+    {
+      "caseId": "pc-lora-001", "canonicalTitle": "LoRA: Low-Rank Adaptation of Large Language Models", "arxivId": "2106.09685", "authors": ["Edward J. Hu", "Yelong Shen", "Phillip Wallis", "Zeyuan Allen-Zhu", "Yuanzhi Li", "Sheng Shen", "Weizhu Chen"],
+      "repository": {"url": "https://github.com/microsoft/LoRA", "owner": "microsoft", "name": "LoRA", "commitSha": "c4593f060e6a368d7bb5af5273b8e42810cdef90", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/microsoft/LoRA/blob/c4593f060e6a368d7bb5af5273b8e42810cdef90/README.md", "sourceClass": "README", "locator": "README.md:9", "note": "README links the paper arXiv:2106.09685; repository organization is the author-affiliated project context."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "lora_rank", "paper": {"value": "8", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2106.09685#sec:experiments"}, "code": {"value": "16", "sourceClass": "README", "path": "README.md", "lineStart": 88, "lineEnd": 88}, "expected": "CONFLICT", "annotationNote": "Paper experimental rank and README usage example are different scopes; retained as a conflict candidate, not a truth decision."}]
+    },
+    {
+      "caseId": "pc-qlora-001", "canonicalTitle": "QLoRA: Efficient Finetuning of Quantized LLMs", "arxivId": "2305.14314", "authors": ["Tim Dettmers", "Artidoro Pagnoni"],
+      "repository": {"url": "https://github.com/artidoro/qlora", "owner": "artidoro", "name": "qlora", "commitSha": "7f4e95a68dc076bea9b3a413d2b512eca6d004e5", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/artidoro/qlora/blob/7f4e95a68dc076bea9b3a413d2b512eca6d004e5/README.md", "sourceClass": "README", "locator": "README.md:3", "note": "README explicitly names the paper and repository purpose."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "learning_rate", "paper": {"value": "0.0002", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2305.14314#sec:experiments"}, "code": {"value": "0.0001", "sourceClass": "README", "path": "README.md", "lineStart": 48, "lineEnd": 48}, "expected": "CONFLICT", "annotationNote": "README qualifies the value as a recommendation for models larger than 13B; it is not silently treated as the paper's universal default."}]
+    },
+    {
+      "caseId": "pc-flashattention-001", "canonicalTitle": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness", "arxivId": "2205.14135", "authors": ["Tri Dao", "Daniel Y. Fu", "Stefano Ermon", "Atri Rudra", "Christopher Ré"],
+      "repository": {"url": "https://github.com/Dao-AILab/flash-attention", "owner": "Dao-AILab", "name": "flash-attention", "commitSha": "ce088ab9ce0fc0434dcd8afa0a791da9fcc3a820", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/Dao-AILab/flash-attention/blob/ce088ab9ce0fc0434dcd8afa0a791da9fcc3a820/README.md", "sourceClass": "README", "locator": "README.md:2-8", "note": "README calls the repository the official implementation and links the paper."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "batch_size", "paper": {"value": null, "status": "UNKNOWN", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2205.14135#sec:experiments"}, "code": {"value": "16k/seqlen", "sourceClass": "README", "path": "README.md", "lineStart": 503, "lineEnd": 503}, "expected": "UNKNOWN", "comparisonEligible": false, "annotationNote": "The README describes a benchmark plotting parameter, not a training batch size; numeric coincidence must not become agreement."}]
+    },
+    {
+      "caseId": "pc-dpo-001", "canonicalTitle": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model", "arxivId": "2305.18290", "authors": ["Rafael Rafailov", "Archit Sharma", "Eric Mitchell", "Stefan Ermon", "Christopher D. Manning", "Chelsea Finn"],
+      "repository": {"url": "https://github.com/eric-mitchell/direct-preference-optimization", "owner": "eric-mitchell", "name": "direct-preference-optimization", "commitSha": "f8b8c0f49dc92a430bae41585f9d467d3618fe2f", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/eric-mitchell/direct-preference-optimization/blob/f8b8c0f49dc92a430bae41585f9d467d3618fe2f/README.md", "sourceClass": "README", "locator": "README.md:11", "note": "README explicitly describes the reference implementation and links the paper."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "batch_size", "paper": {"value": "64", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2305.18290#sec:experiments"}, "code": {"value": "64", "sourceClass": "README", "path": "README.md", "lineStart": 30, "lineEnd": 32}, "expected": "UNKNOWN", "comparisonEligible": false, "annotationNote": "The README example combines batch_size with gradient accumulation and an SFT command; global/per-device semantics are not established by this locator."}]
+    },
+    {
+      "caseId": "pc-medusa-001", "canonicalTitle": "Medusa: Simple Framework for Accelerating LLM Generation with Multiple Decoding Heads", "arxivId": "2401.10774", "authors": ["Hongjia Gao"],
+      "repository": {"url": "https://github.com/FasterDecoding/Medusa", "owner": "FasterDecoding", "name": "Medusa", "commitSha": "e2a5d20c048a9b0a4092e6933c34313687422518", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/FasterDecoding/Medusa", "sourceClass": "project_repository", "locator": "repository README", "note": "Repository is the named Medusa project; exact publication-era alignment remains unknown."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "inference_configuration", "paper": {"value": null, "status": "UNKNOWN", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2401.10774"}, "code": {"value": null, "status": "UNKNOWN", "sourceClass": "repository", "path": "README.md", "lineStart": 1, "lineEnd": 1}, "expected": "UNKNOWN", "annotationNote": "No executable configuration value is asserted from the bounded repository inspection."}]
+    },
+    {
+      "caseId": "pc-eagle-001", "canonicalTitle": "EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty", "arxivId": "2401.15077", "authors": ["Yuhui Li", "Fusheng Zhao", "Chongyang Tao", "Jingze Li", "Chongyi Wang", "Jianfei Wang", "Chengyuan Wu", "Jianping Shi", "Sheng Guo", "Gao Huang"],
+      "repository": {"url": "https://github.com/SafeAILab/EAGLE", "owner": "SafeAILab", "name": "EAGLE", "commitSha": "cb7e0841fe0c206c6ed74a197ad5e2a1f13f5a2b", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/SafeAILab/EAGLE/blob/cb7e0841fe0c206c6ed74a197ad5e2a1f13f5a2b/README.md", "sourceClass": "README", "locator": "README.md:291-299", "note": "README links the EAGLE paper and identifies the project."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "base_model", "paper": {"value": "LLaMA-2", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2401.15077#sec:experiments"}, "code": {"value": "Qwen3-4B", "sourceClass": "README", "path": "README.md", "lineStart": 275, "lineEnd": 275}, "expected": "CONFLICT", "annotationNote": "The README command is an explicitly named Qwen3 example, not evidence that the paper's original experiment used it."}]
+    },
+    {
+      "caseId": "pc-vllm-001", "canonicalTitle": "vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention", "arxivId": "2309.06180", "authors": ["Woosuk Kwon", "Zhuohan Li", "Siyue Zhuang", "Yitao Zeng", "Xiaohan Cheng", "Ying Sheng", "Lianmin Zheng", "Cody Hao Yu", "Joseph E. Gonzalez", "Hao Zhang", "Ion Stoica"],
+      "repository": {"url": "https://github.com/vllm-project/vllm", "owner": "vllm-project", "name": "vllm", "commitSha": "bb363db9a5ec2edc7b39e99b00af363a89d1fb81", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/vllm-project/vllm/blob/bb363db9a5ec2edc7b39e99b00af363a89d1fb81/README.md", "sourceClass": "README", "locator": "README.md:14", "note": "README links the vLLM paper from the project repository."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "inference_configuration", "paper": {"value": null, "status": "NOT_REPORTED", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2309.06180#sec:evaluation"}, "code": {"value": "speculative decoding supported", "sourceClass": "README", "path": "README.md", "lineStart": 37, "lineEnd": 37}, "expected": "MISSING_IN_PAPER", "annotationNote": "The paper field is intentionally not treated as a value; a capability statement is not a parameter."}]
+    },
+    {
+      "caseId": "pc-minilm-001", "canonicalTitle": "MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers", "arxivId": "2002.10957", "authors": ["Wenhui Wang", "Furu Wei", "Li Dong", "Hangbo Bao", "Nan Yang", "Ming Zhou"],
+      "repository": {"url": "https://github.com/microsoft/unilm", "owner": "microsoft", "name": "unilm", "commitSha": "ca43e4cd19445a536f133bf2bc25b573b2f0c7c5", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/microsoft/unilm/blob/ca43e4cd19445a536f133bf2bc25b573b2f0c7c5/README.md", "sourceClass": "README", "locator": "README.md:236-237", "note": "Microsoft UniLM README identifies MiniLM project and links its paper in the project listing."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "architecture_parameters", "paper": {"value": "12-layer, 384-hidden", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2002.10957#sec:experiments"}, "code": {"value": null, "status": "NOT_REPORTED", "sourceClass": "README", "path": "README.md", "lineStart": 236, "lineEnd": 237}, "expected": "MISSING_IN_CODE", "annotationNote": "The bounded root README listing does not expose the architecture configuration; no inference is made about nested project files."}]
+    },
+    {
+      "caseId": "pc-bert-001", "canonicalTitle": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", "arxivId": "1810.04805", "authors": ["Jacob Devlin", "Ming-Wei Chang", "Kenton Lee", "Kristina Toutanova"],
+      "repository": {"url": "https://github.com/google-research/bert", "owner": "google-research", "name": "bert", "commitSha": "eedf5716ce1268e56f0a50264a88cafad334ac61", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/google-research/bert/blob/eedf5716ce1268e56f0a50264a88cafad334ac61/README.md", "sourceClass": "README", "locator": "README.md:189-191", "note": "Google Research README links the BERT paper and describes the released models/code."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "optimizer", "paper": {"value": "Adam", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/1810.04805#sec:pre-training-bert"}, "code": {"value": "Adam", "sourceClass": "README", "path": "README.md", "lineStart": 676, "lineEnd": 676}, "expected": "MATCH", "annotationNote": "Both sources name the optimizer; no claim is made about every fine-tuning command."}]
+    },
+    {
+      "caseId": "pc-zero-001", "canonicalTitle": "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models", "arxivId": "1910.02054", "authors": ["Samyam Rajbhandari", "Jeff Rasley", "Olatunji Ruwase", "Yuxiong He"],
+      "repository": {"url": "https://github.com/microsoft/DeepSpeed", "owner": "microsoft", "name": "DeepSpeed", "commitSha": "4fd3c8251578f09d50d21df3d3bcff35883ebd4d", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/microsoft/DeepSpeed/blob/4fd3c8251578f09d50d21df3d3bcff35883ebd4d/README.md", "sourceClass": "README", "locator": "README.md:219", "note": "DeepSpeed README lists the ZeRO paper among the project's research works."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "distributed_strategy", "paper": {"value": "ZeRO", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/1910.02054#sec:zero"}, "code": {"value": "ZeRO", "sourceClass": "README", "path": "README.md", "lineStart": 219, "lineEnd": 219}, "expected": "MATCH", "annotationNote": "The project citation and paper method name agree; this is not a configuration-equivalence claim."}]
+    },
+    {
+      "caseId": "pc-whisper-001", "canonicalTitle": "Robust Speech Recognition via Large-Scale Weak Supervision", "arxivId": "2212.04356", "authors": ["Alec Radford", "Jong Wook Kim", " Tao Xu", "Greg Brockman", "Christine McLeavey", "Ilya Sutskever"],
+      "repository": {"url": "https://github.com/openai/whisper", "owner": "openai", "name": "whisper", "commitSha": "86098128c0b4f24f0e2aa2994de830614b474227", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/openai/whisper", "sourceClass": "project_repository", "locator": "repository README", "note": "OpenAI repository is the named Whisper project; paper linkage is preserved by arXiv ID."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "training_steps", "paper": {"value": "UNKNOWN", "status": "UNKNOWN", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2212.04356"}, "code": {"value": null, "status": "UNKNOWN", "sourceClass": "repository", "path": "README.md", "lineStart": 1, "lineEnd": 1}, "expected": "UNKNOWN", "annotationNote": "No bounded source pair establishes a comparable training-step value."}]
+    },
+    {
+      "caseId": "pc-clip-001", "canonicalTitle": "Learning Transferable Visual Models From Natural Language Supervision", "arxivId": "2103.00020", "authors": ["Alec Radford", "Jong Wook Kim", "Chris Hallacy", "Aditya Ramesh", "Gabriel Goh", "Agarwal Girish", "Sandhini Agarwal", "Girish Sastry", "Amanda Askell", "Pamela Mishkin", "Jack Clark", "Gretchen Krueger", "Ilya Sutskever"],
+      "repository": {"url": "https://github.com/openai/CLIP", "owner": "openai", "name": "CLIP", "commitSha": "d05afc436d78f1c48dc0dbf8e5980a9d471f35f6", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/openai/CLIP", "sourceClass": "project_repository", "locator": "repository README", "note": "OpenAI repository is the named CLIP implementation and retains the paper identifier."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "dataset", "paper": {"value": "400 million image-text pairs", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2103.00020#sec:method"}, "code": {"value": null, "status": "NOT_REPORTED", "sourceClass": "repository", "path": "README.md", "lineStart": 1, "lineEnd": 1}, "expected": "MISSING_IN_CODE", "annotationNote": "The public inference repository is not treated as a training-data manifest."}]
+    },
+    {
+      "caseId": "pc-t5-001", "canonicalTitle": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer", "arxivId": "1910.10683", "authors": ["Colin Raffel", "Noam Shazeer", "Adam Roberts", "Katherine Lee", "Sharan Narang", "Michael Matena", "Yanqi Zhou", "Wei Li", "Peter J. Liu"],
+      "repository": {"url": "https://github.com/google-research/text-to-text-transfer-transformer", "owner": "google-research", "name": "text-to-text-transfer-transformer", "commitSha": "6819e989bb733171706b9228d05468a4230e14c0", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/google-research/text-to-text-transfer-transformer", "sourceClass": "project_repository", "locator": "repository README", "note": "Google Research project repository is linked to the T5 paper by project identity."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "method", "paper": {"value": "text-to-text", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/1910.10683#sec:method"}, "code": {"value": "text-to-text", "sourceClass": "repository_documentation", "path": "README.md", "lineStart": 1, "lineEnd": 1}, "expected": "MATCH", "annotationNote": "High-level method identity only; not a claim that all defaults match the paper."}]
+    },
+    {
+      "caseId": "pc-dinov2-001", "canonicalTitle": "DINOv2: Learning Robust Visual Features without Supervision", "arxivId": "2304.07193", "authors": ["Maxime Oquab", "Timothée Darcet", "Théo Moutakanni", "Huy V. Vo", "Marc Szafraniec", "Vasil Khalidov", "Pierre Fernandez", "Daniel Haziza", "Francisco Massa", "Alaaeldin El-Nouby", "Mekkhi Assran", "Nicolas Ballas", "Hervé Jegou", "Matthijs Douze", "Patrick Labatut", "Armand Joulin", "Ilharco G. F. Pereira"],
+      "repository": {"url": "https://github.com/facebookresearch/dinov2", "owner": "facebookresearch", "name": "dinov2", "commitSha": "7764ea0f912e53c92e82eb78a2a1631e92725fc8", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/facebookresearch/dinov2", "sourceClass": "project_repository", "locator": "repository README", "note": "Facebook Research project repository is linked by project identity; revision is explicit."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "optimizer", "paper": {"value": "AdamW", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2304.07193#sec:training"}, "code": {"value": null, "status": "NOT_REPORTED", "sourceClass": "repository", "path": "README.md", "lineStart": 1, "lineEnd": 1}, "expected": "MISSING_IN_CODE", "annotationNote": "Root README inspection does not establish a training-config value."}]
+    },
+    {
+      "caseId": "pc-deberta-001", "canonicalTitle": "DeBERTa: Decoding-enhanced BERT with Disentangled Attention", "arxivId": "2006.03654", "authors": ["Pengcheng He", "Xiaodong Liu", "Jianfeng Gao", "Weizhu Chen"],
+      "repository": {"url": "https://github.com/microsoft/DeBERTa", "owner": "microsoft", "name": "DeBERTa", "commitSha": "4d7fe0bd4fb3c7d4f4005a7cafabde9800372098", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/microsoft/DeBERTa", "sourceClass": "project_repository", "locator": "repository README", "note": "Microsoft repository is the named DeBERTa project; paper ID is preserved."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "architecture_parameters", "paper": {"value": "disentangled attention", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2006.03654#sec:method"}, "code": {"value": "disentangled attention", "sourceClass": "repository_documentation", "path": "README.md", "lineStart": 1, "lineEnd": 1}, "expected": "MATCH", "annotationNote": "Method-name agreement is not configuration equivalence."}]
+    },
+    {
+      "caseId": "pc-alignment-handbook-001", "canonicalTitle": "Alignment Handbook", "arxivId": "2310.16944", "authors": ["Hugging Face Alignment Handbook contributors"],
+      "repository": {"url": "https://github.com/huggingface/alignment-handbook", "owner": "huggingface", "name": "alignment-handbook", "commitSha": "1de1fc996972aa76b7d40c64c07b66dec8b6976a", "commitDate": "UNKNOWN"},
+      "officialLinkage": {"evidenceUrl": "https://github.com/huggingface/alignment-handbook/blob/1de1fc996972aa76b7d40c64c07b66dec8b6976a/README.md", "sourceClass": "README", "locator": "README.md:6,40-41", "note": "README links the technical report and states that recipes are YAML training-run configurations."},
+      "paperVersionDate": "UNKNOWN", "temporalAlignment": "UNKNOWN",
+      "fields": [{"name": "rl_preference_algorithm", "paper": {"value": "DPO", "sourceClass": "paper_main_text", "locator": "https://arxiv.org/abs/2310.16944#sec:recipes"}, "code": {"value": "DPO", "sourceClass": "README", "path": "README.md", "lineStart": 40, "lineEnd": 41}, "expected": "MATCH", "annotationNote": "The README documents DPO as one supported training stage; it does not assert that every recipe uses DPO."}]
+    }
+  ]
+}

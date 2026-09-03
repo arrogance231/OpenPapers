@@ -2,7 +2,7 @@
 
 OpenPapers has deterministic unit/adversarial tests and a separate offline evaluation harness. `scripts/mcp-benchmark.mjs` measures operational MCP latency; `npm run eval:baseline` measures retrieval, identity, extraction, and citation-quality fixtures.
 
-The current harness includes versioned identity, retrieval-query, extraction, and citation datasets. Paper/code agreement, provider-failure transparency, PDF structure, and end-to-end research-task benchmarks remain future evaluation slices. Results record commit, timestamp, dataset version, provider configuration, and embedding model. Retrieval changes report canonical identity accuracy alongside ranking metrics.
+The current harness includes versioned identity, retrieval-query, extraction, citation, and paper/code datasets. Provider-failure transparency, PDF structure, and end-to-end research-task benchmarks remain future evaluation slices. Results record commit, timestamp, dataset version, provider configuration, and embedding model. Retrieval changes report canonical identity accuracy alongside ranking metrics.
 
 The fixture results are engineering evidence, not a claim of live-provider or scientific benchmark superiority.
 
@@ -50,9 +50,19 @@ The negative cases are intentionally retained in the result and do not represent
 
 ## Citation support classification
 
-`classifyEvidenceSupport` in `src/research/verification.ts` exposes five statuses: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNSUPPORTED`, `CONTRADICTED`, and `UNKNOWN`, together with a basis explaining the deterministic text/negation heuristic. `citationSupportMetrics` reports classification accuracy, macro-F1, and per-class precision/recall. This is a conservative fixture evaluator; it does not promote heuristic output to verified provenance and is not an estimate of real-world semantic support accuracy.
+`classifyEvidenceSupport` in `src/research/verification.ts` exposes five statuses: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNSUPPORTED`, `CONTRADICTED`, and `UNKNOWN`, together with a basis explaining the deterministic text/negation heuristic. `citationSupportMetrics` reports classification accuracy, macro-F1, and per-class precision/recall. The main baseline runner now reports these values under `citationSupport`. This is a conservative deterministic heuristic evaluator; it does not promote heuristic output to verified provenance and is not an estimate of real-world semantic support accuracy.
 
-The latest clean evidence-milestone run is `evals/results/evidence-milestone-53365b68f768.json`; its retrieval and identity values are unchanged from the accepted R-001 state. Support-classification metrics are currently covered by focused deterministic tests and are not yet included in the main result object.
+The latest clean evidence-milestone run is `evals/results/evidence-milestone-53365b68f768.json`; its retrieval and identity values are unchanged from the accepted R-001 state. New runs include support-classification metrics and paper/code results.
+
+## Paper/code benchmark
+
+`evals/datasets/paper-code-v1.json` is the first curated seed benchmark. It contains 16 cases linking ML/LLM papers to named project repositories, with resolved repository HEAD SHAs, source classes, paper locators, repository paths/line ranges where inspected, temporal-alignment notes, and explicit field labels. The revision policy records the snapshot date and does not imply publication-era alignment when that cannot be independently established.
+
+`paperCodeAgreement` in a baseline result reports case/field counts, classification accuracy, exact agreement, conflict precision/recall, false-agreement and false-conflict rates, correct-`UNKNOWN`, missing-side accuracies, and per-field metrics. `evals/results/*-paper-code-failures.json` contains machine-readable field diagnostics. A paper-side or code-side missing value is never converted to `MATCH`; scope-ambiguous fields are annotated `UNKNOWN`.
+
+This is a curated comparator benchmark, not a production estimate and not yet an end-to-end automatic paper/code extraction score. Several repository snapshots are later than the paper and are explicitly marked temporally unaligned. Gold annotations must be independently corrected and versioned rather than changed to improve OpenPapers metrics.
+
+See [the evidence-completeness plan](evidence-completeness-plan.md) for the ordered remaining evaluation work.
 
 ## Latest milestone result
 

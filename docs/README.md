@@ -16,6 +16,8 @@
 
 ## Research and provenance
 
+- [Evaluation and evidence completeness](evaluation.md)
+- [Evidence completeness plan](evidence-completeness-plan.md)
 - [Provenance, citations, and reproducibility](reproducibility.md)
 - [Known limitations](limitations.md)
 

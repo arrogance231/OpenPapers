@@ -7,6 +7,8 @@ function summarize(rows){
   const nonConflicts=rows.filter(row=>row.expected!=='CONFLICT');
   const predictedMatches=rows.filter(row=>row.predicted==='MATCH');
   const unknowns=rows.filter(row=>row.expected==='UNKNOWN');
+  const expectedMissingInPaper=rows.filter(row=>row.expected==='MISSING_IN_PAPER');
+  const expectedMissingInCode=rows.filter(row=>row.expected==='MISSING_IN_CODE');
   return {
     cases:rows.length,
     exactAgreementAccuracy:ratio(rows.filter(row=>row.expected==='MATCH'&&row.predicted==='MATCH').length,matches.length),
@@ -16,6 +18,8 @@ function summarize(rows){
     falseAgreementRate:ratio(predictedMatches.filter(row=>row.expected!=='MATCH').length,rows.length),
     falseConflictRate:ratio(predictedConflicts.filter(row=>row.expected!=='CONFLICT').length,rows.length),
     correctUnknownRate:ratio(unknowns.filter(row=>row.predicted==='UNKNOWN').length,unknowns.length),
+    missingInPaperAccuracy:ratio(expectedMissingInPaper.filter(row=>row.predicted==='MISSING_IN_PAPER').length,expectedMissingInPaper.length),
+    missingInCodeAccuracy:ratio(expectedMissingInCode.filter(row=>row.predicted==='MISSING_IN_CODE').length,expectedMissingInCode.length),
     nonConflictCases:nonConflicts.length
   };
 }
