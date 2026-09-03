@@ -52,6 +52,8 @@ The negative cases are intentionally retained in the result and do not represent
 
 `classifyEvidenceSupport` in `src/research/verification.ts` exposes five statuses: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNSUPPORTED`, `CONTRADICTED`, and `UNKNOWN`, together with a basis explaining the deterministic text/negation heuristic. `citationSupportMetrics` reports classification accuracy, macro-F1, and per-class precision/recall. This is a conservative fixture evaluator; it does not promote heuristic output to verified provenance and is not an estimate of real-world semantic support accuracy.
 
+The latest clean evidence-milestone run is `evals/results/evidence-milestone-53365b68f768.json`; its retrieval and identity values are unchanged from the accepted R-001 state. Support-classification metrics are currently covered by focused deterministic tests and are not yet included in the main result object.
+
 ## Latest milestone result
 
 `evals/results/final-milestone-1345a425ed06.json` is the latest clean-tree evaluation artifact. It records the post-R001 retrieval implementation, citation metrics, and 119-case identity guardrails from commit `1345a425ed06`.
