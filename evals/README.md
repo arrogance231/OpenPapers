@@ -22,6 +22,7 @@ Datasets are versioned and immutable by convention. A change to labels, identifi
 - Retrieval: Recall@1/5/10, MRR, and Precision@K over realistic discovery queries.
 - Extraction: per-field and macro/micro precision, recall, F1, plus hallucinated-field rate.
 - Citation: evidence-backed valid/invalid claim fixtures and integrity metrics.
+- Paper/code comparison: `evals/metrics/paper-code.mjs` provides classification, exact agreement, conflict, false-agreement, false-conflict, and correct-unknown metrics with per-field breakdowns. The independently curated official-repository gold set is not yet populated, so the main runner continues to report this category as `NOT_YET_MEASURED`.
 - End-to-end tasks: schema is defined, but manually verified task answers remain `NOT_YET_MEASURED` until independently curated.
 
 These fixture results evaluate deterministic mapping, ranking, extraction, and validation behavior. They are not evidence of live-provider coverage, scientific correctness, or semantic embedding quality.
