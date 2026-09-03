@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "openpapers.paper-code-failure-report.v1",
+  "kind": "offline-curated-gold",
+  "commit": "e42addd6279c028982e2ba41b34527ca608fd58f",
+  "timestamp": "2026-09-03T13:31:16.861Z",
+  "workingTreeDirty": false,
+  "dataset": "paper-code-v1",
+  "totalFields": 16,
+  "failures": []
+}
