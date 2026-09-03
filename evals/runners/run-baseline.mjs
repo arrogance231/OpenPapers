@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ResearchDb } from '../../dist/database/db.js';
-import { ResearchService } from '../../dist/research/service.js';
+import { ResearchService, explainRanking } from '../../dist/research/service.js';
 import { author, makeEvidence, normalizeDoi, paperId } from '../../dist/research/citations.js';
 import { parseDocument } from '../../dist/ingestion/document.js';
 import { extractTrainingParameters } from '../../dist/extraction/parameters.js';
@@ -28,7 +28,18 @@ const abstracts={
   orpo:'Monolithic preference optimization without a reference model for language model alignment.',
   toolformer:'Language model tool use, API calls, function calling, and self supervised tool learning.',
   medusa:'Multiple decoding heads and speculative decoding for accelerated language model inference.',
-  eagle:'Speculative sampling, feature uncertainty, and speculative decoding acceleration.'
+  eagle:'Speculative sampling, feature uncertainty, and speculative decoding acceleration.',
+  distilbert:'Knowledge distillation and compressed transformer language models that are smaller and faster.',
+  minilm:'Self attention distillation for task agnostic compression of pretrained transformers.',
+  tinybert:'Distilling BERT for natural language understanding and compact transformer models.',
+  instructgpt:'Instruction fine tuning and reinforcement learning from human feedback for language models.',
+  flan:'Scaling instruction finetuned language models and instruction tuning.',
+  'self-instruct':'Self generated instructions for aligning and instruction tuning language models.',
+  gorilla:'Large language models connected with massive APIs and tool use.',
+  toollm:'Large language model tool use and instruction following with tools.',
+  mixtral:'Sparse mixture of experts language model architecture and routing.',
+  mistral:'Open language model architecture, grouped query attention, and efficient inference.',
+  gemma:'Open foundation language models and instruction tuning based on Gemini research.'
 };
 const works=canonical.works.map(item=>{const authors=item.authors.map(name=>author(name));const arxiv=item.arxiv;return {paperId:paperId(item.title,authors,undefined,arxiv),title:item.title,authors,year:item.year,arxivId:arxiv,publicationStatus:'preprint',bibtex:'',sourceProviders:['eval-fixture'],versions:[],abstract:abstracts[item.id]??''};});
 const byId=new Map(canonical.works.map((item,index)=>[item.id,works[index]]));
@@ -38,7 +49,8 @@ async function evaluateRetrieval(){
   const empty={search:async()=>[]};
   const service=new ResearchService(new ResearchDb(':memory:'),provider,empty,empty,empty);
   const rows=[];
-  for(const item of retrieval.queries){const result=await service.search(item.query,10);const ids=result.data.map(work=>canonical.works.find(gold=>gold.arxiv===work.arxivId)?.id).filter(Boolean);rows.push({query:item.query,...rankingMetrics(ids,item.relevant)});}
+  const candidateIds=works.map(work=>canonical.works.find(gold=>gold.arxiv===work.arxivId)?.id).filter(Boolean);
+  for(const item of retrieval.queries){const result=await service.search(item.query,10);const ids=result.data.map(work=>canonical.works.find(gold=>gold.arxiv===work.arxivId)?.id).filter(Boolean);const diagnostics=item.relevant.map(goldId=>{const candidateRank=candidateIds.indexOf(goldId)+1;const finalRank=ids.indexOf(goldId)+1;const work=byId.get(goldId);const ranking=work?explainRanking(work,item.query):undefined;return {goldWorkId:goldId,returned:finalRank>0,finalRank:finalRank>0?finalRank:null,provider:'eval-fixture',providerNativeRank:candidateRank>0?candidateRank:null,providerNativeScore:null,normalizedOpenPapersScore:ranking?.score??null,signals:ranking?{textContainsQuery:ranking.textContainsQuery,titleTokenOverlap:ranking.titleTokenOverlap,textTokenOverlap:ranking.textTokenOverlap,citationContribution:ranking.citationContribution,arxivBoost:ranking.arxivBoost}:null,failure:candidateRank<1?'not_retrieved':finalRank<1?'ranked_below_k':null};});rows.push({query:item.query,...rankingMetrics(ids,item.relevant),returnedWorkIds:ids,diagnostics});}
   return {dataset:retrieval.version,perQuery:rows,aggregate:aggregateRanking(rows),providerMode:'offline-fixture'};
 }
 
@@ -64,4 +76,4 @@ function evaluateCitation(){
 const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const dirty=execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim().length>0;
 const result={schemaVersion:'openpapers.evaluation-result.v1',kind:'offline-baseline',commit,timestamp:new Date().toISOString(),workingTreeDirty:dirty,configuration:{providerMode:'offline-fixture',embeddingModel:'NOT_APPLICABLE',liveProviders:false},datasets:{canonical:canonical.version,retrieval:retrieval.version,extraction:extraction.version,citation:citation.version},identity:evaluateIdentity(),retrieval:await evaluateRetrieval(),extraction:evaluateExtraction(),citation:evaluateCitation(),paperCodeAgreement:'NOT_YET_MEASURED',endToEndTasks:'NOT_YET_MEASURED'};
-const outputDir=join(root,'evals/results');mkdirSync(outputDir,{recursive:true});let output=join(outputDir,`baseline-v1-${commit.slice(0,12)}.json`);let suffix=2;while(existsSync(output))output=join(outputDir,`baseline-v1-${commit.slice(0,12)}-${suffix++}.json`);writeFileSync(output,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({output,identity:result.identity.metrics,retrieval:result.retrieval.aggregate,citation:result.citation.metrics},null,2));
+const outputDir=join(root,'evals/results');mkdirSync(outputDir,{recursive:true});const prefix=process.env.EVAL_PREFIX??'baseline-v1';let output=join(outputDir,`${prefix}-${commit.slice(0,12)}.json`);let suffix=2;while(existsSync(output))output=join(outputDir,`${prefix}-${commit.slice(0,12)}-${suffix++}.json`);writeFileSync(output,JSON.stringify(result,null,2)+'\n');const diagnostics=result.retrieval.perQuery.flatMap(row=>row.diagnostics);const categories={not_retrieved:diagnostics.filter(row=>row.failure==='not_retrieved').length,ranked_below_k:diagnostics.filter(row=>row.failure==='ranked_below_k').length,returned:diagnostics.filter(row=>row.failure===null).length};let failureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-failures.json`);let failureSuffix=2;while(existsSync(failureOutput))failureOutput=join(outputDir,`${prefix}-${commit.slice(0,12)}-failures-${failureSuffix++}.json`);writeFileSync(failureOutput,JSON.stringify({schemaVersion:'openpapers.retrieval-failure-report.v1',kind:'offline-fixture',commit,timestamp:result.timestamp,workingTreeDirty:dirty,dataset:retrieval.version,categories,totalRelevant:diagnostics.length,diagnostics:result.retrieval.perQuery.map(row=>({query:row.query,gold:row.diagnostics}))},null,2)+'\n');console.log(JSON.stringify({output,failureOutput,identity:result.identity.metrics,retrieval:result.retrieval.aggregate,citation:result.citation.metrics},null,2));

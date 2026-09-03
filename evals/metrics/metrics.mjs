@@ -13,7 +13,7 @@ export function rankingMetrics(ranked, relevant, ks=[1,5,10]) {
 
 export function aggregateRanking(rows) {
   if(!rows.length)return {queries:0,mrr:null};
-  const keys=Object.keys(rows[0]).filter(k=>k!=='query');
+  const keys=['mrr','recallAt1','precisionAt1','recallAt5','precisionAt5','recallAt10','precisionAt10'];
   return Object.fromEntries([['queries',rows.length],...keys.map(k=>[k,rows.reduce((sum,row)=>sum+(row[k]??0),0)/rows.length])]);
 }
 

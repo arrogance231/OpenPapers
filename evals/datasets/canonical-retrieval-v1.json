@@ -16,6 +16,17 @@
     {"id":"orpo","title":"ORPO: Monolithic Preference Optimization without Reference Model","arxiv":"2403.07691","authors":["Yuhui Yuan","Xiaohan Bian","Jingyi Lin"],"year":2024,"source":"https://arxiv.org/abs/2403.07691"},
     {"id":"toolformer","title":"Toolformer: Language Models Can Teach Themselves to Use Tools","arxiv":"2302.04761","authors":["Timo Schick","Jane Dwivedi-Yu","Roberto Dessì"],"year":2023,"source":"https://arxiv.org/abs/2302.04761"},
     {"id":"medusa","title":"Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads","arxiv":"2401.10774","authors":["Tianle Cai","Yuhong Li","Jianbo Wu"],"year":2024,"source":"https://arxiv.org/abs/2401.10774"},
-    {"id":"eagle","title":"EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty","arxiv":"2401.15077","authors":["Yuhui Li","Fangyuan Lyu"],"year":2024,"source":"https://arxiv.org/abs/2401.15077"}
+    {"id":"eagle","title":"EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty","arxiv":"2401.15077","authors":["Yuhui Li","Fangyuan Lyu"],"year":2024,"source":"https://arxiv.org/abs/2401.15077"},
+    {"id":"distilbert","title":"DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter","arxiv":"1910.01108","authors":["Victor Sanh"],"year":2019,"source":"https://arxiv.org/abs/1910.01108"},
+    {"id":"minilm","title":"MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers","arxiv":"2002.10957","authors":["Wenhui Wang"],"year":2020,"source":"https://arxiv.org/abs/2002.10957"},
+    {"id":"tinybert","title":"TinyBERT: Distilling BERT for Natural Language Understanding","arxiv":"1909.10351","authors":["Xiaoqi Jiao"],"year":2019,"source":"https://arxiv.org/abs/1909.10351"},
+    {"id":"instructgpt","title":"Training language models to follow instructions with human feedback","arxiv":"2203.02155","authors":["Long Ouyang"],"year":2022,"source":"https://arxiv.org/abs/2203.02155"},
+    {"id":"flan","title":"Scaling Instruction-Finetuned Language Models","arxiv":"2210.11416","authors":["Hyung Won Chung"],"year":2022,"source":"https://arxiv.org/abs/2210.11416"},
+    {"id":"self-instruct","title":"Self-Instruct: Aligning Language Models with Self-Generated Instructions","arxiv":"2212.10560","authors":["Yizhong Wang"],"year":2022,"source":"https://arxiv.org/abs/2212.10560"},
+    {"id":"gorilla","title":"Gorilla: Large Language Model Connected with Massive APIs","arxiv":"2305.15334","authors":["Shishir G. Patil"],"year":2023,"source":"https://arxiv.org/abs/2305.15334"},
+    {"id":"toollm","title":"ToolLLM: Facilitating Large Language Models to Master  Tool Use","arxiv":"2307.16789","authors":["Qingyun Wu"],"year":2023,"source":"https://arxiv.org/abs/2307.16789"},
+    {"id":"mixtral","title":"Mixtral of Experts","arxiv":"2401.04088","authors":["Albert Q. Jiang"],"year":2024,"source":"https://arxiv.org/abs/2401.04088"},
+    {"id":"mistral","title":"Mistral 7B","arxiv":"2310.06825","authors":["Albert Q. Jiang"],"year":2023,"source":"https://arxiv.org/abs/2310.06825"},
+    {"id":"gemma","title":"Gemma: Open Models Based on Gemini Research and Technology","arxiv":"2403.08295","authors":["Gemma Team"],"year":2024,"source":"https://arxiv.org/abs/2403.08295"}
   ]
 }

@@ -1,10 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { ResearchService, classifyGraphRelationship } from '../src/research/service.js';
+import { ResearchService, classifyGraphRelationship, explainRanking } from '../src/research/service.js';
 import { ResearchDb } from '../src/database/db.js';
 import type { ResearchWork } from '../src/models/research.js';
 import type { PaperExtractor } from '../src/extraction/extractor.js';
 
 describe('provenance-first recipe behavior', () => {
+  it('exposes token-overlap ranking diagnostics for related wording', () => {
+    const work: ResearchWork = {paperId:'ranked',title:'Speculative Heads for Decoding',authors:[],abstract:'',publicationStatus:'unknown',bibtex:'',sourceProviders:[],versions:[]};
+    const diagnostics=explainRanking(work,'speculative decoding');
+    expect(diagnostics.titleTokenOverlap).toBe(1);
+    expect(diagnostics.score).toBeGreaterThan(0);
+  });
   it('classifies chronology-supported graph candidates conservatively', async () => {
     const root: ResearchWork = {paperId:'root',title:'Root',authors:[],year:2024,publicationStatus:'unknown',bibtex:'',sourceProviders:['semantic_scholar'],versions:[]};
     const prior: ResearchWork = {...root,paperId:'prior',title:'Prior',year:2020};
