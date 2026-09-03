@@ -28,8 +28,22 @@ Measured values:
 | Citation precision (3 cases) | 1.0 |
 | Unsupported citation rate | 0.0 |
 
-Invalid-locator rate, wrong-work rate, paper/code agreement, and end-to-end task accuracy are `NOT_YET_MEASURED`. These results are a reproducible offline baseline for the current fixture harness, not live-provider or scientific-quality evidence.
+Paper/code agreement and end-to-end task accuracy remain `NOT_YET_MEASURED`. The original clean baseline predates invalid-locator and wrong-work instrumentation, so its `null` values are not zero and should not be compared as numeric deltas.
 
 ## Baseline V1
 
 The clean baseline is `evals/results/baseline-v1-edadc8a31da6.json`. It records commit `edadc8a31da6`, `workingTreeDirty: false`, the versioned offline datasets, and the same measured values above. This is the reference for retrieval experiments. The query set is intentionally still small and is expanded before ranking changes.
+
+## Post-citation evaluation
+
+`evals/results/post-citation-3e4aa68eadf3.json` evaluates the expanded retrieval set and citation-v1 with locator and wrong-work instrumentation. It records commit `3e4aa68eadf3` and `workingTreeDirty: true` because the instrumentation was measured before its follow-up commit.
+
+| Citation metric | Value |
+|---|---:|
+| Citation precision (5 cases) | 1.0 |
+| Unsupported citation rate | 0.0 |
+| Invalid locator rate | 0.2 |
+| Wrong-work rate | 0.2 |
+| Missing-source rate | 0.2 |
+
+The negative cases are intentionally retained in the result and do not represent production citation errors; they measure whether the validator detects those conditions.

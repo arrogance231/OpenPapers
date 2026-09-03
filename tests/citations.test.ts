@@ -5,8 +5,18 @@ import { CrossrefProvider } from '../src/providers/crossref.js';
 import { mapOpenAlexWork } from '../src/providers/openalex.js';
 import { mapSemanticScholarPaper } from '../src/providers/semantic-scholar.js';
 import { ArxivProvider } from '../src/providers/arxiv.js';
+import { citationMetrics } from '../evals/metrics/metrics.mjs';
 
 describe('citation and canonicalization invariants', () => {
+  it('reports invalid locator and wrong-work citation metrics separately', () => {
+    const metrics=citationMetrics([
+      {expectedValid:true,actualValid:true,missingSource:false,invalidLocator:false,wrongWork:false},
+      {expectedValid:false,actualValid:false,missingSource:false,invalidLocator:true,wrongWork:false},
+      {expectedValid:false,actualValid:false,missingSource:false,invalidLocator:false,wrongWork:true},
+    ]);
+    expect(metrics.invalidLocatorRate).toBeCloseTo(1/3);
+    expect(metrics.wrongWorkRate).toBeCloseTo(1/3);
+  });
   it('normalizes DOI and arXiv version identifiers',()=>{
     expect(normalizeDoi('HTTP://DX.DOI.ORG/10.1234/ABC.')).toBe('10.1234/abc');
     expect(normalizeArxivId('https://arxiv.org/abs/2301.01234v2')).toBe('2301.01234');
