@@ -5,7 +5,7 @@ import { CrossrefProvider } from '../src/providers/crossref.js';
 import { mapOpenAlexWork } from '../src/providers/openalex.js';
 import { mapSemanticScholarPaper } from '../src/providers/semantic-scholar.js';
 import { ArxivProvider } from '../src/providers/arxiv.js';
-import { citationMetrics } from '../evals/metrics/metrics.mjs';
+import { citationMetrics, citationSupportMetrics } from '../evals/metrics/metrics.mjs';
 
 describe('citation and canonicalization invariants', () => {
   it('reports invalid locator and wrong-work citation metrics separately', () => {
@@ -16,6 +16,12 @@ describe('citation and canonicalization invariants', () => {
     ]);
     expect(metrics.invalidLocatorRate).toBeCloseTo(1/3);
     expect(metrics.wrongWorkRate).toBeCloseTo(1/3);
+  });
+  it('reports support classification accuracy and per-class F1',()=>{
+    const metrics=citationSupportMetrics([
+      {expected:'SUPPORTED',predicted:'SUPPORTED'}, {expected:'PARTIALLY_SUPPORTED',predicted:'PARTIALLY_SUPPORTED'}, {expected:'UNSUPPORTED',predicted:'UNSUPPORTED'}, {expected:'CONTRADICTED',predicted:'CONTRADICTED'}, {expected:'UNKNOWN',predicted:'UNKNOWN'}
+    ]);
+    expect(metrics.classificationAccuracy).toBe(1); expect(metrics.macroF1).toBe(1); expect(metrics.byClass.CONTRADICTED.cases).toBe(1);
   });
   it('normalizes DOI and arXiv version identifiers',()=>{
     expect(normalizeDoi('HTTP://DX.DOI.ORG/10.1234/ABC.')).toBe('10.1234/abc');

@@ -48,6 +48,10 @@ The clean baseline is `evals/results/baseline-v1-edadc8a31da6.json`. It records 
 
 The negative cases are intentionally retained in the result and do not represent production citation errors; they measure whether the validator detects those conditions.
 
+## Citation support classification
+
+`classifyEvidenceSupport` in `src/research/verification.ts` exposes five statuses: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNSUPPORTED`, `CONTRADICTED`, and `UNKNOWN`, together with a basis explaining the deterministic text/negation heuristic. `citationSupportMetrics` reports classification accuracy, macro-F1, and per-class precision/recall. This is a conservative fixture evaluator; it does not promote heuristic output to verified provenance and is not an estimate of real-world semantic support accuracy.
+
 ## Latest milestone result
 
 `evals/results/final-milestone-1345a425ed06.json` is the latest clean-tree evaluation artifact. It records the post-R001 retrieval implementation, citation metrics, and 119-case identity guardrails from commit `1345a425ed06`.
