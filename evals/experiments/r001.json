@@ -9,5 +9,5 @@
   "failureCounts":{"before":{"notRetrieved":0,"rankedBelowK":40,"returned":49},"after":{"notRetrieved":0,"rankedBelowK":15,"returned":74}},
   "decision":"ACCEPT",
   "reason":"All ranking metrics improved on the held-constant expanded fixture. Identity accuracy and false merge/split/unresolved guardrails remained unchanged. Provider-native scores and live-provider omission remain unmeasured.",
-  "status":"PENDING_CLEAN_RESULT"
+  "status":"ACCEPTED_CLEAN_RESULT"
 }
