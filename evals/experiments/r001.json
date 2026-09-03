@@ -1,0 +1,13 @@
+{
+  "experimentId":"R-001",
+  "hypothesis":"Whole-query substring matching misses semantically related wording; deterministic title and text token overlap should improve ranking without changing identity reconciliation.",
+  "changedComponents":["src/research/service.ts","evals/runners/run-baseline.mjs"],
+  "dataset":"retrieval-v1",
+  "providerMode":"offline-fixture",
+  "baseline":{"recallAt1":0.1553030303,"recallAt5":0.3560606061,"recallAt10":0.5946969697,"mrr":0.4010371573,"identityAccuracy":1,"falseMergeRate":0,"falseSplitRate":0,"unresolvedRate":0},
+  "experiment":{"recallAt1":0.4204545455,"recallAt5":0.75,"recallAt10":0.8560606061,"mrr":0.7726010101,"identityAccuracy":1,"falseMergeRate":0,"falseSplitRate":0,"unresolvedRate":0},
+  "failureCounts":{"before":{"notRetrieved":0,"rankedBelowK":40,"returned":49},"after":{"notRetrieved":0,"rankedBelowK":15,"returned":74}},
+  "decision":"ACCEPT",
+  "reason":"All ranking metrics improved on the held-constant expanded fixture. Identity accuracy and false merge/split/unresolved guardrails remained unchanged. Provider-native scores and live-provider omission remain unmeasured.",
+  "status":"PENDING_CLEAN_RESULT"
+}
