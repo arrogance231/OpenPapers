@@ -55,4 +55,18 @@ R-001 adds `titleTokenOverlap` and `textTokenOverlap` to the actual ranking func
 | False merge rate | 0.0 | 0.0 | 0 |
 | False split rate | 0.0 | 0.0 | 0 |
 
-Relevant judgments ranked below the top 10 fell from 40 to 15; returned relevant judgments rose from 49 to 74. The experiment is accepted, with its machine-readable record in `evals/experiments/r001.json` and result/diagnostics under `evals/results/experiment-r001-*`. The clean result artifact will be generated after the experiment commit.
+Relevant judgments ranked below the top 10 fell from 40 to 15; returned relevant judgments rose from 49 to 74. The experiment is accepted, with its machine-readable record in `evals/experiments/r001.json` and clean result/diagnostics in `evals/results/experiment-r001-413621146cbb.json` and `evals/results/experiment-r001-413621146cbb-failures.json`.
+
+## R-002: stronger title weighting (rejected)
+
+Hypothesis: increasing the title-token coefficient from 4 to 6 would improve title-aligned discovery. It was tested in isolation against the same 44-query fixture and then reverted.
+
+| Metric | R-001 accepted | R-002 | Delta |
+|---|---:|---:|---:|
+| Recall@1 | 0.4204545455 | 0.4090909091 | -0.0113636364 |
+| Recall@5 | 0.7500000000 | 0.6969696970 | -0.0530303030 |
+| Recall@10 | 0.8560606061 | 0.8484848485 | -0.0075757576 |
+| MRR | 0.7726010101 | 0.7569083694 | -0.0156926407 |
+| Identity accuracy | 1.0 | 1.0 | 0 |
+
+Decision: `REJECT`. All primary retrieval metrics regressed. The result and diagnostics are preserved under `evals/results/experiment-r002-*`, with the experiment record in `evals/experiments/r002.json`.

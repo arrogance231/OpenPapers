@@ -1,0 +1,14 @@
+{
+  "experimentId":"R-002",
+  "hypothesis":"Increasing title-token weight from 4 to 6 would improve precision for title-aligned discovery queries.",
+  "changedComponent":"src/research/service.ts",
+  "dataset":"retrieval-v1",
+  "providerMode":"offline-fixture",
+  "baselineReference":"experiment-r001-413621146cbb.json",
+  "baseline":{"recallAt1":0.4204545455,"recallAt5":0.75,"recallAt10":0.8560606061,"mrr":0.7726010101,"identityAccuracy":1,"falseMergeRate":0,"falseSplitRate":0,"unresolvedRate":0},
+  "experiment":{"recallAt1":0.4090909091,"recallAt5":0.696969697,"recallAt10":0.8484848485,"mrr":0.7569083694,"identityAccuracy":1,"falseMergeRate":0,"falseSplitRate":0,"unresolvedRate":0},
+  "decision":"REJECT",
+  "reason":"Every primary retrieval metric regressed. Identity guardrails remained unchanged, but there was no ranking benefit to justify the regression.",
+  "implementationReverted":true,
+  "result":"evals/results/experiment-r002-239572eeff81.json"
+}
