@@ -7,6 +7,7 @@ import { ResearchService } from '../research/service.js';
 import { PostgresResearchStore } from '../database/postgres.js';
 import { HashEmbeddingProvider, PostgresVectorRetriever } from '../retrieval/vector.js';
 import { registerTools } from './tools.js';
+import { createShutdownController } from './lifecycle.js';
 
 export function createMcpServer(research = new ResearchService()): McpServer {
   const server = new McpServer({ name: 'OpenPapers', version: '0.1.0' });
@@ -37,7 +38,8 @@ async function main(): Promise<void> {
       void nodeHandler(req as any, res);
     });
     http.listen(port, host, () => console.error(`OpenPapers HTTP listening on http://${host}:${port}/mcp`));
-    const shutdown = async () => { await handler.close(); await research.flushStorage(); await research.db.close?.(); http.close(); };
+    const closeHttp = () => new Promise<void>((resolve, reject) => { http.close(error => error ? reject(error) : resolve()); });
+    const shutdown = createShutdownController([closeHttp, () => handler.close(), () => research.flushStorage(), () => research.db.close?.()]);
     process.once('SIGINT', () => void shutdown()); process.once('SIGTERM', () => void shutdown());
   } else {
     await serveStdio(() => createMcpServer(research));
