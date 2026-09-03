@@ -44,6 +44,10 @@ See `.env.example` and `docs/configuration.md` for SQLite/PostgreSQL selection, 
 
 Publishing is intentionally not automated from this repository. `prepack` builds TypeScript before packaging, and `files` limits the artifact to compiled runtime files, public documentation, license, changelog, and configuration example. Run `npm pack` and the packed-install smoke test before a versioned release.
 
+## MCP Registry preparation
+
+`server.json` follows the current preview registry schema published by the MCP Registry repository. The npm ownership marker `mcpName` is present in `package.json` and matches the server name. Registry publication is intentionally not performed here: the package must first be published to npm and registry authentication requires an operator account. The authoritative workflow is the [MCP Registry TypeScript quickstart](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/quickstart.mdx).
+
 ## Known limitations
 
 Live provider checks, PostgreSQL restart/persistence checks, and GROBID extraction are separate from deterministic CI. A passing Compose configuration check does not prove service readiness or end-to-end protocol behavior.
