@@ -32,6 +32,8 @@ docker compose -f docker-compose.yml -f docker-compose.integration.yml down
 
 The integration override publishes PostgreSQL on local host port `55432` for the test process, avoiding common local PostgreSQL port collisions. The harness verifies rollback, identity migration, reconnect persistence, and model/dimension-filtered pgvector search. These checks are separate from the credential-free deterministic suite.
 
+Vector compatibility is keyed by the embedding provider's exact `identity` string and embedding dimension. A provider implementation must use a stable identity for a specific model/version; equal dimensions alone are not considered compatible. OpenPapers does not compare vectors when either identity or dimension does not match.
+
 ## Live verification
 
 Live provider and Docker checks are environment-dependent. Record the endpoint, provider status, response counts, and failures without recording credentials or raw secret-bearing headers. A successful HTTP response proves reachability and mapping only; it does not prove metadata completeness, paper identity, or scientific correctness.

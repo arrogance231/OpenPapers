@@ -20,6 +20,8 @@ npm exec -- openpapers
 
 The executable uses stdio by default and exits when its MCP client closes stdin.
 
+For HTTP transport, shutdown is idempotent. The server stops accepting new connections through Node's `http.close()`, waits for active HTTP work to drain, then closes the MCP handler and storage. Cleanup steps are attempted in order; a cleanup error is returned after later cleanup has been attempted. A forced process termination is outside this guarantee.
+
 ## HTTP and Docker
 
 ```sh
