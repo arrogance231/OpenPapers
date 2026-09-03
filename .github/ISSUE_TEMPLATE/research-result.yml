@@ -1,0 +1,62 @@
+name: Reproducible research result
+about: Report a reproducible retrieval, extraction, provenance, or citation result
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, private paper copies, or secret-bearing logs.
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OpenPapers version or commit
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: MCP tool called
+  - type: textarea
+    id: query
+    attributes:
+      label: Query or identifier
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result and authoritative source
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: input
+    id: provider
+    attributes:
+      label: Provider involved
+  - type: input
+    id: identifiers
+    attributes:
+      label: DOI, arXiv ID, GitHub, or Hugging Face repository
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps and environment
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted logs
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - label: Affects provenance or citation correctness

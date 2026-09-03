@@ -227,12 +227,12 @@ Remaining risk: HTTP shutdown idempotence, active-request draining, and signal r
 ### BUG-015 — Several MCP handlers let dependency exceptions escape
 
 Severity: P1
-Status: DEFERRED
-Affected component: `src/mcp/tools.ts` and ecosystem tool registration.
+Status: FIXED
+Affected component: `src/mcp/tools.ts`, `src/mcp/boundary.ts`, and ecosystem tool registration.
 
 Confirmed: direct invocation of handlers such as `search_papers` and `resolve_author` with rejecting service dependencies returns a rejected promise rather than a protocol-level `isError` result. Several other handlers already catch errors, so behavior is inconsistent.
 
-No fix was applied in this pass; handlers need a shared safe-tool wrapper that preserves sanitized error context.
+Fix: `src/mcp/boundary.ts` provides a shared sanitized boundary, installed at the central registration point so all public tools use it. Regression coverage is in `tests/adversarial/full-flow.test.ts`.
 
 
 
@@ -249,27 +249,27 @@ Fix: both source and compiled MCP entrypoint paths invoke `main()`.
 ### BUG-012 — Different DOI representations prevented reconciliation
 
 Severity: P0
-Status: DEFERRED
+Status: FIXED
 Affected component: provider mappers and `src/research/service.ts`.
 
 Confirmed: provider adapters can emit DOI URL/prefix forms while reconciliation compares raw strings. Equivalent DOI forms can remain duplicate works.
 
-No fix was applied in this pass; central normalization at every provider boundary needs dedicated coverage.
+Status update: FIXED in the current checkout. DOI normalization is centralized in `src/research/citations.ts`, Crossref/OpenAlex use it at mapping boundaries, and service identity keys normalize stable identifiers. Regression coverage is in `tests/citations.test.ts`.
 
 ### BUG-013 — GROBID size limit was enforced after full response allocation
 
 Severity: P2
-Status: DEFERRED
+Status: FIXED
 Affected component: `src/ingestion/pdf.ts`.
 
-Confirmed: `response.text()` reads the entire TEI response before `maxTeiBytes` is checked. The limit prevents acceptance but is not a memory bound.
+Status update: FIXED in the current checkout. `GrobidClient` reads `response.body` incrementally, cancels when the byte limit is exceeded, and only decodes accepted bytes. `tests/document.test.ts` verifies cancellation.
 
 ### BUG-014 — Refresh can orphan collection membership after identity change
 
 Severity: P1
-Status: DEFERRED
+Status: FIXED
 Affected component: `src/research/service.ts`.
 
-Confirmed: refresh can upsert a provider result under a newly derived paper ID without migrating collection references from the old ID. This requires an explicit transactional identity-migration operation.
+Status update: FIXED for SQLite and the PostgreSQL adapter in the current checkout. Refresh calls the transactional identity migration, updates evidence/collections/graph references, and preserves old lookups through aliases. Deterministic coverage is in `tests/phase9-refresh.test.ts`; live PostgreSQL migration coverage remains separately limited.
 
 

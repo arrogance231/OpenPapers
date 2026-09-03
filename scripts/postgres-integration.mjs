@@ -1,0 +1,15 @@
+import { PostgresResearchStore } from '../dist/database/postgres.js';
+import { makeEvidence } from '../dist/research/citations.js';
+
+const url=process.env.DATABASE_URL ?? 'postgresql://openpapers:openpapers-local-only@127.0.0.1:55432/openpapers';
+const store=PostgresResearchStore.fromConfig(url);
+await store.initialize();
+const suffix=Date.now().toString();
+const failedId=`rollback-${suffix}`;
+await store.withTransaction(async tx=>{await tx('INSERT INTO works(paper_id,payload) VALUES($1,$2)',[failedId,{paperId:failedId,title:'rollback'}]);throw new Error('intentional rollback');}).then(()=>{throw new Error('rollback unexpectedly committed');}).catch(error=>{if(error.message!=='intentional rollback')throw error;});
+if(await store.getWork(failedId))throw new Error('rolled-back work remained visible');
+const a=`integration-a-${suffix}`;const b=`integration-b-${suffix}`;
+const work={paperId:a,title:'Integration Paper',authors:[],doi:'10.1000/integration',publicationStatus:'unknown',bibtex:'',sourceProviders:['integration'],versions:[]};
+const canonical={...work,paperId:b};
+await store.upsertWork(work);const collection=await store.createCollection(`integration-${suffix}`);await store.addToCollection(collection.id,a);await store.addEvidence(makeEvidence(a,work,'metadata'),a);await store.saveClaim({claimId:`claim-${suffix}`,claimKey:`integration-${suffix}`,kind:'methodology',statement:'method',sourceUrl:a,locator:{section:'Method'},confidence:'heuristic',evidenceType:'DERIVED',evidence:makeEvidence(a,work,'method')});await store.upsertGraphEdge({sourcePaperId:'root',targetPaperId:a,relation:'reference',relationshipClass:'DIRECT',provider:'integration',evidenceId:'missing',retrievedAt:'2026-01-01T00:00:00.000Z'});const embeddingModel=`integration-model-${suffix}`;await store.upsertVector(a,[1,0],{text:'integration',metadata:{paperId:a},embeddingProvider:embeddingModel,dimensions:2});await store.migrateWorkIdentity(a,canonical);await store.close();
+const reopened=PostgresResearchStore.fromConfig(url);await reopened.initialize();if((await reopened.getWork(a))?.paperId!==b)throw new Error('alias lookup failed');if((await reopened.getCollection(collection.id))?.paperIds[0]!==b)throw new Error('collection migration failed');if((await reopened.getEvidenceForPaper(b)).length!==1)throw new Error('evidence migration failed');if((await reopened.getClaims()).at(-1)?.evidence.sourceId!==b)throw new Error('claim migration failed');if((await reopened.getGraphEdges('root')).at(-1)?.targetPaperId!==b)throw new Error('edge migration failed');const vectors=await reopened.searchVectorsSql([1,0],10,embeddingModel,2);if(vectors[0]?.recordId!==b)throw new Error('vector migration/search failed');await reopened.close();console.log(JSON.stringify({status:'passed',rollback:'passed',identityMigration:'passed',reconnect:'passed',vectorSearch:'passed'}));

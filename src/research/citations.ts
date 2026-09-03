@@ -1,8 +1,26 @@
 import { createHash } from 'node:crypto';
 import type { Author, Evidence, EvidenceType, Identifier, Locator, ResearchWork, SourceQuality } from '../models/research.js';
 
-export function normalizeDoi(value: string): string { return value.trim().replace(/^https?:\/\/(?:doi\.org|dx\.doi\.org)\//i, '').replace(/^doi:\s*/i, '').toLowerCase().replace(/[.,;:]+$/, ''); }
-export function normalizeArxivId(value: string): string { return value.trim().replace(/^https?:\/\/(arxiv\.org\/abs\/|export\.arxiv\.org\/api\/query\?id_list=)/i, '').replace(/^arxiv:/i, '').replace(/v\d+$/i, ''); }
+const DOI_PATTERN = /^10\.\d{4,9}\/\S+$/i;
+const ARXIV_PATTERN = /^(?:\d{4}\.\d{4,5}|[a-z-]+\.[A-Z]{2}\/\d{7})(?:v\d+)?$/i;
+
+export function normalizeDoi(value: string): string {
+  const normalized = value.trim()
+    .replace(/^https?:\/\/(?:www\.)?(?:doi\.org|dx\.doi\.org)\//i, '')
+    .replace(/^doi:\s*/i, '')
+    .replace(/[.,;:]+$/, '')
+    .toLowerCase();
+  if (!isValidDoi(normalized)) throw new Error(`invalid DOI: ${value}`);
+  return normalized;
+}
+export function isValidDoi(value: string): boolean { return DOI_PATTERN.test(value.trim()); }
+export function normalizeArxivId(value: string): string {
+  let normalized = value.trim().replace(/^https?:\/\/(?:www\.)?arxiv\.org\/(?:abs|pdf)\//i, '').replace(/\.pdf$/i, '').replace(/^arxiv:/i, '');
+  normalized = normalized.replace(/^https?:\/\/export\.arxiv\.org\/api\/query\?id_list=/i, '').split(',')[0] ?? normalized;
+  normalized = normalized.replace(/v\d+$/i, '');
+  if (!ARXIV_PATTERN.test(normalized)) throw new Error(`invalid arXiv identifier: ${value}`);
+  return normalized.toLowerCase();
+}
 export function normalizeAuthorName(name: string): string { return name.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N} ]/gu, ' ').replace(/\s+/g, ' ').trim().toLowerCase(); }
 export function author(name: string, orcid?: string): Author { return orcid ? { name, normalizedName: normalizeAuthorName(name), orcid } : { name, normalizedName: normalizeAuthorName(name) }; }
 export function paperId(title: string, authors: Author[], doi?: string, arxiv?: string): string { const key = doi ? `doi:${normalizeDoi(doi)}` : arxiv ? `arxiv:${normalizeArxivId(arxiv)}` : `${title}|${authors.map(a => a.normalizedName).join('|')}`; return `work_${createHash('sha256').update(key.toLowerCase()).digest('hex').slice(0, 16)}`; }

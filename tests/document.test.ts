@@ -40,6 +40,12 @@ describe('structured document parsing', () => {
     expect(request?.method).toBe('POST');
   });
 
+  it('enforces the GROBID TEI limit while reading the response stream', async () => {
+    const chunks = [new TextEncoder().encode('<TEI><text>'), new TextEncoder().encode('x'.repeat(20)), new TextEncoder().encode('</text></TEI>')]; let cancelled = false; let index = 0;
+    const fetcher = async () => new Response(new ReadableStream({pull(controller) { const chunk=chunks[index++]; if(chunk) controller.enqueue(chunk); else controller.close(); }, cancel() { cancelled=true; }}), {status:200, headers:{'content-type':'application/xml','content-length':'1'}});
+    await expect(new GrobidClient('http://grobid:8070', fetcher, 20).process(new Uint8Array([1]), 'paper.pdf')).rejects.toThrow('GROBID response size limit');
+    expect(cancelled).toBe(true);
+  });
   it('uses configured fallbacks after GROBID failure and preserves a warning', async () => {
     const fallback = {name:'pymupdf', extract:async () => ({format:'pdf' as const,url:'file.pdf',sections:[],references:[],warnings:[]})};
     const chain = new PdfParserChain({process:async () => { throw new Error('offline'); }}, [fallback]);

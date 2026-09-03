@@ -60,13 +60,13 @@ describe('research database', () => {
   it('records an idempotent schema version for file-backed databases', async () => {
     const directory=mkdtempSync(join(tmpdir(),'openpapers-'));
     const path=join(directory,'research.sqlite');
-    const first=new ResearchDb(path); expect(first.schemaVersion()).toBe(1); first.close();
-    const second=new ResearchDb(path); expect(second.schemaVersion()).toBe(1); second.close();
+    const first=new ResearchDb(path); expect(first.schemaVersion()).toBe(2); first.close();
+    const second=new ResearchDb(path); expect(second.schemaVersion()).toBe(2); second.close();
     rmSync(directory,{recursive:true,force:true});
   });
   it('upgrades a legacy graph schema through the ordered migration', async () => {
     const directory=mkdtempSync(join(tmpdir(),'openpapers-')); const path=join(directory,'legacy.sqlite');
     const legacy=new DatabaseSync(path); legacy.exec('CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY); CREATE TABLE graph_edges (source_paper_id TEXT NOT NULL,target_paper_id TEXT NOT NULL,relation TEXT NOT NULL,provider TEXT NOT NULL,evidence_id TEXT NOT NULL,retrieved_at TEXT NOT NULL,PRIMARY KEY(source_paper_id,target_paper_id,relation,provider));'); legacy.close();
-    const db=new ResearchDb(path); expect(db.schemaVersion()).toBe(1); await db.upsertGraphEdge({sourcePaperId:'a',targetPaperId:'b',relation:'reference',relationshipClass:'DIRECT',provider:'legacy',evidenceId:'e',retrievedAt:'2026-01-01T00:00:00.000Z'}); expect(await db.getGraphEdges()).toHaveLength(1); await db.close(); rmSync(directory,{recursive:true,force:true});
+    const db=new ResearchDb(path); expect(db.schemaVersion()).toBe(2); await db.upsertGraphEdge({sourcePaperId:'a',targetPaperId:'b',relation:'reference',relationshipClass:'DIRECT',provider:'legacy',evidenceId:'e',retrievedAt:'2026-01-01T00:00:00.000Z'}); expect(await db.getGraphEdges()).toHaveLength(1); await db.close(); rmSync(directory,{recursive:true,force:true});
   });
 });

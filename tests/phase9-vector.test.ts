@@ -24,4 +24,12 @@ describe('vector retrieval interface',()=>{
     await retriever.index([{id:'paper-a',text:'document',metadata:{paperId:'a'}}]);
     expect(await retriever.search('query')).toEqual([{id:'paper-a',score:1,metadata:{paperId:'a'}}]);
   });
+  it('requires the same embedding identity and dimension during SQL search', async () => {
+    let request:{identity?:string;dimensions?:number}|undefined;
+    const store={upsertVector:async()=>{},searchVectorsSql:async (_query:number[],_limit:number,identity?:string,dimensions?:number)=>{request={identity,dimensions};return [];},flush:async()=>undefined};
+    const retriever=new PostgresVectorRetriever(store,{identity:'model-a',dimensions:2,embed:async()=>[1,0]});
+    await retriever.index([{id:'paper-a',text:'document'}]);
+    await retriever.search('query');
+    expect(request).toEqual({identity:'model-a',dimensions:2});
+  });
 });

@@ -1,0 +1,17 @@
+{
+  "version":"retrieval-v1",
+  "queries":[
+    {"query":"speculative decoding training","relevant":["medusa","eagle","attention-is-all-you-need"]},
+    {"query":"multi-token prediction language models","relevant":["medusa","eagle"]},
+    {"query":"knowledge distillation for small language models","relevant":["bert","gpt3","llama"]},
+    {"query":"on-policy distillation LLM","relevant":["dpo","orpo"]},
+    {"query":"function calling supervised fine tuning","relevant":["toolformer"]},
+    {"query":"tool calling post training","relevant":["toolformer","dpo"]},
+    {"query":"preference optimization without reference model","relevant":["orpo"]},
+    {"query":"mixture of experts routing","relevant":["llama"]},
+    {"query":"long context attention efficiency","relevant":["flashattention","attention-is-all-you-need"]},
+    {"query":"quantization aware decoding","relevant":["qlora","medusa"]},
+    {"query":"low rank adaptation quantized language models","relevant":["lora","qlora"]},
+    {"query":"transformer pretraining language understanding","relevant":["attention-is-all-you-need","bert","gpt3"]}
+  ]
+}

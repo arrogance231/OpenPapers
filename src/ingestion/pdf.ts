@@ -18,8 +18,20 @@ export class GrobidClient implements PdfParser {
     form.append('input', new Blob([pdfBytes.buffer as ArrayBuffer], {type:'application/pdf'}), filename);
     const response = await this.fetcher(`${this.baseUrl.replace(/\/$/, '')}/api/processFulltextDocument`, {method:'POST', body:form});
     if (!response.ok) throw new Error(`GROBID request failed: ${response.status}`);
-    const tei = await response.text();
-    if (new TextEncoder().encode(tei).byteLength > this.maxTeiBytes) throw new Error('GROBID response size limit');
+    if (!response.body) throw new Error('GROBID response has no body');
+    const reader=response.body.getReader();
+    const chunks:Uint8Array[]=[]; let total=0;
+    try {
+      while(true){
+        const next=await reader.read();
+        if(next.done)break;
+        const chunk=next.value;
+        total+=chunk.byteLength;
+        if(total>this.maxTeiBytes){await reader.cancel('GROBID response size limit');throw new Error('GROBID response size limit');}
+        chunks.push(chunk);
+      }
+    } finally { reader.releaseLock(); }
+    const tei=new TextDecoder().decode(Buffer.concat(chunks));
     return parseGrobidTei(filename, tei);
   }
 }

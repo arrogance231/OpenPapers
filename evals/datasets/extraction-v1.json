@@ -1,0 +1,8 @@
+{
+  "version":"extraction-v1",
+  "cases":[
+    {"id":"explicit-recipe-1","html":"<html><body><h1>Training Details</h1><p>We use AdamW with learning rate 2e-5, batch size 32, gradient accumulation steps 4, weight decay 0.1, temperature 2, and train for 3 epochs.</p></body></html>","gold":{"learning_rate":"2e-5","batch_size":"32","gradient_accumulation":"4","weight_decay":"0.1","temperature":"2","epochs":"3","optimizer":"AdamW"}},
+    {"id":"explicit-recipe-2","html":"<html><body><h1>Optimization</h1><p>The optimizer is Adam, lr=1e-4, batch size=8. We train for 5 epochs.</p></body></html>","gold":{"learning_rate":"1e-4","batch_size":"8","epochs":"5","optimizer":"Adam"}},
+    {"id":"unknown-fields","html":"<html><body><h1>Results</h1><p>We report 768 dimensions and 42 experiments. No training configuration is reported.</p></body></html>","gold":{}}
+  ]
+}

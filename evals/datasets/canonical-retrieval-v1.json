@@ -1,0 +1,21 @@
+{
+  "version": "canonical-retrieval-v1",
+  "sourcePolicy": "Manually curated from publisher, arXiv, and official project records.",
+  "doiAliases": [
+    {"id":"attention-doi-alias","title":"Attention Is All You Need","authors":["Ashish Vaswani"],"canonicalDoi":"10.48550/arxiv.1706.03762","aliases":["10.48550/arXiv.1706.03762","doi:10.48550/arXiv.1706.03762","https://doi.org/10.48550/arXiv.1706.03762","https://dx.doi.org/10.48550/arXiv.1706.03762"]}
+  ],
+  "works": [
+    {"id":"attention-is-all-you-need","title":"Attention Is All You Need","arxiv":"1706.03762","authors":["Ashish Vaswani","Noam Shazeer","Niki Parmar"],"year":2017,"source":"https://arxiv.org/abs/1706.03762"},
+    {"id":"bert","title":"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding","arxiv":"1810.04805","authors":["Jacob Devlin","Ming-Wei Chang","Kenton Lee","Kristina Toutanova"],"year":2018,"source":"https://arxiv.org/abs/1810.04805"},
+    {"id":"gpt3","title":"Language Models are Few-Shot Learners","arxiv":"2005.14165","authors":["Tom B. Brown","Benjamin Mann","Nick Ryder"],"year":2020,"source":"https://arxiv.org/abs/2005.14165"},
+    {"id":"llama","title":"LLaMA: Open and Efficient Foundation Language Models","arxiv":"2302.13971","authors":["Hugo Touvron","Thibaut Lavril","Gautier Izacard"],"year":2023,"source":"https://arxiv.org/abs/2302.13971"},
+    {"id":"lora","title":"LoRA: Low-Rank Adaptation of Large Language Models","arxiv":"2106.09685","authors":["Edward J. Hu","Yelong Shen","Phillip Wallis"],"year":2021,"source":"https://arxiv.org/abs/2106.09685"},
+    {"id":"qlora","title":"QLoRA: Efficient Finetuning of Quantized LLMs","arxiv":"2305.14314","authors":["Tim Dettmers","Artidri S. Pagnoni","Ari Holtzman"],"year":2023,"source":"https://arxiv.org/abs/2305.14314"},
+    {"id":"flashattention","title":"FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness","arxiv":"2205.14135","authors":["Tri Dao","Daniel Y. Fu","Stefano Ermon"],"year":2022,"source":"https://arxiv.org/abs/2205.14135"},
+    {"id":"dpo","title":"Direct Preference Optimization: Your Language Model is Secretly a Reward Model","arxiv":"2305.18290","authors":["Rafael Rafailov","Archit Sharma","Eric Mitchell"],"year":2023,"source":"https://arxiv.org/abs/2305.18290"},
+    {"id":"orpo","title":"ORPO: Monolithic Preference Optimization without Reference Model","arxiv":"2403.07691","authors":["Yuhui Yuan","Xiaohan Bian","Jingyi Lin"],"year":2024,"source":"https://arxiv.org/abs/2403.07691"},
+    {"id":"toolformer","title":"Toolformer: Language Models Can Teach Themselves to Use Tools","arxiv":"2302.04761","authors":["Timo Schick","Jane Dwivedi-Yu","Roberto Dessì"],"year":2023,"source":"https://arxiv.org/abs/2302.04761"},
+    {"id":"medusa","title":"Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads","arxiv":"2401.10774","authors":["Tianle Cai","Yuhong Li","Jianbo Wu"],"year":2024,"source":"https://arxiv.org/abs/2401.10774"},
+    {"id":"eagle","title":"EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty","arxiv":"2401.15077","authors":["Yuhui Li","Fangyuan Lyu"],"year":2024,"source":"https://arxiv.org/abs/2401.15077"}
+  ]
+}

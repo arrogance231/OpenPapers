@@ -146,6 +146,14 @@ describe('large adversarial full-flow campaign', () => {
     expect(response.content[0].text).toContain('[Ashish Vaswani, 2017]');
   });
 
+  it('turns uncaught tool dependency failures into sanitized MCP errors', async () => {
+    const {server, handlers} = capture();
+    registerTools(server as any, {search:vi.fn().mockRejectedValue(new Error('provider failed with token=secret-value'))} as any);
+    const response = await handlers.get('search_papers')!({query:'attention',limit:5});
+    expect(response.isError).toBe(true);
+    expect(response.content[0].text).toContain('search_papers failed');
+    expect(response.content[0].text).not.toContain('secret-value');
+  });
   it('persists a collection round trip without deleting its paper', async () => {
     const db = new ResearchDb(':memory:');
     const paper = work();

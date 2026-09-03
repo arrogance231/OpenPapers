@@ -6,6 +6,7 @@ import type { Collection } from './db.js';
 /** The sole persistence boundary consumed by ResearchService. */
 export interface AsyncResearchStore {
   upsertWork(work: ResearchWork): Promise<void>;
+  migrateWorkIdentity(fromPaperId: string, toWork: ResearchWork): Promise<void>;
   getWork(id: string): Promise<ResearchWork | undefined>;
   search(query: string, limit?: number): Promise<ResearchWork[]>;
   addEvidence(evidence: Evidence, paperId: string): Promise<void>;

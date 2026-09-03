@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "license": "Apache-2.0",
   "description": "Provenance-first MCP server for reproducible LLM/ML research",
+  "repository": {"type":"git","url":"https://github.com/arrogance231/OpenPapers.git"},
+  "homepage": "https://github.com/arrogance231/OpenPapers#readme",
+  "bugs": {"url":"https://github.com/arrogance231/OpenPapers/issues"},
+  "keywords": ["mcp","research","scholarly","provenance","llm","machine-learning"],
   "type": "module",
   "engines": {
     "node": ">=22.5"
@@ -14,8 +18,13 @@
     "test": "node --no-warnings ./node_modules/vitest/vitest.mjs run",
     "lint": "tsc -p tsconfig.json --noEmit",
     "architecture-check": "node scripts/verify-architecture.mjs",
-    "check": "npm run lint && npm run architecture-check && npm run build && npm test"
+    "check": "npm run lint && npm run architecture-check && npm run build && npm test",
+    "eval:baseline": "npm run build && node evals/runners/run-baseline.mjs",
+    "test:postgres": "npm run build && node scripts/postgres-integration.mjs",
+    "prepack": "npm run build"
   },
+  "bin": {"openpapers": "dist/mcp/server.js"},
+  "files": ["dist", "README.md", "LICENSE.md", "CHANGELOG.md", "docs", ".env.example"],
   "dependencies": {
     "@modelcontextprotocol/node": "^2.0.0",
     "@modelcontextprotocol/server": "^2.0.0",

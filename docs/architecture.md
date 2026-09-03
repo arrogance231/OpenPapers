@@ -40,7 +40,7 @@ The MCP v2 `McpServer` factory registers typed tools. `serveStdio` serves local 
 
 ### Phase 5 — Structured paper ingestion
 - Implemented first slice: `PaperAcquirer` provides bounded byte-preserving HTTP acquisition with HTTP(S)-only validation, private/local host rejection, redirect revalidation and limits, timeout cancellation, declared-size checks, and streamed body limits.
-- Implemented second slice: format detection recognizes HTML/PDF/unknown content; dependency-free HTML parsing extracts the document title, heading-based sections, normalized paragraph text, and reference links. PDF and unknown binary inputs fail explicitly until a dedicated PDF parser is added.
+- Implemented second slice: format detection recognizes HTML/PDF/unknown content; dependency-free HTML parsing extracts the document title, heading-based sections, normalized paragraph text, and reference links. PDF parsing is provided by the GROBID-first parser chain; unknown binary inputs fail explicitly.
 - Implemented third slice: `GrobidClient` posts bounded PDF bytes to GROBID’s `/api/processFulltextDocument` endpoint and parses returned TEI; `PdfParserChain` optionally falls back to configured PyMuPDF and Docling command adapters while preserving warnings and parser provenance.
 - Implemented fourth slice: the TEI parser tracks page-break number/ID metadata, nested division depth, page-aware sections, and page-aware search chunks.
 - Implemented fifth slice: GROBID TEI extraction preserves equations, figure captions, table captions/content, and appendix sections in typed fields.

@@ -1,0 +1,23 @@
+name: Bug report
+about: Report a reproducible OpenPapers defect
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted logs

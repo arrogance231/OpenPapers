@@ -1,0 +1,23 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://openpapers.dev/schemas/evaluation-result.v1.json",
+  "title":"OpenPapers evaluation result",
+  "type":"object",
+  "required":["schemaVersion","kind","commit","timestamp","configuration","datasets"],
+  "properties":{
+    "schemaVersion":{"const":"openpapers.evaluation-result.v1"},
+    "kind":{"enum":["offline-baseline","offline-comparison","live-provider"]},
+    "commit":{"type":"string","minLength":7},
+    "timestamp":{"type":"string","format":"date-time"},
+    "workingTreeDirty":{"type":"boolean"},
+    "configuration":{"type":"object","required":["providerMode","embeddingModel","liveProviders"]},
+    "datasets":{"type":"object","required":["canonical","retrieval","extraction","citation"]},
+    "identity":{"type":"object"},
+    "retrieval":{"type":"object"},
+    "extraction":{"type":"object"},
+    "citation":{"type":"object"},
+    "paperCodeAgreement":{},
+    "endToEndTasks":{}
+  },
+  "additionalProperties":true
+}

@@ -55,4 +55,14 @@ describe('PostgreSQL hardening contracts', () => {
     await expect(store.withTransaction(async tx => { await tx('INSERT INTO works VALUES ($1,$2)', ['id', {}]); throw new Error('transaction failed'); })).rejects.toThrow('transaction failed');
     expect(query.mock.calls.map(call => call[0])).toEqual(['BEGIN', 'INSERT INTO works VALUES ($1,$2)', 'ROLLBACK']);
   });
+  it('uses one checked-out client for production transactions', async () => {
+    const poolQuery = vi.fn().mockResolvedValue({rows:[]});
+    const clientQuery = vi.fn().mockResolvedValue({rows:[]});
+    const release = vi.fn();
+    const store = PostgresResearchStore.fromQueryClient({query:poolQuery,connect:vi.fn(async()=>({query:clientQuery,release})),close:vi.fn(async()=>undefined)} as any);
+    await store.withTransaction(async tx => { await tx('UPDATE works SET payload=$1', [{}]); });
+    expect(clientQuery.mock.calls.map(call=>call[0])).toEqual(['BEGIN','UPDATE works SET payload=$1','COMMIT']);
+    expect(poolQuery).not.toHaveBeenCalled();
+    expect(release).toHaveBeenCalledOnce();
+  });
 });
