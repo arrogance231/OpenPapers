@@ -46,7 +46,7 @@ The clean baseline is `evals/results/baseline-v1-edadc8a31da6.json`. It records 
 | Wrong-work rate | 0.2 |
 | Missing-source rate | 0.2 |
 
-The negative cases are intentionally retained in the result and do not represent production citation errors; they measure whether the validator detects those conditions.
+The negative cases are intentionally retained in the result and do not represent production citation errors; they measure whether the validator detects those conditions. Machine-readable results now expose `invalidLocatorDetectionAccuracy`, `wrongWorkDetectionAccuracy`, and `missingSourceDetectionAccuracy` separately from the `*Rate` fields, which describe fixture prevalence.
 
 ## Citation support classification
 
