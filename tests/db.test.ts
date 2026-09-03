@@ -64,6 +64,10 @@ describe('research database', () => {
     const second=new ResearchDb(path); expect(second.schemaVersion()).toBe(2); second.close();
     rmSync(directory,{recursive:true,force:true});
   });
+  it('creates missing parent directories for file-backed databases', async () => {
+    const directory=mkdtempSync(join(tmpdir(),'openpapers-')); const path=join(directory,'nested','research.sqlite');
+    const db=new ResearchDb(path); expect(db.schemaVersion()).toBe(2); db.close(); rmSync(directory,{recursive:true,force:true});
+  });
   it('upgrades a legacy graph schema through the ordered migration', async () => {
     const directory=mkdtempSync(join(tmpdir(),'openpapers-')); const path=join(directory,'legacy.sqlite');
     const legacy=new DatabaseSync(path); legacy.exec('CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY); CREATE TABLE graph_edges (source_paper_id TEXT NOT NULL,target_paper_id TEXT NOT NULL,relation TEXT NOT NULL,provider TEXT NOT NULL,evidence_id TEXT NOT NULL,retrieved_at TEXT NOT NULL,PRIMARY KEY(source_paper_id,target_paper_id,relation,provider));'); legacy.close();

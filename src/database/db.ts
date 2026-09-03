@@ -1,4 +1,6 @@
+import { mkdirSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
+import { dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import type { ResearchWork, Evidence, GraphEdge } from '../models/research.js';
 import type { ParsedDocument } from '../ingestion/document.js';
@@ -10,7 +12,7 @@ export interface Collection { id:string; name:string; paperIds:string[]; }
 
 export class ResearchDb implements AsyncResearchStore {
   private db: DatabaseSync;
-  constructor(path = process.env.RESEARCH_DB_PATH ?? ':memory:') { this.db = new DatabaseSync(path); this.db.exec('PRAGMA journal_mode = WAL;'); runMigrations(this.db); }
+  constructor(path = process.env.RESEARCH_DB_PATH ?? ':memory:') { if(path!==':memory:')mkdirSync(dirname(path),{recursive:true}); this.db = new DatabaseSync(path); this.db.exec('PRAGMA journal_mode = WAL;'); runMigrations(this.db); }
   schemaVersion():number { const row=this.db.prepare('SELECT COALESCE(MAX(version),0) AS version FROM schema_migrations').get() as {version:number}; return row.version; }
   async upsertWork(work: ResearchWork): Promise<void> { this.db.prepare('INSERT INTO works(paper_id,data,title,doi,arxiv_id,year) VALUES(?,?,?,?,?,?) ON CONFLICT(paper_id) DO UPDATE SET data=excluded.data,title=excluded.title,doi=excluded.doi,arxiv_id=excluded.arxiv_id,year=excluded.year').run(work.paperId, JSON.stringify(work), work.title, work.doi ?? null, work.arxivId ?? null, work.year ?? null); this.db.prepare('DELETE FROM works_fts WHERE paper_id=?').run(work.paperId); this.db.prepare('INSERT INTO works_fts(paper_id,title,abstract) VALUES(?,?,?)').run(work.paperId, work.title, work.abstract ?? ''); }
   async migrateWorkIdentity(fromPaperId:string,toWork:ResearchWork):Promise<void> {
