@@ -19,4 +19,8 @@ describe('citation and canonicalization invariants', () => {
     expect(evidence.citationText).toContain('p. 7');
     expect(evidence.evidenceType).toBe('DIRECT');
   });
+  it('preserves every available provider identifier in evidence', () => {
+    const work: ResearchWork = { paperId:'work_x', title:'A Paper', authors:[author('Alice Smith')], year:2025, doi:'10.1000/example', arxivId:'2501.00001', semanticScholarId:'S2-1', openAlexId:'https://openalex.org/W1', publicationStatus:'published', bibtex:'', sourceProviders:['crossref','arxiv','semantic_scholar','openalex'], versions:[] };
+    expect(makeEvidence('paper', work, 'Metadata is available').identifiers).toEqual({ doi:'10.1000/example', arxiv:'2501.00001', semanticScholar:'S2-1', openAlex:'https://openalex.org/W1' });
+  });
 });

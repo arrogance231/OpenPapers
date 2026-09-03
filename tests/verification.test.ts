@@ -22,4 +22,18 @@ describe('citation integrity', () => {
     const response = { summary:'A claim [Someone Else, 2025].', data:{claim:'x'}, evidence:[evidence], references:[{paperId:'paper_1',title:'Paper',authors:evidence.authors,year:2025,publicationStatus:'preprint',bibtex:'',sourceProviders:['test'],versions:[] }], transparency:{expandedQueries:[],sourcesSearched:[],candidates:1,retrievedAt:'',rankingRationale:[]} } as unknown as ResearchResponse<unknown>;
     expect(validateCitationIntegrity(response).valid).toBe(false);
   });
+  it('rejects duplicate evidence identifiers and invalid page locators', () => {
+    const duplicate = {...evidence};
+    const invalidLocator = {...evidence, evidenceId:'ev_2', locator:{page:0}};
+    const response = { summary:'A claim [A Author, 2025].', data:{claim:'x'}, evidence:[duplicate, {...duplicate}, invalidLocator], references:[{paperId:'paper_1',title:'Paper',authors:evidence.authors,year:2025,publicationStatus:'preprint',bibtex:'',sourceProviders:['test'],versions:[]}], transparency:{expandedQueries:[],sourcesSearched:[],candidates:1,retrievedAt:'',rankingRationale:[]} } as unknown as ResearchResponse<unknown>;
+    const result = validateCitationIntegrity(response);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toEqual(expect.arrayContaining(['duplicate evidenceId ev_1', 'evidence ev_2 has invalid page locator']));
+  });
+  it('rejects evidence with no author metadata even when its source exists', () => {
+    const response = { summary:'A claim [A Author, 2025].', data:{claim:'x'}, evidence:[{...evidence, authors:[]}], references:[{paperId:'paper_1',title:'Paper',authors:evidence.authors,year:2025,publicationStatus:'preprint',bibtex:'',sourceProviders:['test'],versions:[]}], transparency:{expandedQueries:[],sourcesSearched:[],candidates:1,retrievedAt:'',rankingRationale:[]} } as unknown as ResearchResponse<unknown>;
+    const result = validateCitationIntegrity(response);
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain('evidence ev_1 has no author metadata');
+  });
 });
