@@ -29,6 +29,7 @@
     "eval:fact-lopo": "npm run build && node evals/runners/run-scoped-fact-lopo.mjs",
     "eval:fact-real-pdf": "npm run build && node evals/runners/run-real-pdf-fact-baseline.mjs",
     "eval:fact-real-pdf-lopo": "npm run build && node evals/runners/run-real-pdf-fact-lopo.mjs",
+    "eval:fact-fn-trace": "npm run build && node evals/runners/run-v5-3-fn-trace.mjs",
     "eval:providers": "npm run build && node evals/runners/run-provider-degradation.mjs",
     "eval:holdout": "npm run build && node evals/runners/run-retrieval-holdout.mjs",
     "test:postgres": "npm run build && node scripts/postgres-integration.mjs",

@@ -33,4 +33,4 @@ for page_number, page in enumerate(doc, 1):
             elif current is not None:
                 current['text'] = (current['text'] + ' ' + line).strip()
 sections = [section for section in sections if section['text']]
-print(json.dumps({'title': '', 'sections': sections, 'references': [], 'warnings': [], 'equations': [], 'figures': [], 'tables': []}))
+print(json.dumps({'title': '', 'pages': [{'page': index + 1, 'text': page.get_text('text')} for index, page in enumerate(doc)], 'sections': sections, 'references': [], 'warnings': [], 'equations': [], 'figures': [], 'tables': []}))
