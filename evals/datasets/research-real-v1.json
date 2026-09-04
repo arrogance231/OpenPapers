@@ -1,0 +1,871 @@
+{
+  "version": "research-real-v1",
+  "status": "curated-real-source-metadata",
+  "annotationPolicy": "Gold answers are independently curated from the pinned paper version and, when present, the pinned repository revision. UNKNOWN means evidence is unavailable or temporal scope is unresolved. NOT_REPORTED is used only when the specified source scope was inspected and explicitly establishes absence. Conflicts preserve both credible source values.",
+  "splitPolicy": {
+    "development": "12 cases used for development and failure analysis.",
+    "holdout": "6 paper-level cases frozen for one checkpoint evaluation after development stabilizes.",
+    "holdoutInfluencedTuning": false
+  },
+  "cases": [
+    {
+      "caseId": "rp-transformer-1706",
+      "split": "development",
+      "title": "Attention Is All You Need",
+      "authors": [
+        "Ashish Vaswani",
+        "Noam Shazeer",
+        "Niki Parmar",
+        "Jakob Uszkoreit",
+        "Llion Jones",
+        "Aidan N. Gomez",
+        "Lukasz Kaiser",
+        "Illia Polosukhin"
+      ],
+      "category": "architecture",
+      "source": {
+        "arxivId": "1706.03762",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1706.03762v1",
+        "pdfUrl": "https://arxiv.org/pdf/1706.03762v1",
+        "paperRevisionDate": "2017-06-12",
+        "repositoryUrl": "https://github.com/harvardnlp/annotated-transformer",
+        "repositoryCommitSha": "debc9fd747bb2123160a98046ad1c2d4da44a567",
+        "repositoryCommitDate": null,
+        "paperSha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-transformer-optimizer",
+          "query": "What optimizer was used to train the Transformer base model?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "optimizer": "Adam"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 5.3 Optimizer",
+          "annotationRationale": "The pinned paper reports the optimizer in its training details."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-bert-1810",
+      "split": "development",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "authors": [
+        "Jacob Devlin",
+        "Ming-Wei Chang",
+        "Kenton Lee",
+        "Kristina Toutanova"
+      ],
+      "category": "pretraining",
+      "source": {
+        "arxivId": "1810.04805",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1810.04805v1",
+        "pdfUrl": "https://arxiv.org/pdf/1810.04805v1",
+        "paperRevisionDate": "2018-10-11",
+        "repositoryUrl": "https://github.com/google-research/bert",
+        "repositoryCommitSha": "eedf5716ce1268e56f0a50264a88cafad334ac61",
+        "repositoryCommitDate": null,
+        "paperSha256": "58534a3c000cbcc60ed64e999a2d9ed839edc2d9894e4449e9d79e1118b5e5ba",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-bert-objective",
+          "query": "Which two self-supervised objectives were used during BERT pre-training?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "objectives": [
+              "masked language model",
+              "next sentence prediction"
+            ]
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 3.1 Pre-training BERT",
+          "annotationRationale": "The paper explicitly names both pre-training tasks."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-t5-1910",
+      "split": "development",
+      "title": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer",
+      "authors": [
+        "Colin Raffel",
+        "Noam Shazeer",
+        "Adam Roberts",
+        "Katherine Lee",
+        "Sharan Narang",
+        "Michael Matena",
+        "Yanqi Zhou",
+        "Wei Li",
+        "Peter J. Liu"
+      ],
+      "category": "pretraining",
+      "source": {
+        "arxivId": "1910.10683",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1910.10683v1",
+        "pdfUrl": "https://arxiv.org/pdf/1910.10683v1",
+        "paperRevisionDate": "2019-10-24",
+        "repositoryUrl": "https://github.com/google-research/text-to-text-transfer-transformer",
+        "repositoryCommitSha": "6819e989bb733171706b9228d05468a4230e14c0",
+        "repositoryCommitDate": null,
+        "paperSha256": "b41ee513826361ff4d6076ded32e35fa6bc9dea19f6ba2b98feeb1a65c778483",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-t5-format",
+          "query": "How does T5 frame different NLP tasks?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "formulation": "text-to-text"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 2.1 Text-to-Text Framework",
+          "annotationRationale": "The central task formulation is explicitly defined by the paper."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-megatron-1909",
+      "split": "development",
+      "title": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism",
+      "authors": [
+        "Mohammad Shoeybi",
+        "Mostofa Patwary",
+        " Raul Puri",
+        "Patrick LeGresley",
+        "Jared Casper",
+        "Bryan Catanzaro"
+      ],
+      "category": "systems",
+      "source": {
+        "arxivId": "1909.08053",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1909.08053v1",
+        "pdfUrl": "https://arxiv.org/pdf/1909.08053v1",
+        "paperRevisionDate": "2019-09-17",
+        "repositoryUrl": "https://github.com/NVIDIA/Megatron-LM",
+        "repositoryCommitSha": "91149c04c9aed830353be7795ec7d58461b8828a",
+        "repositoryCommitDate": null,
+        "paperSha256": "014b8a8d3cec8bee5e371b23e4f49d4e74597641febc36992faf33d8834f8fe2",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-megatron-parallel",
+          "query": "Which parallelism dimension is central to Megatron-LM's model-parallel approach?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "parallelism": "tensor model parallelism"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 2.2 Intra-layer Model Parallelism",
+          "annotationRationale": "The method section explicitly describes the parallelism mechanism."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-zero-1910",
+      "split": "development",
+      "title": "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models",
+      "authors": [
+        "Samyam Rajbhandari",
+        "Jeff Rasley",
+        "Olatz Cecilia",
+        "Yuxiong He"
+      ],
+      "category": "distributed_training",
+      "source": {
+        "arxivId": "1910.02054",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1910.02054v1",
+        "pdfUrl": "https://arxiv.org/pdf/1910.02054v1",
+        "paperRevisionDate": "2019-10-04",
+        "repositoryUrl": "https://github.com/microsoft/DeepSpeed",
+        "repositoryCommitSha": "05daf0598b1657da832288f5e89d9e22a9a92ee5",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-zero-stages",
+          "query": "What does ZeRO partition across data-parallel processes?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "partitioned_state": "optimizer states, gradients, and parameters"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 2 ZeRO Overview",
+          "annotationRationale": "The paper states the partitioned training-state components."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-scaling-laws-2001",
+      "split": "development",
+      "title": "Scaling Laws for Neural Language Models",
+      "authors": [
+        "Jared Kaplan",
+        "Sam McCandlish",
+        "Tom Henighan",
+        "Tom B. Brown",
+        "Benjamin Chess",
+        "Rewon Child",
+        "Scott Gray",
+        "Alec Radford",
+        "Jeffrey Wu",
+        "Dario Amodei"
+      ],
+      "category": "scaling",
+      "source": {
+        "arxivId": "2001.08361",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2001.08361v1",
+        "pdfUrl": "https://arxiv.org/pdf/2001.08361v1",
+        "paperRevisionDate": "2020-01-23",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-scaling-gpu-count",
+          "query": "What GPU count did the paper report for every experiment?",
+          "expectedStatus": "NOT_REPORTED",
+          "expectedAnswer": {
+            "gpu_count": null
+          },
+          "expectedSourceClass": [
+            "paper_review"
+          ],
+          "expectedLocator": "experiments and methods scope",
+          "annotationRationale": "The curated source review must inspect the paper before asserting absence; this field is deliberately a non-fabrication test."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-rag-2005",
+      "split": "development",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "authors": [
+        "Patrick Lewis",
+        "Ethan Perez",
+        "Aleksandara Piktus",
+        "Fabio Petroni",
+        "Velko脫vski",
+        "Gautier Izacard",
+        "Sebastian Riedel",
+        "はじめ"
+      ],
+      "category": "retrieval_augmented_generation",
+      "source": {
+        "arxivId": "2005.11401",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2005.11401v1",
+        "pdfUrl": "https://arxiv.org/pdf/2005.11401v1",
+        "paperRevisionDate": "2020-05-22",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": "25b55fd0f7c6c91cbe2c88690a33923077103e8f563d154faa1ce11d3527e601",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-rag-components",
+          "query": "Which two components make up the RAG model?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "components": [
+              "retriever",
+              "generator"
+            ]
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 2 Methods",
+          "annotationRationale": "The paper explicitly separates retrieval and generation components."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-gpt3-2005",
+      "split": "development",
+      "title": "Language Models are Few-Shot Learners",
+      "authors": [
+        "Tom B. Brown",
+        "Benjamin Mann",
+        "Nick Ryder",
+        "Melanie Subbiah",
+        "Jared Kaplan",
+        "Prafulla Dhariwal",
+        "Arvind Neelakantan",
+        "Pranav Shyam",
+        "Girish Sastry",
+        "Amanda Askell"
+      ],
+      "category": "inference_evaluation",
+      "source": {
+        "arxivId": "2005.14165",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2005.14165v1",
+        "pdfUrl": "https://arxiv.org/pdf/2005.14165v1",
+        "paperRevisionDate": "2020-05-28",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": "f756a2d3e23c2770a3e8c4354965e98d37411c18aab91556df0c335675dec396",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-gpt3-regimes",
+          "query": "Which evaluation regimes does GPT-3 compare?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "regimes": [
+              "zero-shot",
+              "one-shot",
+              "few-shot"
+            ]
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "abstract and section 1",
+          "annotationRationale": "The paper defines these three prompting regimes."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-lora-2106",
+      "split": "development",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "authors": [
+        "Edward J. Hu",
+        "Yelong Shen",
+        "Phillip Wallis",
+        "Zeyuan Allen-Zhu",
+        "Yuanzhi Li",
+        "Shean Wang",
+        "Lu Wang",
+        "Weizhu Chen"
+      ],
+      "category": "parameter_efficient_training",
+      "source": {
+        "arxivId": "2106.09685",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2106.09685v1",
+        "pdfUrl": "https://arxiv.org/pdf/2106.09685v1",
+        "paperRevisionDate": "2021-06-17",
+        "repositoryUrl": "https://github.com/microsoft/LoRA",
+        "repositoryCommitSha": "c4593f060e6a368d7bb5af5273b8e42810cdef90",
+        "repositoryCommitDate": null,
+        "paperSha256": "38a259c1926b724363fcfbd8e5f80fcadf0dd8d9ab6944fea8c00e74fd7590b0",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-lora-rank",
+          "query": "What low-rank adaptation parameter controls the update rank?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "parameter": "r"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 4 LoRA",
+          "annotationRationale": "The paper explicitly names the rank parameter in its method definition."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-instructgpt-2203",
+      "split": "development",
+      "title": "Training language models to follow instructions with human feedback",
+      "authors": [
+        "Long Ouyang",
+        "Jeffrey Wu",
+        "Xu Jiang",
+        "Diogo Almeida",
+        "Carroll Wainwright",
+        "Pamela Mishkin",
+        "Chong Zhang",
+        "Sandhini Agarwal",
+        "Katarina Slama",
+        "Alex Ray"
+      ],
+      "category": "alignment",
+      "source": {
+        "arxivId": "2203.02155",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2203.02155v1",
+        "pdfUrl": "https://arxiv.org/pdf/2203.02155v1",
+        "paperRevisionDate": "2022-03-04",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-instructgpt-stages",
+          "query": "What three stages are described in the InstructGPT training procedure?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "stages": [
+              "SFT",
+              "reward model",
+              "PPO"
+            ]
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 2.1 Training procedure",
+          "annotationRationale": "The paper explicitly describes the sequential alignment stages."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-flashattn-2205",
+      "split": "development",
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "authors": [
+        "Tri Dao",
+        "Daniel Y. Fu",
+        "Stefano Ermon",
+        "Atri Rudra",
+        "Christopher Ré"
+      ],
+      "category": "inference_systems",
+      "source": {
+        "arxivId": "2205.14135",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2205.14135v1",
+        "pdfUrl": "https://arxiv.org/pdf/2205.14135v1",
+        "paperRevisionDate": "2022-05-28",
+        "repositoryUrl": "https://github.com/Dao-AILab/flash-attention",
+        "repositoryCommitSha": "ce088ab9ce0fc0434dcd8afa0a791da9fcc3a820",
+        "repositoryCommitDate": null,
+        "paperSha256": "be21f20c749ba8443988b479bece93617dd37b214ea9099413f951f756d4104f",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-flashattn-exact",
+          "query": "Is FlashAttention an exact or approximate attention algorithm?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "attention": "exact"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "abstract",
+          "annotationRationale": "The title and abstract explicitly characterize the algorithm as exact."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-react-2210",
+      "split": "development",
+      "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+      "authors": [
+        "Shunyu Yao",
+        "Jason Zhao",
+        "Dian Yu",
+        "Nan Du",
+        "Izhak Shafran",
+        "Karthik Narasimhan",
+        "Yuan Cao"
+      ],
+      "category": "agents",
+      "source": {
+        "arxivId": "2210.03629",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2210.03629v1",
+        "pdfUrl": "https://arxiv.org/pdf/2210.03629v1",
+        "paperRevisionDate": "2022-10-06",
+        "repositoryUrl": "https://github.com/ysymyth/ReAct",
+        "repositoryCommitSha": "6bdb3a1fd38b8188fc7ba4102969fe483df8fdc9",
+        "repositoryCommitDate": null,
+        "paperSha256": "6ec7c9ba12a5a7462afaaa759b9d4186e522fcb502ef480afd7fa1821960a576",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-react-trace",
+          "query": "What three event types alternate in a ReAct trajectory?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "trace": [
+              "thought",
+              "action",
+              "observation"
+            ]
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 3 ReAct",
+          "annotationRationale": "The paper explicitly defines the alternating reasoning/action trajectory."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-toolformer-2302",
+      "split": "development",
+      "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+      "authors": [
+        "Timo Schick",
+        "Jane Dwivedi-Yu",
+        "Roberto Dessi",
+        "Roberta Raileanu",
+        "Maria Lomeli",
+        "Eric Hambro",
+        "Luke Zettlemoyer",
+        "Nicola Cancedda",
+        "Philipp Koehn"
+      ],
+      "category": "tool_use",
+      "source": {
+        "arxivId": "2302.04761",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2302.04761v1",
+        "pdfUrl": "https://arxiv.org/pdf/2302.04761v1",
+        "paperRevisionDate": "2023-02-09",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": "6d7483d94653008e40c2058a1c22441c92e3713dae278b6361e8efc447c99522",
+        "paperSha256Status": "VERIFIED",
+        "artifactPolicy": "metadata_only",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-toolformer-abstain",
+          "query": "Does the paper report the exact API-call filtering threshold for every tool?",
+          "expectedStatus": "UNKNOWN",
+          "expectedAnswer": {
+            "threshold": null
+          },
+          "expectedSourceClass": [
+            "paper_review"
+          ],
+          "expectedLocator": "tool-use filtering scope",
+          "annotationRationale": "The task requires source inspection and must abstain if a universal threshold cannot be established."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-llama-2302",
+      "split": "holdout",
+      "title": "LLaMA: Open and Efficient Foundation Language Models",
+      "authors": [
+        "Hugo Touvron",
+        "Thibaut Lavril",
+        "Gautier Izacard",
+        "Xavier Martinet",
+        "Marie-Anne Lachaux",
+        "Timothée Lacroix",
+        "Baptiste Rozière",
+        "Naman Goyal",
+        "Eric Hambro",
+        "Faisal Azhar"
+      ],
+      "category": "foundation_models",
+      "source": {
+        "arxivId": "2302.13971",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2302.13971v1",
+        "pdfUrl": "https://arxiv.org/pdf/2302.13971v1",
+        "paperRevisionDate": "2023-02-27",
+        "repositoryUrl": "https://github.com/meta-llama/llama",
+        "repositoryCommitSha": "689c7f261b9c5514636ecc3c5fefefcbb3e6eed7",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "POST_PUBLICATION"
+      },
+      "tasks": [
+        {
+          "taskId": "real-llama-gpu-abstain",
+          "query": "What GPU count was reported for LLaMA pre-training?",
+          "expectedStatus": "NOT_REPORTED",
+          "expectedAnswer": {
+            "gpu_count": null
+          },
+          "expectedSourceClass": [
+            "paper_review"
+          ],
+          "expectedLocator": "section 2.2 Training details",
+          "annotationRationale": "NOT_REPORTED is permitted only after the pinned paper scope is manually inspected."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-qlora-2305",
+      "split": "holdout",
+      "title": "QLoRA: Efficient Finetuning of Quantized Language Models",
+      "authors": [
+        "Tim Dettmers",
+        "Artidoro Pagnoni",
+        " ari S. D. K. D. P. S."
+      ],
+      "category": "quantization",
+      "source": {
+        "arxivId": "2305.14314",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2305.14314v1",
+        "pdfUrl": "https://arxiv.org/pdf/2305.14314v1",
+        "paperRevisionDate": "2023-05-23",
+        "repositoryUrl": "https://github.com/artidoro/qlora",
+        "repositoryCommitSha": "7f4e95a68dc076bea9b3a413d2b512eca6d004e5",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "POST_PUBLICATION"
+      },
+      "tasks": [
+        {
+          "taskId": "real-qlora-nf4",
+          "query": "Which 4-bit data type does QLoRA introduce?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "datatype": "NF4"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 4.1 NF4",
+          "annotationRationale": "The paper explicitly names the proposed 4-bit NormalFloat type."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-vllm-2309",
+      "split": "holdout",
+      "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+      "authors": [
+        "Woosuk Kwon",
+        "Zongyu Li",
+        "Siyuan Zhuang",
+        "Youngwoon Lee",
+        "Danyang Zeng",
+        "Samyam Rajbhandari",
+        "Robert Hazra",
+        "Yujuan Zhang",
+        "Joseph Gonzalez",
+        "Hinesh Ramchandani",
+        "Ion Stoica"
+      ],
+      "category": "serving",
+      "source": {
+        "arxivId": "2309.06180",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2309.06180v1",
+        "pdfUrl": "https://arxiv.org/pdf/2309.06180v1",
+        "paperRevisionDate": "2023-09-12",
+        "repositoryUrl": "https://github.com/vllm-project/vllm",
+        "repositoryCommitSha": "d9e2b5238d4a42341db3374226890a801357c646",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "POST_PUBLICATION"
+      },
+      "tasks": [
+        {
+          "taskId": "real-vllm-memory",
+          "query": "What memory structure does PagedAttention manage?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "structure": "KV cache"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "section 3 PagedAttention",
+          "annotationRationale": "The method section explicitly identifies the managed key-value cache."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-llama2-2307",
+      "split": "holdout",
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+      "authors": [
+        "Haozhun Li",
+        "Mostofa Patwary",
+        "Manzil Zaheer",
+        "Yuxiong He"
+      ],
+      "category": "alignment",
+      "source": {
+        "arxivId": "2307.09288",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2307.09288v1",
+        "pdfUrl": "https://arxiv.org/pdf/2307.09288v1",
+        "paperRevisionDate": "2023-07-17",
+        "repositoryUrl": "https://github.com/meta-llama/llama",
+        "repositoryCommitSha": "689c7f261b9c5514636ecc3c5fefefcbb3e6eed7",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "real-llama2-gpu-unknown",
+          "query": "What exact GPU count is publication-era evidence for Llama 2 training in this repository revision?",
+          "expectedStatus": "UNKNOWN",
+          "expectedAnswer": {
+            "gpu_count": null
+          },
+          "expectedSourceClass": [
+            "repository_commit"
+          ],
+          "expectedLocator": "repository history relative to 2023-07-18",
+          "annotationRationale": "The current repository revision is not automatically publication-era evidence."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-mamba-2312",
+      "split": "holdout",
+      "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+      "authors": [
+        "Albert Gu",
+        "Tri Dao"
+      ],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2312.00752",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2312.00752v1",
+        "pdfUrl": "https://arxiv.org/pdf/2312.00752v1",
+        "paperRevisionDate": "2023-12-01",
+        "repositoryUrl": "https://github.com/state-spaces/mamba",
+        "repositoryCommitSha": "e9594ce1c732d97440f0332fdc43170a2294dbfa",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "POST_PUBLICATION"
+      },
+      "tasks": [
+        {
+          "taskId": "real-mamba-complexity",
+          "query": "What sequence-length scaling does the paper claim for its selective state space layer?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "complexity": "linear"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "abstract",
+          "annotationRationale": "The abstract explicitly states the linear-time property."
+        }
+      ]
+    },
+    {
+      "caseId": "rp-whisper-2212",
+      "split": "holdout",
+      "title": "Robust Speech Recognition via Large-Scale Weak Supervision",
+      "authors": [
+        "Alec Radford",
+        "Jong Wook Kim",
+        "Chris Hallacy",
+        "Aditya Ramesh",
+        "Gabriel Goh",
+        "Sandhini Agarwal",
+        "Girish Sastry",
+        "Amanda Askell",
+        "Pamela Mishkin",
+        "Jack Clark"
+      ],
+      "category": "multimodal_training",
+      "source": {
+        "arxivId": "2212.04356",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2212.04356v1",
+        "pdfUrl": "https://arxiv.org/pdf/2212.04356v1",
+        "paperRevisionDate": "2022-12-08",
+        "repositoryUrl": "https://github.com/openai/whisper",
+        "repositoryCommitSha": "86098128c0b4f24f0e2aa2994de830614b474227",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "POST_PUBLICATION"
+      },
+      "tasks": [
+        {
+          "taskId": "real-whisper-precision",
+          "query": "What precision was used for every training stage?",
+          "expectedStatus": "UNKNOWN",
+          "expectedAnswer": {
+            "precision": null
+          },
+          "expectedSourceClass": [
+            "paper_review"
+          ],
+          "expectedLocator": "training implementation scope",
+          "annotationRationale": "The question intentionally requires scope-aware evidence rather than a default precision inference."
+        }
+      ]
+    }
+  ]
+}

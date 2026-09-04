@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "openpapers.real-pdf-evaluation.v1",
+  "kind": "real-source-development-pdf",
+  "dataset": "research-real-v1",
+  "corpusSize": 13,
+  "parserModes": [
+    "pymupdf"
+  ],
+  "unavailableParsers": [
+    "grobid:live service not attempted",
+    "docling:not configured"
+  ],
+  "metrics": {
+    "parseSuccess": 0.8461538461538461,
+    "titleRecovery": null,
+    "sectionRecovery": 0.8461538461538461,
+    "pageMapping": null,
+    "referenceDetection": null,
+    "downstreamExtractionImpact": "NOT_MEASURED"
+  },
+  "rows": [
+    {
+      "caseId": "rp-transformer-1706",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Attention Is All You Need",
+      "sections": 15,
+      "pages": 15,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-bert-1810",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "sections": 14,
+      "pages": 14,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-t5-1910",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer",
+      "sections": 52,
+      "pages": 52,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-megatron-1909",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism",
+      "sections": 15,
+      "pages": 15,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-zero-1910",
+      "status": "UNAVAILABLE",
+      "parser": "pymupdf",
+      "title": "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models",
+      "sections": 0,
+      "pages": 0,
+      "error": null,
+      "parseSuccess": false
+    },
+    {
+      "caseId": "rp-scaling-laws-2001",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Scaling Laws for Neural Language Models",
+      "sections": 30,
+      "pages": 30,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-rag-2005",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "sections": 18,
+      "pages": 18,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-gpt3-2005",
+      "status": "UNAVAILABLE",
+      "parser": "pymupdf",
+      "title": "Language Models are Few-Shot Learners",
+      "sections": 0,
+      "pages": 0,
+      "error": null,
+      "parseSuccess": false
+    },
+    {
+      "caseId": "rp-lora-2106",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "sections": 20,
+      "pages": 20,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-instructgpt-2203",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Training language models to follow instructions with human feedback",
+      "sections": 68,
+      "pages": 68,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-flashattn-2205",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "sections": 31,
+      "pages": 31,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-react-2210",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+      "sections": 31,
+      "pages": 31,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    },
+    {
+      "caseId": "rp-toolformer-2302",
+      "status": "ACQUIRED",
+      "parser": "pymupdf",
+      "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+      "sections": 17,
+      "pages": 17,
+      "error": null,
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
+    }
+  ]
+}

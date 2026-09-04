@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://openpapers.dev/schemas/research-real-v1.schema.json",
+  "title":"OpenPapers real-source research benchmark v1",
+  "type":"object",
+  "required":["version","status","annotationPolicy","splitPolicy","cases"],
+  "properties":{
+    "version":{"const":"research-real-v1"},
+    "status":{"const":"curated-real-source-metadata"},
+    "annotationPolicy":{"type":"string","minLength":40},
+    "splitPolicy":{"type":"object","required":["development","holdout","holdoutInfluencedTuning"],"properties":{"development":{"type":"string"},"holdout":{"type":"string"},"holdoutInfluencedTuning":{"const":false}},"additionalProperties":false},
+    "cases":{"type":"array","minItems":15,"items":{"$ref":"#/$defs/case"}}
+  },
+  "$defs":{
+    "source":{"type":"object","required":["arxivId","arxivVersion","absUrl","pdfUrl","paperRevisionDate","artifactPolicy","paperSha256Status","temporalAlignment"],"properties":{"arxivId":{"type":"string","pattern":"^[0-9]{4}\\.[0-9]{4,5}$"},"arxivVersion":{"type":"string","pattern":"^v[0-9]+$"},"absUrl":{"type":"string","format":"uri"},"pdfUrl":{"type":"string","format":"uri"},"paperRevisionDate":{"type":"string","format":"date"},"repositoryUrl":{"type":["string","null"]},"repositoryCommitSha":{"type":["string","null"],"pattern":"^([0-9a-f]{40})?$"},"repositoryCommitDate":{"type":["string","null"],"format":"date"},"paperSha256":{"type":["string","null"],"pattern":"^([0-9a-f]{64})?$"},"paperSha256Status":{"enum":["PENDING_ACQUISITION","VERIFIED","UNAVAILABLE"]},"artifactPolicy":{"enum":["metadata_only","cache_only_no_redistribution"]},"temporalAlignment":{"enum":["ALIGNED","LIKELY_ALIGNED","POST_PUBLICATION","PRE_PUBLICATION","UNKNOWN"]}},"additionalProperties":true},
+    "task":{"type":"object","required":["taskId","query","expectedStatus","expectedAnswer","expectedSourceClass","expectedLocator","annotationRationale"],"properties":{"taskId":{"type":"string"},"query":{"type":"string","minLength":1},"expectedStatus":{"enum":["SUPPORTED","PARTIALLY_SUPPORTED","CONFLICTING","UNKNOWN","NOT_REPORTED"]},"expectedAnswer":{"type":"object"},"expectedSourceClass":{"type":"array","items":{"type":"string"}},"expectedLocator":{"type":"string","minLength":1},"annotationRationale":{"type":"string","minLength":20}},"additionalProperties":true},
+    "case":{"type":"object","required":["caseId","split","title","authors","category","source","tasks"],"properties":{"caseId":{"type":"string"},"split":{"enum":["development","holdout"]},"title":{"type":"string","minLength":1},"authors":{"type":"array","minItems":1},"category":{"type":"string"},"source":{"$ref":"#/$defs/source"},"tasks":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/task"}}},"additionalProperties":true}
+  },
+  "additionalProperties":false
+}

@@ -1,0 +1,478 @@
+{
+  "schemaVersion": "openpapers.real-source-evaluation.v1",
+  "kind": "real-source-development",
+  "commit": "756793b3daf332716e02311848d5fe049e5b7c8d",
+  "dataset": "research-real-v1",
+  "split": "development",
+  "holdoutInfluencedTuning": null,
+  "configuration": {
+    "providerMode": "offline-pinned-artifact",
+    "parserMode": "pymupdf-real-pdf",
+    "liveProviders": false
+  },
+  "taskCount": 13,
+  "metrics": {
+    "workAccuracy": null,
+    "identifierAccuracy": null,
+    "answerCorrectness": 0,
+    "evidenceSourceAccuracy": null,
+    "locatorAccuracy": null,
+    "supportStatusAccuracy": 0,
+    "correctUNKNOWN": 0,
+    "correctNOT_REPORTED": 0,
+    "falseUNKNOWN": 0.23076923076923078,
+    "falseNOT_REPORTED": 0,
+    "fabricatedAnswerRate": 0.15384615384615385,
+    "conflictPrecision": null,
+    "conflictRecall": null,
+    "taskCount": 13,
+    "expectedUnknown": 1,
+    "expectedNotReported": 1,
+    "actualUnknown": 3,
+    "actualNotReported": 0
+  },
+  "failureCategories": {
+    "field extraction failure": 11,
+    "pdf acquisition unavailable": 2
+  },
+  "rows": [
+    {
+      "caseId": "rp-transformer-1706",
+      "taskId": "real-transformer-optimizer",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "optimizer": "Adam"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 5.3 Optimizer",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": null,
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-bert-1810",
+      "taskId": "real-bert-objective",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "objectives": [
+          "masked language model",
+          "next sentence prediction"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 3.1 Pre-training BERT",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "learning_rate": "2e-5",
+        "batch_size": "16",
+        "epochs": "3",
+        "optimizer": "Adam",
+        "weight_decay": "0.01"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-t5-1910",
+      "taskId": "real-t5-format",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "formulation": "text-to-text"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2.1 Text-to-Text Framework",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "learning_rate": "0.01",
+        "batch_size": "84",
+        "optimizer": "AdaFactor"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 9"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-megatron-1909",
+      "taskId": "real-megatron-parallel",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "parallelism": "tensor model parallelism"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2.2 Intra-layer Model Parallelism",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "learning_rate": "1.5e-4",
+        "batch_size": "8"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 6"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-zero-1910",
+      "taskId": "real-zero-stages",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "partitioned_state": "optimizer states, gradients, and parameters"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2 ZeRO Overview",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualSourceClass": [],
+      "actualLocator": null,
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "UNAVAILABLE",
+      "parserMode": "not_configured",
+      "parserError": null,
+      "failureCategory": "pdf acquisition unavailable"
+    },
+    {
+      "caseId": "rp-scaling-laws-2001",
+      "taskId": "real-scaling-gpu-count",
+      "expectedStatus": "NOT_REPORTED",
+      "expectedAnswer": {
+        "gpu_count": null
+      },
+      "expectedSourceClass": [
+        "paper_review"
+      ],
+      "expectedLocator": "experiments and methods scope",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "batch_size": "512",
+        "epochs": "1",
+        "learning_rate": "50"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 7"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-rag-2005",
+      "taskId": "real-rag-components",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "components": [
+          "retriever",
+          "generator"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2 Methods",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "learning_rate": "2015"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 13"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-gpt3-2005",
+      "taskId": "real-gpt3-regimes",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "regimes": [
+          "zero-shot",
+          "one-shot",
+          "few-shot"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "abstract and section 1",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualSourceClass": [],
+      "actualLocator": null,
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "UNAVAILABLE",
+      "parserMode": "not_configured",
+      "parserError": null,
+      "failureCategory": "pdf acquisition unavailable"
+    },
+    {
+      "caseId": "rp-lora-2106",
+      "taskId": "real-lora-rank",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "parameter": "r"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 4 LoRA",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "batch_size": "128",
+        "epochs": "2",
+        "optimizer": "AdamW",
+        "learning_rate": "5.00E-06",
+        "weight_decay": "0.01"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-instructgpt-2203",
+      "taskId": "real-instructgpt-stages",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "stages": [
+          "SFT",
+          "reward model",
+          "PPO"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2.1 Training procedure",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "epochs": "2",
+        "learning_rate": "4e-6",
+        "batch_size": "32"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 8"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-flashattn-2205",
+      "taskId": "real-flashattn-exact",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "attention": "exact"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "abstract",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "batch_size": "128",
+        "learning_rate": "6e-4",
+        "weight_decay": "0.1",
+        "epochs": "200"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 6"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-react-2210",
+      "taskId": "real-react-trace",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "trace": [
+          "thought",
+          "action",
+          "observation"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 3 ReAct",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "temperature": "0.7",
+        "batch_size": "64"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-toolformer-2302",
+      "taskId": "real-toolformer-abstain",
+      "expectedStatus": "UNKNOWN",
+      "expectedAnswer": {
+        "threshold": null
+      },
+      "expectedSourceClass": [
+        "paper_review"
+      ],
+      "expectedLocator": "tool-use filtering scope",
+      "actualStatus": "PARTIALLY_SUPPORTED",
+      "actualAnswer": {
+        "learning_rate": "1",
+        "batch_size": "128"
+      },
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": null,
+      "identifierCorrect": null,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": null,
+      "locatorCorrect": null,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "failureCategory": "field extraction failure"
+    }
+  ]
+}
