@@ -110,7 +110,14 @@ The remaining BERT FN is not repaired by inference. The accepted changes materia
 
 ## LOPO
 
-The real-PDF LOPO runner is rerun after the accepted changes. It remains diagnostic on the six-paper development corpus and does not consume a holdout.
+The real-PDF LOPO runner was rerun after the accepted changes:
+
+- mean candidate recall: 0.7500;
+- mean precision: 0.8333;
+- mean recall: 0.8333;
+- mean F1: 0.8333.
+
+The result is diagnostic on the six-paper development corpus. The BERT paper remains the only zero-recovery case; its gold sentence is absent from the downloaded PDF text rather than being recovered through a formatting variant. No holdout was consumed.
 
 ## Benchmark boundary
 
