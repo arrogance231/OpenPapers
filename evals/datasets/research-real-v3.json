@@ -513,8 +513,8 @@
       },
       "facts": [
         {
-          "predicate": "training.objective",
-          "value": "knowledge distillation",
+          "predicate": "training.stage",
+          "value": "fine-tuning",
           "sourceClass": "PAPER",
           "locator": "paper evidence"
         }
@@ -522,11 +522,11 @@
       "tasks": [
         {
           "taskId": "v3-gemma-task",
-          "query": "What transfer technique is described in the model development?",
-          "predicate": "training.objective",
+          "query": "What adaptation stage is described in the model development?",
+          "predicate": "training.stage",
           "expectedStatus": "SUPPORTED",
           "expectedAnswer": {
-            "training.objective": "knowledge distillation"
+            "training.stage": "fine-tuning"
           },
           "expectedSourceClass": [
             "paper"
