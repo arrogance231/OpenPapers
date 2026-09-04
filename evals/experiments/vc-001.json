@@ -1,0 +1,12 @@
+{
+  "id":"VC-001",
+  "kind":"real-pdf-baseline-and-negation",
+  "hypothesis":"The frozen V5.1 production candidate/validator path can run on downloaded PDFs, and predicate-aware treatment of frozen-state negation will recover the LoRA fact without admitting negated retrieval claims.",
+  "goldRevision":"research-facts-v5-2-development; same six papers and seven facts, BERT subject scope restricted to BERTBASE and LoRA locator aligned to the parsed section",
+  "changes":["added predicate-aware frozen/update negation semantics","added subject-aware scoped matching","added duplicate-equivalent accounting","added live PyMuPDF PDF parser runner with SHA verification"],
+  "fixtureBaseline":{"candidateRecall":1,"precision":0.875,"recall":1,"f1":0.9333333333},
+  "realPdfBaseline":{"parser":"pymupdf-live","papersAttempted":6,"parseSuccess":6,"candidateCount":165,"candidateRecall":0.5833333333,"tp":4,"fp":0,"fn":3,"precision":1,"recall":0.5714285714,"f1":0.7272727273,"outOfScope":161,"duplicateEquivalent":0},
+  "realPdfLopo":{"candidateRecall":0.5833333333,"precision":0.6666666667,"recall":0.5833333333,"f1":0.6111111111},
+  "fabrication":0,
+  "decision":"ACCEPT ARCHITECTURE CHECKPOINT; REJECT FINAL CALIBRATION. Real parsing succeeds and fact recovery is non-zero, but parser-induced candidate recall loss and high out-of-scope volume require further generic parser/section and candidate calibration. No holdout created or used."
+}

@@ -6,7 +6,12 @@ V5.1 added `src/extraction/facts.ts` and `ResearchService.extractResearchFacts()
 
 The missing seam is runtime PDF evaluation: the current scoped runner constructs ParsedDocument sections from independently authored bounded source excerpts. V5.2 adds `eval:fact-real-pdf`, which acquires each pinned PDF, verifies its SHA-256, sends bytes through the configured production PDF parser chain, and evaluates the resulting production facts. It does not inject fixture text after parsing.
 
-## Gold semantics before tuning
+## Real-PDF checkpoint
+
+`npm run eval:fact-real-pdf` acquired all six pinned PDFs, verified all SHA-256 values, and parsed them with the live PyMuPDF command parser. Artifact: `evals/results/v5-real-pdf-fact-baseline-63017d745be5.json`. Parse success was 6/6. The actual-PDF run produced 165 candidates, mean candidate recall 0.5833, TP=4, FP=0, FN=3, precision 1.0, recall 0.5714, and F1 0.7273. OUT_OF_SCOPE was 161. Real-PDF LOPO artifact `evals/results/v5-real-pdf-fact-lopo-63017d745be5.json` reports mean candidate recall 0.5833, precision 0.6667, recall 0.5833, and F1 0.6111.
+
+This is materially weaker than the fixture run and is the correct signal: the parser produces section/heading artifacts and many broad candidates. GROBID was attempted as part of the environment audit but became unavailable/timeout-bound during the live run; the committed real-PDF baseline therefore explicitly uses PyMuPDF, not GROBID. No parser comparison or default-routing change is claimed.
+
 
 The BERT scope intentionally remains focused on BERTBASE, because the existing seven-fact corpus is frozen for this checkpoint and the gold fact carries subject `BERTBASE`. A BERTLARGE depth candidate is therefore diagnosed as outside the selected subject scope rather than silently counted as an annotation omission. The frozen-parameter fact is retained as `training.parameter_update = base weights frozen`; its source sentence contains a negative grammatical predicate about updates, but positively entails the frozen state. A global negation rejection is therefore incorrect for this predicate.
 
