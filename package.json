@@ -23,7 +23,7 @@
     "eval:baseline": "npm run build && node evals/runners/run-baseline.mjs",
     "eval:research": "npm run build && node evals/runners/run-research-tasks.mjs",
     "eval:pdf": "npm run build && node evals/runners/run-pdf.mjs",
-    "eval:providers": "npm run build && node evals/runners/run-provider-degradation.mjs",
+    "eval:providers": "npm run build && node --env-file-if-exists=.env evals/runners/run-provider-degradation.mjs",
     "eval:validate-real": "node evals/validate-real-source.mjs",
     "eval:acquire-real": "node scripts/acquire-real-source.mjs",
     "eval:real-dev": "npm run eval:acquire-real -- --split=development && npm run build && node --env-file-if-exists=.env evals/runners/run-real-source.mjs",
