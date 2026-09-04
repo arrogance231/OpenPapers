@@ -59,7 +59,8 @@ export function parseGrobidTei(url: string, tei: string): ParsedDocument {
   let page: number | undefined;
   let pageId: string | undefined;
   const tokenPattern = /<pb\b([^>]*)\/?\s*>|<div\b[^>]*>|<\/div\s*>|<head\b[^>]*>([\s\S]*?)<\/head\s*>|<p\b[^>]*>([\s\S]*?)<\/p\s*>/gi;
-  for (const match of body.matchAll(tokenPattern)) {
+  const structuralBody = body.replace(/<table\b[^>]*>[\s\S]*?<\/table\s*>/gi, '');
+  for (const match of structuralBody.matchAll(tokenPattern)) {
     const token = match[0]!;
     if (/^<pb\b/i.test(token)) {
       const attrs = match[1] ?? '';

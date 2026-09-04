@@ -20,6 +20,12 @@ describe('structured document parsing', () => {
     expect(searchDocument(parsed, 'Referenced Work', 5)).toMatchObject([{kind:'reference',referenceId:'b1',text:'Referenced Work'}]);
   });
 
+  it('does not promote table captions to document sections', () => {
+    const parsed = parseGrobidTei('https://example.com/table.pdf', '<TEI><text><body><div><head>Experiments</head><p>Results.</p><table><head>Results</head><row><cell>A</cell></row></table></div></body></text></TEI>');
+    expect(parsed.sections.map(section => section.heading)).toEqual(['Experiments']);
+    expect(parsed.tables?.[0]?.caption).toBe('Results');
+  });
+
   it('reports citation targets that have no extracted bibliography record', () => {
     const parsed = parseGrobidTei('https://example.com/missing.pdf', '<TEI><text><body><div><head>Methods</head><p>See <ref type="bibr" target="#missing">[9]</ref>.</p></div></body><back><listBibl/></back></text></TEI>');
     expect(parsed.citations).toEqual([{target:'missing',text:'[9]',sectionHeading:'Methods'}]);
