@@ -7,6 +7,7 @@ import { ResearchService } from '../../dist/research/service.js';
 import { author, paperId } from '../../dist/research/citations.js';
 import { parseDocument } from '../../dist/ingestion/document.js';
 import { extractTrainingParameters } from '../../dist/extraction/parameters.js';
+import { classifyResearchTaskStatus } from '../metrics/research-tasks.mjs';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
 const dataset=JSON.parse(readFileSync(join(root,'evals/datasets/research-tasks-v1.json'),'utf8'));
@@ -16,12 +17,7 @@ const byArxiv=new Map(works.map(work=>[work.arxivId,work]));
 const provider={search:async()=>works}; const empty={search:async()=>[]};
 const supported=new Set(['learning_rate','batch_size','epochs','optimizer','weight_decay','temperature','gradient_accumulation']);
 const valueMap=(parameters)=>Object.fromEntries(parameters.map(parameter=>[parameter.name,parameter.value]));
-function actualStatus(task, values) {
-  if(task.expectedStatus==='NOT_REPORTED') return /not report|does not report/i.test(task.evidenceHtml)?'NOT_REPORTED':'UNKNOWN';
-  if(task.expectedStatus==='UNKNOWN') return 'UNKNOWN';
-  if(task.expectedStatus==='CONFLICTING') return Object.values(values).some(value=>Array.isArray(value))?'CONFLICTING':'UNKNOWN';
-  return Object.keys(values).length?'SUPPORTED':'UNKNOWN';
-}
+function actualStatus(task, values) { return classifyResearchTaskStatus(task, values, supported); }
 function actualAnswer(parameters) {
   const grouped={};
   for(const parameter of parameters){ const prior=grouped[parameter.name]; grouped[parameter.name]=prior===undefined?parameter.value:Array.isArray(prior)?[...prior,parameter.value]:[prior,parameter.value]; }
