@@ -11,9 +11,9 @@
     "docling:not configured"
   ],
   "metrics": {
-    "parseSuccess": 0.8461538461538461,
+    "parseSuccess": 0.9230769230769231,
     "titleRecovery": null,
-    "sectionRecovery": 0.8461538461538461,
+    "sectionRecovery": 0.9230769230769231,
     "pageMapping": null,
     "referenceDetection": null,
     "downstreamExtractionImpact": "NOT_MEASURED"
@@ -109,13 +109,16 @@
     },
     {
       "caseId": "rp-gpt3-2005",
-      "status": "UNAVAILABLE",
+      "status": "ACQUIRED",
       "parser": "pymupdf",
       "title": "Language Models are Few-Shot Learners",
-      "sections": 0,
-      "pages": 0,
+      "sections": 72,
+      "pages": 72,
       "error": null,
-      "parseSuccess": false
+      "parserWarnings": [
+        "PyMuPDF fallback provides page text; reference structure may be incomplete."
+      ],
+      "parseSuccess": true
     },
     {
       "caseId": "rp-lora-2106",
