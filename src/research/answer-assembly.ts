@@ -1,8 +1,11 @@
 import type { TrainingParameter } from '../extraction/parameters.js';
 import type { ResearchProposition } from '../extraction/propositions.js';
+import type { ResearchFact, FactValue } from './facts.js';
+import type { ResearchQueryIntent } from './query-intent.js';
 import type { Evidence } from '../models/research.js';
 
 export interface StructuredResearchAnswer { answer:Record<string,string>; status:'SUPPORTED'|'PARTIALLY_SUPPORTED'|'UNKNOWN'|'NOT_REPORTED'; evidence:Evidence[]; }
+export interface FactAnswer { answer:Record<string,FactValue>; status:'SUPPORTED'|'PARTIALLY_SUPPORTED'|'CONFLICTING'|'UNKNOWN'|'NOT_REPORTED'; facts:ResearchFact[]; evidence:Evidence[]; }
 export function assembleExplicitParameterAnswer(requestedFields:string[], parameters:TrainingParameter[], evidenceFor:(parameter:TrainingParameter,index:number)=>Evidence):StructuredResearchAnswer {
   const requested=new Set(requestedFields); const selected=parameters.filter(parameter=>requested.has(parameter.name));
   const answer=Object.fromEntries(selected.map(parameter=>[parameter.name,parameter.value])); const evidence=selected.map((parameter,index)=>evidenceFor(parameter,index));
@@ -22,3 +25,5 @@ export function assemblePropositionAnswer(requestedFields:string[], propositions
   const complete=[...requested].every(field=>field in grouped); const answer=Object.fromEntries(Object.entries(grouped).map(([key,value])=>[key,value]));
   return{answer:answer as Record<string,string>,status:complete?'SUPPORTED':'PARTIALLY_SUPPORTED',evidence};
 }
+function valueKey(value:FactValue):string{return JSON.stringify(value);}
+export function assembleFactAnswer(intent:ResearchQueryIntent,facts:ResearchFact[]):FactAnswer { const selected=facts.filter(fact=>intent.predicates.includes(fact.predicate));if(!selected.length)return{answer:{},status:'UNKNOWN',facts:[],evidence:[]};const byPredicate=new Map<string,ResearchFact[]>();for(const fact of selected)byPredicate.set(fact.predicate,[...(byPredicate.get(fact.predicate)??[]),fact]);const answer:Record<string,FactValue>={};const evidence:Evidence[]=[];let conflict=false;for(const [predicate,items] of byPredicate){const values=[...new Map(items.map(item=>[valueKey(item.value),item])).values()];if(values.length>1)conflict=true;const chosen=values[0]!;answer[predicate]=intent.cardinality==='list'?values.map(item=>item.value) as FactValue:chosen.value;for(const item of values)evidence.push({evidenceId:item.factId,sourceId:item.sourceId,authors:[],title:`Extracted ${predicate} fact`,identifiers:{},locator:item.locator,evidenceType:item.supportState==='CONFLICTING'?'CONFLICTING':'DERIVED',sourceQuality:'C',evidence:item.rawEvidence,citationText:`${item.sourceId}${item.locator.section?`#${item.locator.section}`:''}`});}const complete=intent.predicates.every(predicate=>predicate in answer);return{answer,status:conflict?'CONFLICTING':complete?'SUPPORTED':'PARTIALLY_SUPPORTED',facts:selected,evidence};}

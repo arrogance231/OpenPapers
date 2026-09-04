@@ -22,6 +22,7 @@ import type { ResearchPack } from './research-pack.js';
 import type { VectorMatch, VectorRetriever } from '../retrieval/vector.js';
 import { PinnedRepositoryReader } from './pinned-repository-reader.js';
 import type { PinnedRepositoryRead } from './pinned-repository-reader.js';
+import { extractResearchFacts } from './facts.js';
 
 const missing = <T>(): Reported<T> => ({ value: null, status: 'NOT_REPORTED' });
 export interface SearchFilters { yearFrom?: number; yearTo?: number; author?: string; venue?: string; topic?: string; }
@@ -88,6 +89,7 @@ export class ResearchService {
   async resolveAuthor(id:string):Promise<AuthorProfile|undefined> { const profile=await this.semanticScholar.resolveAuthor(id); return profile?.authorId&&profile.name ? {authorId:profile.authorId,name:profile.name,aliases:profile.aliases ?? [],paperIds:(profile.papers ?? []).map(paper=>paper.paperId).filter((paperId):paperId is string=>Boolean(paperId)),source:'semantic_scholar'} : undefined; }
   async readPaper(url:string) { const acquired=await this.acquirer.acquire(url); const hash=createHash('sha256').update(acquired.body).digest('hex'); const cached=await this.db.getParsedDocument(acquired.url,hash); if(cached)return cached; const parsed=detectDocumentFormat(acquired.contentType,acquired.body)==='pdf' ? await this.pdfParser.process(acquired.body,acquired.url) : parseDocument(acquired); await this.db.saveParsedDocument(parsed,hash); return parsed; }
   async readPinnedRepository(owner:string,repo:string,commitSha:string,reader?:PinnedRepositoryReader):Promise<PinnedRepositoryRead> { return (reader ?? new PinnedRepositoryReader()).read(owner,repo,commitSha); }
+  async extractResearchFacts(url:string) { return extractResearchFacts(await this.readPaper(url)); }
   async searchWithinPaper(url:string, query:string, limit=10) { return searchDocument(await this.readPaper(url), query, limit); }
   async extractPaperFacts(url:string): Promise<PaperFact[]> { return extractPaperFacts(await this.readPaper(url)); }
   async extractPaperClaims(url:string): Promise<{claims:PaperClaim[]; conflicts:ClaimConflict[]}> { const claims=extractPaperClaims(await this.extractPaperFacts(url)); const reconciliation=reconcileClaims(await this.db.getClaims(),claims); const persistClaims=this.db.persistClaimsTransactional; if(persistClaims) await persistClaims.call(this.db,claims,reconciliation.conflicts); else { for(const claim of claims) await this.db.saveClaim(claim); for(const conflict of reconciliation.conflicts) await this.db.saveClaimConflict(conflict); await this.flushStorage(); } return {claims,conflicts:reconciliation.conflicts}; }
