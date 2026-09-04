@@ -91,7 +91,7 @@ Decision: ACCEPT with the explicit limitation that this is evaluation scope reco
 
 ## Current real-PDF checkpoint
 
-Artifact: `evals/results/v5-real-pdf-fact-baseline-9a7de055b9b4.json`
+Artifact: `evals/results/v5-real-pdf-fact-baseline-4a346371f6d9.json`
 
 - papers: 6;
 - parse success: 6/6;
