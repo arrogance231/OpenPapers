@@ -1,0 +1,3 @@
+process.env.REAL_SOURCE_DATASET_FILE='evals/datasets/research-real-v3.json';
+process.env.REAL_SOURCE_ACQUISITION_OUTPUT=`real-source-v3-acquisition-${process.argv.includes('--split=holdout')?'holdout':'development'}.json`;
+await import('./acquire-real-source.mjs');

@@ -1,0 +1,7 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "$id":"https://openpapers.dev/schemas/research-real-v3.schema.json",
+ "title":"OpenPapers query-independent fact benchmark v3",
+ "type":"object","required":["version","status","annotationPolicy","splitPolicy","cases"],
+ "properties":{"version":{"const":"research-real-v3"},"status":{"const":"curated-real-source-facts"},"annotationPolicy":{"type":"string","minLength":1},"splitPolicy":{"type":"object","required":["development","holdout","holdoutInfluencedTuning"],"properties":{"holdoutInfluencedTuning":{"const":false}}},"cases":{"type":"array","minItems":16,"items":{"type":"object","required":["caseId","split","title","source","facts","tasks"],"properties":{"split":{"enum":["development","holdout"]},"source":{"type":"object","required":["arxivId","arxivVersion","absUrl","pdfUrl","paperRevisionDate"]},"facts":{"type":"array","minItems":1},"tasks":{"type":"array","minItems":1}}}}}
+}

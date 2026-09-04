@@ -1,0 +1,608 @@
+{
+  "schemaVersion": "openpapers.real-source-v3-evaluation.v1",
+  "commit": "04ad029f75c0df07638161bc7f0bc450fd372cf0",
+  "dataset": "research-real-v3",
+  "split": "development",
+  "holdoutUsedForTuning": null,
+  "configuration": {
+    "extraction": "query-independent-facts",
+    "intent": "separate-query-intent",
+    "parser": "pymupdf-real-pdf"
+  },
+  "taskCount": 12,
+  "factMetrics": {
+    "precision": 0,
+    "recall": 0,
+    "valueAccuracy": 0,
+    "locatorAccuracy": 1
+  },
+  "queryMetrics": {
+    "predicateAccuracy": 1
+  },
+  "answerMetrics": {
+    "answerCorrectness": 0,
+    "evidenceSourceAccuracy": 0.3333333333333333,
+    "locatorAccuracy": 1,
+    "supportStatusAccuracy": 0.16666666666666666,
+    "falseUnknown": 0.6666666666666666,
+    "falseNotReported": 0,
+    "fabricatedAnswerRate": 0
+  },
+  "failureCategories": {
+    "fact selection/normalization": 12
+  },
+  "rows": [
+    {
+      "caseId": "v3-transformer-xl",
+      "taskId": "v3-transformer-xl-task",
+      "predicate": "architecture.recurrence",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.recurrence": "segment-level recurrence"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "1901.02860",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 2,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 2
+    },
+    {
+      "caseId": "v3-electra",
+      "taskId": "v3-electra-task",
+      "predicate": "training.objective",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.objective": "replaced token detection"
+      },
+      "actualAnswer": {
+        "training.objective": "masked language model"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "CONFLICTING",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2003.10555",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-masked language model",
+          "predicate": "training.objective",
+          "value": "masked language model",
+          "rawValue": "Masked language model",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "edu ABSTRACT Masked language modeling (MLM) pre-training methods such as BERT corrupt the input by replacing some tokens with [MASK] and then train a model to re- construct the original tokens.",
+          "extractionMethod": "masked objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-contrastive learning",
+          "predicate": "training.objective",
+          "value": "contrastive learning",
+          "rawValue": "Contrastive Learning",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 10"
+          },
+          "rawEvidence": "Contrastive Learning Broadly, contrastive learning methods distinguish observed data points from ﬁctitious negative samples.",
+          "extractionMethod": "contrastive objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-next sentence prediction",
+          "predicate": "training.objective",
+          "value": "next sentence prediction",
+          "rawValue": "next sentence prediction",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 13"
+          },
+          "rawEvidence": "Also, we did not use the next sentence prediction objective proposed in the original BERT paper, as recent work has suggested it does not improve scores (Yang et al.",
+          "extractionMethod": "pretraining objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-masked language model",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "edu ABSTRACT Masked language modeling (MLM) pre-training methods such as BERT corrupt the input by replacing some tokens with [MASK] and then train a model to re- construct the original tokens.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 1"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-contrastive learning",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 10"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Contrastive Learning Broadly, contrastive learning methods distinguish observed data points from ﬁctitious negative samples.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 10"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-next sentence prediction",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 13"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Also, we did not use the next sentence prediction objective proposed in the original BERT paper, as recent work has suggested it does not improve scores (Yang et al.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 13"
+        }
+      ],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 6,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 6
+    },
+    {
+      "caseId": "v3-linformer",
+      "taskId": "v3-linformer-task",
+      "predicate": "architecture.attention",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.attention": "linear attention"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2006.04768",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 5,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 5
+    },
+    {
+      "caseId": "v3-swin",
+      "taskId": "v3-swin-task",
+      "predicate": "architecture.attention",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.attention": "shifted-window attention"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2103.14030",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 3,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 3
+    },
+    {
+      "caseId": "v3-vit",
+      "taskId": "v3-vit-task",
+      "predicate": "architecture.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.formulation": "image patches"
+      },
+      "actualAnswer": {
+        "architecture.formulation": "cross-attention"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2010.11929",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2010.11929v1-architecture.formulation-cross-attention",
+          "predicate": "architecture.formulation",
+          "value": "cross-attention",
+          "rawValue": "cross attention",
+          "sourceId": "https://arxiv.org/pdf/2010.11929v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 10"
+          },
+          "rawEvidence": "Ccnet: Criss-cross attention for semantic segmentation.",
+          "extractionMethod": "multimodal connection",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2010.11929v1-architecture.formulation-cross-attention",
+          "sourceId": "https://arxiv.org/pdf/2010.11929v1",
+          "authors": [],
+          "title": "Extracted architecture.formulation fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 10"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Ccnet: Criss-cross attention for semantic segmentation.",
+          "citationText": "https://arxiv.org/pdf/2010.11929v1#Page 10"
+        }
+      ],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 6,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 6
+    },
+    {
+      "caseId": "v3-mae",
+      "taskId": "v3-mae-task",
+      "predicate": "training.objective",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.objective": "masked reconstruction"
+      },
+      "actualAnswer": {
+        "training.objective": "contrastive learning"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "CONFLICTING",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2111.06377",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-contrastive learning",
+          "predicate": "training.objective",
+          "value": "contrastive learning",
+          "rawValue": "contrastive learning",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 3"
+          },
+          "rawEvidence": "Self-supervised learning approaches have seen signiﬁcant interest in computer vision, often focusing on different pre- text tasks for pre-training [15, 50, 35, 59, 38, 17].",
+          "extractionMethod": "contrastive objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-masked language model",
+          "predicate": "training.objective",
+          "value": "masked language model",
+          "rawValue": "Masked language model",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 3"
+          },
+          "rawEvidence": "Related Work Masked language modeling and its autoregressive coun- terparts, e.",
+          "extractionMethod": "masked objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-contrastive learning",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 3"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Self-supervised learning approaches have seen signiﬁcant interest in computer vision, often focusing on different pre- text tasks for pre-training [15, 50, 35, 59, 38, 17].",
+          "citationText": "https://arxiv.org/pdf/2111.06377v1#Page 3"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-masked language model",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 3"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Related Work Masked language modeling and its autoregressive coun- terparts, e.",
+          "citationText": "https://arxiv.org/pdf/2111.06377v1#Page 3"
+        }
+      ],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 8,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 8
+    },
+    {
+      "caseId": "v3-opt",
+      "taskId": "v3-opt-task",
+      "predicate": "model.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "model.formulation": "decoder-only Transformer"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2205.01068",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 7,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 7
+    },
+    {
+      "caseId": "v3-flan",
+      "taskId": "v3-flan-task",
+      "predicate": "training.stage",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.stage": "instruction fine-tuning"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2210.11416",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 10,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 10
+    },
+    {
+      "caseId": "v3-gpt4",
+      "taskId": "v3-gpt4-task",
+      "predicate": "model.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "model.formulation": "multimodal model"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2303.08774",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 10,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 10
+    },
+    {
+      "caseId": "v3-mtbench",
+      "taskId": "v3-mtbench-task",
+      "predicate": "evaluation.method",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "evaluation.method": "pairwise judging"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2306.05685",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 7,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 7
+    },
+    {
+      "caseId": "v3-deepseekv2",
+      "taskId": "v3-deepseekv2-task",
+      "predicate": "architecture.moe",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.moe": "mixture of experts"
+      },
+      "actualAnswer": {
+        "architecture.moe": "sparse mixture of experts"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2405.04434",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2405.04434v1-architecture.moe-sparse mixture of experts",
+          "predicate": "architecture.moe",
+          "value": "sparse mixture of experts",
+          "rawValue": "Mixture-of-Experts",
+          "sourceId": "https://arxiv.org/pdf/2405.04434v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model DeepSeek-AI research@deepseek.",
+          "extractionMethod": "mixture of experts",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2405.04434v1-architecture.moe-sparse mixture of experts",
+          "sourceId": "https://arxiv.org/pdf/2405.04434v1",
+          "authors": [],
+          "title": "Extracted architecture.moe fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model DeepSeek-AI research@deepseek.",
+          "citationText": "https://arxiv.org/pdf/2405.04434v1#Page 1"
+        }
+      ],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 14,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 14
+    },
+    {
+      "caseId": "v3-gemma",
+      "taskId": "v3-gemma-task",
+      "predicate": "training.objective",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.objective": "knowledge distillation"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2403.08295",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 8,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 8
+    }
+  ]
+}

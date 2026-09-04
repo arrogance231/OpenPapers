@@ -1,0 +1,716 @@
+{
+  "version": "research-real-v3",
+  "status": "curated-real-source-facts",
+  "annotationPolicy": "New fact-level corpus with source facts separated from task wording. V3 holdout is frozen before capability tuning.",
+  "splitPolicy": {
+    "development": "12 new cases for architecture development.",
+    "holdout": "4 new cases frozen for one-shot generalization evaluation.",
+    "holdoutInfluencedTuning": false
+  },
+  "cases": [
+    {
+      "caseId": "v3-transformer-xl",
+      "split": "development",
+      "title": "Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context",
+      "category": "architecture",
+      "source": {
+        "arxivId": "1901.02860",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1901.02860v1",
+        "pdfUrl": "https://arxiv.org/pdf/1901.02860v1",
+        "paperRevisionDate": "2019-01-08",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.recurrence",
+          "value": "segment-level recurrence",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-transformer-xl-task",
+          "query": "How does the model carry information beyond a fixed context?",
+          "predicate": "architecture.recurrence",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.recurrence": "segment-level recurrence"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-electra",
+      "split": "development",
+      "title": "ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators",
+      "category": "training",
+      "source": {
+        "arxivId": "2003.10555",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2003.10555v1",
+        "pdfUrl": "https://arxiv.org/pdf/2003.10555v1",
+        "paperRevisionDate": "2020-03-18",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "training.objective",
+          "value": "replaced token detection",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-electra-task",
+          "query": "What pretraining signal trains the encoder as a discriminator?",
+          "predicate": "training.objective",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.objective": "replaced token detection"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-linformer",
+      "split": "development",
+      "title": "Linformer: Self-Attention with Linear Complexity",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2006.04768",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2006.04768v1",
+        "pdfUrl": "https://arxiv.org/pdf/2006.04768v1",
+        "paperRevisionDate": "2020-06-08",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.attention",
+          "value": "linear attention",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-linformer-task",
+          "query": "What attention formulation reduces the self-attention complexity?",
+          "predicate": "architecture.attention",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.attention": "linear attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-swin",
+      "split": "development",
+      "title": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2103.14030",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2103.14030v1",
+        "pdfUrl": "https://arxiv.org/pdf/2103.14030v1",
+        "paperRevisionDate": "2021-03-25",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.attention",
+          "value": "shifted-window attention",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-swin-task",
+          "query": "Which windowing mechanism structures the attention layers?",
+          "predicate": "architecture.attention",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.attention": "shifted-window attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-vit",
+      "split": "development",
+      "title": "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2010.11929",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2010.11929v1",
+        "pdfUrl": "https://arxiv.org/pdf/2010.11929v1",
+        "paperRevisionDate": "2020-10-22",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.formulation",
+          "value": "image patches",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-vit-task",
+          "query": "How are images represented before entering the Transformer?",
+          "predicate": "architecture.formulation",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.formulation": "image patches"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-mae",
+      "split": "development",
+      "title": "Masked Autoencoders Are Scalable Vision Learners",
+      "category": "training",
+      "source": {
+        "arxivId": "2111.06377",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2111.06377v1",
+        "pdfUrl": "https://arxiv.org/pdf/2111.06377v1",
+        "paperRevisionDate": "2021-11-11",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "training.objective",
+          "value": "masked reconstruction",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-mae-task",
+          "query": "What reconstruction task is used for visual pretraining?",
+          "predicate": "training.objective",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.objective": "masked reconstruction"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-opt",
+      "split": "development",
+      "title": "OPT: Open Pre-trained Transformer Language Models",
+      "category": "model",
+      "source": {
+        "arxivId": "2205.01068",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2205.01068v1",
+        "pdfUrl": "https://arxiv.org/pdf/2205.01068v1",
+        "paperRevisionDate": "2022-05-03",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "model.formulation",
+          "value": "decoder-only Transformer",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-opt-task",
+          "query": "What model family is used for OPT language modeling?",
+          "predicate": "model.formulation",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "model.formulation": "decoder-only Transformer"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-flan",
+      "split": "development",
+      "title": "Scaling Instruction-Finetuned Language Models",
+      "category": "training",
+      "source": {
+        "arxivId": "2210.11416",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2210.11416v1",
+        "pdfUrl": "https://arxiv.org/pdf/2210.11416v1",
+        "paperRevisionDate": "2022-10-20",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "training.stage",
+          "value": "instruction fine-tuning",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-flan-task",
+          "query": "What post-training stage scales the language models?",
+          "predicate": "training.stage",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.stage": "instruction fine-tuning"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-gpt4",
+      "split": "development",
+      "title": "GPT-4 Technical Report",
+      "category": "model",
+      "source": {
+        "arxivId": "2303.08774",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2303.08774v1",
+        "pdfUrl": "https://arxiv.org/pdf/2303.08774v1",
+        "paperRevisionDate": "2023-03-15",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "model.formulation",
+          "value": "multimodal model",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-gpt4-task",
+          "query": "What modality capability is described for GPT-4?",
+          "predicate": "model.formulation",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "model.formulation": "multimodal model"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-mtbench",
+      "split": "development",
+      "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+      "category": "evaluation",
+      "source": {
+        "arxivId": "2306.05685",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2306.05685v1",
+        "pdfUrl": "https://arxiv.org/pdf/2306.05685v1",
+        "paperRevisionDate": "2023-06-09",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "evaluation.method",
+          "value": "pairwise judging",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-mtbench-task",
+          "query": "How are model responses compared in the evaluation?",
+          "predicate": "evaluation.method",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "evaluation.method": "pairwise judging"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-deepseekv2",
+      "split": "development",
+      "title": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2405.04434",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2405.04434v1",
+        "pdfUrl": "https://arxiv.org/pdf/2405.04434v1",
+        "paperRevisionDate": "2024-05-07",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.moe",
+          "value": "mixture of experts",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-deepseekv2-task",
+          "query": "What sparse architecture is used to scale DeepSeek-V2?",
+          "predicate": "architecture.moe",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.moe": "mixture of experts"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-gemma",
+      "split": "development",
+      "title": "Gemma: Open Models Based on Gemini Research and Technology",
+      "category": "training",
+      "source": {
+        "arxivId": "2403.08295",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2403.08295v1",
+        "pdfUrl": "https://arxiv.org/pdf/2403.08295v1",
+        "paperRevisionDate": "2024-03-13",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "training.objective",
+          "value": "knowledge distillation",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-gemma-task",
+          "query": "What transfer technique is described in the model development?",
+          "predicate": "training.objective",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.objective": "knowledge distillation"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-bigbird",
+      "split": "holdout",
+      "title": "Big Bird: Transformers for Longer Sequences",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2007.14062",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2007.14062v1",
+        "pdfUrl": "https://arxiv.org/pdf/2007.14062v1",
+        "paperRevisionDate": "2020-07-28",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.attention",
+          "value": "sparse attention",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-bigbird-task",
+          "query": "How does BigBird handle long-sequence attention?",
+          "predicate": "architecture.attention",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.attention": "sparse attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-phi2",
+      "split": "holdout",
+      "title": "Phi-2: The surprising power of small language models",
+      "category": "training",
+      "source": {
+        "arxivId": "2311.10730",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2311.10730v1",
+        "pdfUrl": "https://arxiv.org/pdf/2311.10730v1",
+        "paperRevisionDate": "2023-10-14",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "training.stage",
+          "value": "continued pretraining",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-phi2-task",
+          "query": "What training continuation stage is described?",
+          "predicate": "training.stage",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.stage": "continued pretraining"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-qwen2",
+      "split": "holdout",
+      "title": "Qwen2 Technical Report",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2407.10671",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2407.10671v1",
+        "pdfUrl": "https://arxiv.org/pdf/2407.10671v1",
+        "paperRevisionDate": "2024-07-15",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.attention",
+          "value": "grouped-query attention",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-qwen2-task",
+          "query": "Which attention topology is used by Qwen2?",
+          "predicate": "architecture.attention",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.attention": "grouped-query attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    },
+    {
+      "caseId": "v3-mamba2",
+      "split": "holdout",
+      "title": "Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2405.21060",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2405.21060v1",
+        "pdfUrl": "https://arxiv.org/pdf/2405.21060v1",
+        "paperRevisionDate": "2024-05-31",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.operator",
+          "value": "state-space model",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v3-mamba2-task",
+          "query": "What operator family replaces standard attention?",
+          "predicate": "architecture.operator",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.operator": "state-space model"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded fact for V3 query-independent evaluation."
+        }
+      ]
+    }
+  ]
+}
