@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "openpapers.real-source-acquisition.v1",
+  "dataset": "research-real-v2",
+  "split": "holdout",
+  "metadataOnly": false,
+  "rows": [
+    {
+      "caseId": "v2-ul2",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2205.05131v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T09:17:44.331Z",
+      "sha256": "3f0f6d45a4565c70ac57e96c0000d72b92753d110e5d053b6f401c535b4db47c",
+      "bytes": 640655,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v2-ul2-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v2-mistral",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2310.06825v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T09:17:45.051Z",
+      "sha256": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+      "bytes": 3749788,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v2-mistral-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v2-mixtral",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2401.04088v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T09:17:46.570Z",
+      "sha256": "f8bbf0e9d979b7a8ce7be65119266545a229a85b57e077d8bd048e458bb642da",
+      "bytes": 2475990,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v2-mixtral-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v2-qwen",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2309.16609v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T09:17:49.990Z",
+      "sha256": "5d4a9c3f6da9e9fa18a444bc3a663271dcf5ada36cc4c5dfe607a041619be798",
+      "bytes": 1994623,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v2-qwen-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v2-phi3",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2404.14219v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T09:17:53.751Z",
+      "sha256": "54fe7b2ddc32ff3de643ca2384e0ceab39214d97191248375d6063c362350106",
+      "bytes": 2049157,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v2-phi3-v1.pdf",
+      "error": null
+    }
+  ]
+}
