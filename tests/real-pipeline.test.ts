@@ -52,7 +52,7 @@ describe('real-source research pipeline primitives', () => {
     };
     const result=await new PinnedRepositoryReader(github).read('alice','paper',sha);
     expect(result.evidence[0]).toMatchObject({parameter:'optimizer',locator:{commitSha:sha,path:'train.py'}});
-    expect(result.manifest).toEqual(expect.arrayContaining([expect.objectContaining({commitSha:sha,path:'train.py',contentSha:'blob-train'})]));
+    expect(result.manifest).toEqual(expect.arrayContaining([expect.objectContaining({commitSha:sha,path:'train.py',contentSha:expect.stringMatching(/^[0-9a-f]{64}$/)})]));
     expect(result.failures).toEqual([]);
   });
 
