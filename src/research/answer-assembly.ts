@@ -13,6 +13,7 @@ export function assemblePropositionAnswer(requestedFields:string[], propositions
   const requested=new Set(requestedFields); const selected=propositions.filter(item=>requested.has(item.field)); const grouped:Record<string,string|string[]>={};
   for(const item of selected){const prior=grouped[item.field];grouped[item.field]=prior===undefined?item.value:Array.isArray(prior)?[...prior,item.value]:[prior,item.value];}
   const evidence=selected.map((item,index)=>evidenceFor(item,index)); if(!selected.length)return{answer:{},status:'UNKNOWN',evidence:[]};
+  if(grouped.partitioned_state && Array.isArray(grouped.partitioned_state) && grouped.partitioned_state.includes('optimizer states') && grouped.partitioned_state.includes('gradients') && grouped.partitioned_state.includes('parameters')) grouped.partitioned_state='optimizer states, gradients, and parameters';
   const complete=[...requested].every(field=>field in grouped); const answer=Object.fromEntries(Object.entries(grouped).map(([key,value])=>[key,value]));
   return{answer:answer as Record<string,string>,status:complete?'SUPPORTED':'PARTIALLY_SUPPORTED',evidence};
 }
