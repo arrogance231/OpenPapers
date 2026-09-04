@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "research-generalization-v3",
+  "dataset": "research-real-v3",
+  "sourceResult": "real-source-v3-development-9ec9934b2290.json",
+  "holdoutUsedForTuning": false,
+  "lopo": {
+    "paperCount": 12,
+    "answerCorrectness": 1,
+    "factRecall": 1,
+    "rows": [
+      {
+        "heldOut": "v3-transformer-xl",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.3333333333333333
+      },
+      {
+        "heldOut": "v3-electra",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.125
+      },
+      {
+        "heldOut": "v3-linformer",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.14285714285714285
+      },
+      {
+        "heldOut": "v3-swin",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.14285714285714285
+      },
+      {
+        "heldOut": "v3-vit",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.14285714285714285
+      },
+      {
+        "heldOut": "v3-mae",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.1
+      },
+      {
+        "heldOut": "v3-opt",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.1111111111111111
+      },
+      {
+        "heldOut": "v3-flan",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.07692307692307693
+      },
+      {
+        "heldOut": "v3-gpt4",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.07692307692307693
+      },
+      {
+        "heldOut": "v3-mtbench",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.1
+      },
+      {
+        "heldOut": "v3-deepseekv2",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.0625
+      },
+      {
+        "heldOut": "v3-gemma",
+        "trainCases": 11,
+        "heldOutAnswerCorrect": true,
+        "heldOutFactRecall": 1,
+        "heldOutFactPrecision": 0.09090909090909091
+      }
+    ]
+  },
+  "paraphrase": {
+    "count": 4,
+    "invariance": 1,
+    "rows": [
+      {
+        "caseId": "v3-linformer",
+        "question": "What attention mechanism is used?",
+        "predicate": "architecture.attention",
+        "invariant": true
+      },
+      {
+        "caseId": "v3-linformer",
+        "question": "Which attention pattern does the model use?",
+        "predicate": "architecture.attention",
+        "invariant": true
+      },
+      {
+        "caseId": "v3-swin",
+        "question": "What attention mechanism is used?",
+        "predicate": "architecture.attention",
+        "invariant": true
+      },
+      {
+        "caseId": "v3-swin",
+        "question": "Which attention pattern does the model use?",
+        "predicate": "architecture.attention",
+        "invariant": true
+      }
+    ]
+  }
+}
