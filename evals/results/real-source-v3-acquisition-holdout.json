@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "openpapers.real-source-acquisition.v1",
+  "dataset": "research-real-v3",
+  "split": "holdout",
+  "metadataOnly": false,
+  "rows": [
+    {
+      "caseId": "v3-bigbird",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2007.14062v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T10:41:14.606Z",
+      "sha256": "6a485bf4e3acfd73c87e266573727526469f6ff7950267f2f1bc0d4887403ec4",
+      "bytes": 1143182,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v3-bigbird-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v3-phi2",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2311.10730v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T10:41:17.530Z",
+      "sha256": "97a5a45089271791d5037b8ea1f37756a1b103dfb9f79b78816f834a7447af43",
+      "bytes": 476837,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v3-phi2-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v3-qwen2",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2407.10671v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T10:41:18.539Z",
+      "sha256": "adbdabac242285ba05f3c11205ac366b478382a4b7a1823bd57b4ba2532baf39",
+      "bytes": 463171,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v3-qwen2-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v3-mamba2",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2405.21060v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T10:41:19.408Z",
+      "sha256": "6fe16414fa471a5ab150cddcba5840d3a94e347e96992c50c12c1fb8b919479f",
+      "bytes": 3209170,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v3-mamba2-v1.pdf",
+      "error": null
+    }
+  ]
+}
