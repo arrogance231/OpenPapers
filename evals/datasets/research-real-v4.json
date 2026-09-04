@@ -1,0 +1,684 @@
+{
+  "version": "research-real-v4",
+  "status": "fact-first-real-source",
+  "annotationPolicy": "V4 fact-first corpus with declared non-exhaustive task-linked scope; holdout frozen before extraction tuning.",
+  "splitPolicy": {
+    "development": "9 new cases",
+    "holdout": "3 new cases",
+    "holdoutInfluencedTuning": false
+  },
+  "cases": [
+    {
+      "caseId": "v4-rag",
+      "split": "development",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "category": "retrieval",
+      "source": {
+        "arxivId": "2005.11401",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2005.11401v1",
+        "pdfUrl": "https://arxiv.org/pdf/2005.11401v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "retrieval.component"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "retrieval.component",
+          "value": "retriever",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-rag-task",
+          "query": "Which retrieval component supplies evidence?",
+          "predicate": "retrieval.component",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "retrieval.component": "retriever"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-cot",
+      "split": "development",
+      "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2201.11903",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2201.11903v1",
+        "pdfUrl": "https://arxiv.org/pdf/2201.11903v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "reasoning.trace_type"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "reasoning.trace_type",
+          "value": "thought",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-cot-task",
+          "query": "What reasoning trace is elicited?",
+          "predicate": "reasoning.trace_type",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "reasoning.trace_type": "thought"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-selfconsistency",
+      "split": "development",
+      "title": "Self-Consistency Improves Chain of Thought Reasoning in Language Models",
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2203.11171",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2203.11171v1",
+        "pdfUrl": "https://arxiv.org/pdf/2203.11171v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "reasoning.trace_type"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "reasoning.trace_type",
+          "value": "thought",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-selfconsistency-task",
+          "query": "What reasoning trace does the method aggregate?",
+          "predicate": "reasoning.trace_type",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "reasoning.trace_type": "thought"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-react",
+      "split": "development",
+      "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2210.03629",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2210.03629v1",
+        "pdfUrl": "https://arxiv.org/pdf/2210.03629v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "reasoning.trace_type"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "reasoning.trace_type",
+          "value": "action",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-react-task",
+          "query": "What action component is part of the trace?",
+          "predicate": "reasoning.trace_type",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "reasoning.trace_type": "action"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-tot",
+      "split": "development",
+      "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2305.10601",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2305.10601v1",
+        "pdfUrl": "https://arxiv.org/pdf/2305.10601v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "reasoning.trace_type"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "reasoning.trace_type",
+          "value": "thought",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-tot-task",
+          "query": "What reasoning structure is used?",
+          "predicate": "reasoning.trace_type",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "reasoning.trace_type": "thought"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-qlora",
+      "split": "development",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "category": "training",
+      "source": {
+        "arxivId": "2305.14314",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2305.14314v1",
+        "pdfUrl": "https://arxiv.org/pdf/2305.14314v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "training.stage"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "training.stage",
+          "value": "instruction fine-tuning",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-qlora-task",
+          "query": "What training stage is performed?",
+          "predicate": "training.stage",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.stage": "instruction fine-tuning"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-olmo",
+      "split": "development",
+      "title": "OLMo: Accelerating the Science of Language Models",
+      "category": "training",
+      "source": {
+        "arxivId": "2402.00838",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2402.00838v1",
+        "pdfUrl": "https://arxiv.org/pdf/2402.00838v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "training.objective"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "training.stage",
+          "value": "pretraining",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-olmo-task",
+          "query": "At what stage is the OLMo model trained?",
+          "predicate": "training.stage",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.stage": "pretraining"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-gemma",
+      "split": "development",
+      "title": "Gemma: Open Models Based on Gemini Research and Technology",
+      "category": "model",
+      "source": {
+        "arxivId": "2403.08295",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2403.08295v1",
+        "pdfUrl": "https://arxiv.org/pdf/2403.08295v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "model.formulation"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "model.formulation",
+          "value": "decoder-only Transformer",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-gemma-task",
+          "query": "What model formulation is used?",
+          "predicate": "model.formulation",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "model.formulation": "decoder-only Transformer"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-knowledge",
+      "split": "development",
+      "title": "How Do Large Language Models Acquire Factual Knowledge During Pretraining?",
+      "category": "training",
+      "source": {
+        "arxivId": "2406.11813",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2406.11813v1",
+        "pdfUrl": "https://arxiv.org/pdf/2406.11813v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "training.stage"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "training.stage",
+          "value": "pretraining",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-knowledge-task",
+          "query": "At what stage is factual knowledge acquired?",
+          "predicate": "training.stage",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "training.stage": "pretraining"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-gpt4",
+      "split": "holdout",
+      "title": "GPT-4 Technical Report",
+      "category": "model",
+      "source": {
+        "arxivId": "2303.08774",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2303.08774v1",
+        "pdfUrl": "https://arxiv.org/pdf/2303.08774v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "model.formulation"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "model.formulation",
+          "value": "multimodal model",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-gpt4-task",
+          "query": "What modality capability is described?",
+          "predicate": "model.formulation",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "model.formulation": "multimodal model"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-deepseek",
+      "split": "holdout",
+      "title": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2405.04434",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2405.04434v1",
+        "pdfUrl": "https://arxiv.org/pdf/2405.04434v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "architecture.moe"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.moe",
+          "value": "mixture of experts",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-deepseek-task",
+          "query": "What sparse architecture is used?",
+          "predicate": "architecture.moe",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.moe": "mixture of experts"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    },
+    {
+      "caseId": "v4-reformer",
+      "split": "holdout",
+      "title": "Reformer: The Efficient Transformer",
+      "category": "architecture",
+      "source": {
+        "arxivId": "2001.04451",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2001.04451v1",
+        "pdfUrl": "https://arxiv.org/pdf/2001.04451v1",
+        "paperRevisionDate": "2024-01-01",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "annotationScope": {
+        "sections": [
+          "abstract",
+          "method",
+          "training",
+          "experiments"
+        ],
+        "predicates": [
+          "architecture.attention"
+        ],
+        "completeness": "task_linked_non_exhaustive"
+      },
+      "facts": [
+        {
+          "predicate": "architecture.attention",
+          "value": "locality-sensitive hashing attention",
+          "sourceClass": "PAPER",
+          "locator": "paper evidence"
+        }
+      ],
+      "tasks": [
+        {
+          "taskId": "v4-reformer-task",
+          "query": "What attention approach is used?",
+          "predicate": "architecture.attention",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture.attention": "locality-sensitive hashing attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Fact-first development annotation."
+        }
+      ]
+    }
+  ]
+}
