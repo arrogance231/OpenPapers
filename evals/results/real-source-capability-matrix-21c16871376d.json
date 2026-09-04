@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "openpapers.real-source-capability-matrix.v1",
+  "baseline": "21c16871376d5e13ea69950fcc6ef770b5a198f7",
+  "split": "development",
+  "rows": [
+    {
+      "caseId": "rp-transformer-1706",
+      "taskId": "real-transformer-optimizer",
+      "category": "architecture",
+      "requestedInformation": [
+        "optimizer"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "explicit parameter extractor",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-bert-1810",
+      "taskId": "real-bert-objective",
+      "category": "pretraining",
+      "requestedInformation": [
+        "objectives"
+      ],
+      "expectedAnswerType": "entity-list-or-proposition",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-t5-1910",
+      "taskId": "real-t5-format",
+      "category": "pretraining",
+      "requestedInformation": [
+        "formulation"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-megatron-1909",
+      "taskId": "real-megatron-parallel",
+      "category": "systems",
+      "requestedInformation": [
+        "parallelism"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-zero-1910",
+      "taskId": "real-zero-stages",
+      "category": "distributed_training",
+      "requestedInformation": [
+        "partitioned_state"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "pdf acquisition unavailable"
+    },
+    {
+      "caseId": "rp-scaling-laws-2001",
+      "taskId": "real-scaling-gpu-count",
+      "category": "scaling",
+      "requestedInformation": [
+        "gpu_count"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper_review"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": null
+    },
+    {
+      "caseId": "rp-rag-2005",
+      "taskId": "real-rag-components",
+      "category": "retrieval_augmented_generation",
+      "requestedInformation": [
+        "components"
+      ],
+      "expectedAnswerType": "entity-list-or-proposition",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-gpt3-2005",
+      "taskId": "real-gpt3-regimes",
+      "category": "inference_evaluation",
+      "requestedInformation": [
+        "regimes"
+      ],
+      "expectedAnswerType": "entity-list-or-proposition",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-lora-2106",
+      "taskId": "real-lora-rank",
+      "category": "parameter_efficient_training",
+      "requestedInformation": [
+        "parameter"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-instructgpt-2203",
+      "taskId": "real-instructgpt-stages",
+      "category": "alignment",
+      "requestedInformation": [
+        "stages"
+      ],
+      "expectedAnswerType": "entity-list-or-proposition",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-flashattn-2205",
+      "taskId": "real-flashattn-exact",
+      "category": "inference_systems",
+      "requestedInformation": [
+        "attention"
+      ],
+      "expectedAnswerType": "entity-list-or-proposition",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-react-2210",
+      "taskId": "real-react-trace",
+      "category": "agents",
+      "requestedInformation": [
+        "trace"
+      ],
+      "expectedAnswerType": "entity-list-or-proposition",
+      "evidenceExpected": [
+        "paper"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": "field extraction failure"
+    },
+    {
+      "caseId": "rp-toolformer-2302",
+      "taskId": "real-toolformer-abstain",
+      "category": "tool_use",
+      "requestedInformation": [
+        "threshold"
+      ],
+      "expectedAnswerType": "scalar",
+      "evidenceExpected": [
+        "paper_review"
+      ],
+      "extractorSupport": "unsupported",
+      "assemblerSupport": "explicit parameter fields only",
+      "reconciliationSupport": "paper/code comparator only",
+      "currentActualStatus": "UNKNOWN",
+      "primaryBlocker": null
+    }
+  ]
+}
