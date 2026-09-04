@@ -10,6 +10,7 @@ const rules:Array<[PropositionField,string,RegExp,string]>= [
  ['formulation','text-to-text',/text[- ]to[- ]text/i,'explicit task formulation'],
  ['formulation','draft-and-verify',/draft(?:ing)?[- ]and[- ]verif(?:y|ication)/i,'explicit decoding formulation'],
  ['parallelism','tensor model parallelism',/tensor model parallel(?:ism)?/i,'explicit parallelism phrase'],
+ ['parallelism','tensor model parallelism',/intra[- ]layer model parallel(?:ism)?/i,'explicit tensor-parallel formulation'],
  ['parallelism','pipeline model parallelism',/pipeline model parallel(?:ism)?/i,'explicit parallelism phrase'],
  ['partitioned_state','optimizer states',/optimizer states?/i,'explicit partitioned training state'],
  ['partitioned_state','gradients',/\bgradients\b/i,'explicit partitioned training state'],
