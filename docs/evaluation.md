@@ -74,6 +74,8 @@ The baseline at commit `82f1044f1285` reports work/identifier accuracy `0.5333`,
 
 `npm run eval:providers` injects outages for scholarly providers and records transparent failure, retained evidence, false absence, and all-down uncertainty behavior. GitHub/Hugging Face are ecosystem adapters rather than members of the current scholarly search fan-out and therefore remain a separate integration gap.
 
+`evals/datasets/retrieval-holdout-v1.json` is an untouched five-query checkpoint set. `npm run eval:holdout` evaluates the accepted R-001 ranking without using the holdout for tuning; its result records `developmentDataNotUsed: true` and remains separate from the 44-query development benchmark.
+
 ## Latest milestone result
 
 `evals/results/final-milestone-1345a425ed06.json` is the latest clean-tree evaluation artifact. It records the post-R001 retrieval implementation, citation metrics, and 119-case identity guardrails from commit `1345a425ed06`.

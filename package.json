@@ -24,6 +24,8 @@
     "eval:research": "npm run build && node evals/runners/run-research-tasks.mjs",
     "eval:pdf": "npm run build && node evals/runners/run-pdf.mjs",
     "eval:providers": "npm run build && node evals/runners/run-provider-degradation.mjs",
+    "eval:holdout": "npm run build && node evals/runners/run-retrieval-holdout.mjs",
+    "eval:holdout": "npm run build && node evals/runners/run-retrieval-holdout.mjs",
     "test:postgres": "npm run build && node scripts/postgres-integration.mjs",
     "package:dry-run": "npm pack --dry-run",
     "prepack": "npm run build"
