@@ -8,7 +8,7 @@ Run it with:
 
 The runner exercises the real `ResearchService.search`, HTML document parser, and explicit training-parameter extractor. It records work/identifier resolution, answer, source, locator, support-status, abstention, fabricated-answer, and conflict metrics, plus one diagnostic row per task. Results are written under `evals/results/research-tasks-baseline-v1-*.json` and its `-failures.json` companion.
 
-The first baseline is intentionally a boundary measurement, not a quality claim. The current extractor supports only explicitly labeled learning rate, batch size, epochs, optimizer, weight decay, temperature, and gradient accumulation. It does not yet reconstruct arbitrary teacher/student, dataset, precision, GPU, or training-step fields. Such tasks remain in the gold set so unsupported architecture is visible rather than replaced with plausible values.
+The first baseline is intentionally a boundary measurement, not a quality claim. The current extractor supports only explicitly labeled learning rate, batch size, epochs, optimizer, weight decay, temperature, and gradient accumulation. It does not yet reconstruct arbitrary teacher/student, dataset, precision, GPU, or training-step fields. Such tasks remain in the gold set so unsupported architecture is visible rather than replaced with plausible values. A task that recovers only some requested fields is `PARTIALLY_SUPPORTED`, not `SUPPORTED`.
 
 `UNKNOWN` means the available evidence cannot establish a value. `NOT_REPORTED` is used only where the curated source review explicitly establishes absence. Provider failure and extraction failure never imply `NOT_REPORTED`.
 
