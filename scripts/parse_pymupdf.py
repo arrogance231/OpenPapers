@@ -1,10 +1,13 @@
+import contextlib
+import io
 import json
 import re
 import sys
-import pymupdf
+with contextlib.redirect_stdout(io.StringIO()):
+    import fitz
 
 path = sys.argv[1]
-doc = pymupdf.open(path)
+doc = fitz.open(path)
 sections = []
 current = None
 pending_number = None
@@ -31,6 +34,9 @@ for page_number, page in enumerate(doc, 1):
                 current = {'level': 1, 'heading': heading, 'text': '', 'page': page_number}
                 sections.append(current)
             elif current is not None:
-                current['text'] = (current['text'] + ' ' + line).strip()
+                if current['text'].endswith('-') and line and (line[0].isalnum() or line[0] in 'ﬁﬂ'):
+                    current['text'] += line
+                else:
+                    current['text'] = (current['text'] + ' ' + line).strip()
 sections = [section for section in sections if section['text']]
 print(json.dumps({'title': '', 'pages': [{'page': index + 1, 'text': page.get_text('text')} for index, page in enumerate(doc)], 'sections': sections, 'references': [], 'warnings': [], 'equations': [], 'figures': [], 'tables': []}))

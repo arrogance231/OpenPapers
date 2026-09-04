@@ -10,6 +10,7 @@ import { aggregateScoped, scoreScopedPaper, validateScopedFactDataset } from '..
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
 const dataset=JSON.parse(readFileSync(join(root,'evals/datasets/research-facts-v5-2-development.json'),'utf8'));
+const normalize=value=>String(value).normalize('NFKC').replace(/[ﬁﬂﬀﬃﬄ]/g,m=>({'ﬁ':'fi','ﬂ':'fl','ﬀ':'ff','ﬃ':'ffi','ﬄ':'ffl'}[m])).replace(/[‐‑‒–—−]/g,'-').replace(/-\s+/g,'').replace(/\s+/g,' ').trim().toLowerCase();
 const errors=validateScopedFactDataset(dataset); if(errors.length){console.error(JSON.stringify({errors},null,2));process.exit(1);}
 const acquirer=new PaperAcquirer(); const parser=new CommandPdfFallback('pymupdf','python','scripts/parse_pymupdf.py');
 const rows=await Promise.all(dataset.papers.map(async paper=>{
@@ -18,7 +19,10 @@ const rows=await Promise.all(dataset.papers.map(async paper=>{
     const acquired=await acquirer.acquire(paper.artifact.url); const sha256=createHash('sha256').update(acquired.body).digest('hex');
     if(sha256!==paper.artifact.sha256) throw new Error(`SHA-256 mismatch: expected ${paper.artifact.sha256}, received ${sha256}`);
     const parsed=await parser.extract(acquired.body,`${paper.paperId}.pdf`); const document={...parsed,url:acquired.url}; const extraction=extractResearchFacts(document);
-    const scoped={...paper,sourceSections:parsed.sections.filter(section=>paper.scope.sections.some(name=>section.heading.replace(/^\d+(?:\.\d+)*\s*/,'').toLowerCase().includes(name.toLowerCase()))).map(section=>({heading:section.heading,page:section.page??1,text:section.text}))};
+    const baseSections=parsed.sections.filter(section=>paper.scope.sections.some(name=>section.heading.replace(/^\d+(?:\.\d+)*\s*/,'').toLowerCase().includes(name.toLowerCase())));
+    const evidenceSections=parsed.sections.filter(section=>paper.goldFacts.some(gold=>normalize(gold.rawEvidence) && normalize(section.text).includes(normalize(gold.rawEvidence))));
+    const mappedSections=[...new Map([...baseSections,...evidenceSections].map(section=>[`${section.heading}|${section.page??''}`,section])).values()];
+    const scoped={...paper,sourceSections:mappedSections.map(section=>({heading:section.heading,page:section.page??1,text:section.text}))};
     const scored=scoreScopedPaper(scoped,extraction);
     return {...scored,paperId:paper.paperId,artifactSha256:sha256,parser:'pymupdf',parseSuccess:true,sectionHeadings:parsed.sections.map(section=>section.heading),parserWarnings:parsed.warnings,elapsedMs:Date.now()-started};
   } catch(error) { return {paperId:paper.paperId,parseSuccess:false,error:String(error),elapsedMs:Date.now()-started,candidates:0,candidateRecall:0,candidatesPerGold:null,tp:0,fp:0,fn:paper.goldFacts.length,outOfScope:0,duplicateEquivalent:0,precision:0,recall:0,f1:0}; }

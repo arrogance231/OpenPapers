@@ -1,5 +1,6 @@
 import type { Locator } from '../models/research.js';
 import type { ParsedDocument, DocumentSection } from '../ingestion/document.js';
+import { normalizePdfText } from './text-normalization.js';
 
 export type FactValue = string | number | boolean;
 export type FactPredicate = 'optimization.optimizer' | 'training.dataset' | 'architecture.depth' | 'architecture.attention.algorithm' | 'training.precision' | 'optimization.preference_method' | 'training.parameter_update' | 'retrieval.retriever';
@@ -10,6 +11,7 @@ export interface CandidateEvidence {
   candidatePredicate: FactPredicate;
   rawValue: string;
   rawText: string;
+  normalizedText: string;
   sourceId: string;
   sourceClass: 'PAPER';
   locator: Locator;
@@ -48,13 +50,13 @@ const rules: CandidateRule[] = [
   {predicate:'architecture.depth',triggerKind:'depth',pattern:/\b([A-Z][A-Za-z0-9_-]*(?:BASE|LARGE)?)\s+has\s+(\d+)\s+layers?\b/i,value:m=>m[2]!,subject:m=>m[1],scope:'architecture',stage:'all'},
   {predicate:'architecture.depth',triggerKind:'depth',pattern:/\b([A-Z][A-Za-z0-9_-]*)\s+(BASE|LARGE)\s*\(\s*L\s*=\s*(\d+)/i,value:m=>m[3]!,subject:m=>`${m[1]}${m[2]}`,scope:'architecture',stage:'all'},
   {predicate:'architecture.attention.algorithm',triggerKind:'attention',pattern:/\b(FlashAttention|PagedAttention|Multi-Head Attention)\b/i,value:m=>m[1]!,scope:'architecture',stage:'all'},
-  {predicate:'training.precision',triggerKind:'precision',pattern:/\b(\d+\s*-\s*bit)\s+quantized\b/i,value:m=>m[1]!.replace(/\s+/g,''),scope:'training',stage:'finetuning'},
+  {predicate:'training.precision',triggerKind:'precision',pattern:/\b(\d+\s*-\s*bit)\s+(?:quantized|precision|finetuning)\b/i,value:m=>m[1]!.replace(/\s+/g,''),scope:'training',stage:'finetuning'},
   {predicate:'optimization.preference_method',triggerKind:'preference_method',pattern:/\b(?:Direct Preference Optimization)\s*\((DPO)\)/i,value:m=>m[1]!,scope:'training',stage:'preference optimization'},
   {predicate:'training.parameter_update',triggerKind:'frozen_parameter',pattern:/\b(frozen)\b|does not receive gradient updates/i,value:()=> 'base weights frozen',scope:'training',stage:'finetuning'},
   {predicate:'retrieval.retriever',triggerKind:'retrieval',pattern:/\bretrieval\b/i,value:()=> 'retrieval',scope:'retrieval',stage:'inference'}
 ];
 
-function sentences(text: string): string[] { return text.split(/(?<=[.!?])\s+/).map(item=>item.trim()).filter(Boolean); }
+function sentences(text: string): Array<{rawText:string; normalizedText:string}> { return text.split(/(?<=[.!?])\s+/).map(rawText=>({rawText,normalizedText:normalizePdfText(rawText)})).filter(item=>item.normalizedText); }
 function locator(section: DocumentSection): Locator { return {section:section.heading,...(section.page===undefined?{}:{page:section.page}),...(section.pageId===undefined?{}:{pageId:section.pageId})}; }
 function isExternal(section: string, sentence: string): ValidationReason | undefined {
   if (/related|references?|prior work|previous work|cited|literature/i.test(section) || /\b(?:prior|previous|existing)\s+work\b|\bcited\s+(?:model|work)\b/i.test(sentence)) return 'REJECT_CITATION';
@@ -67,11 +69,12 @@ export function extractCandidateEvidence(document: ParsedDocument): CandidateEvi
   const candidates: CandidateEvidence[] = [];
   for (const section of document.sections) {
     if (!section.text) continue;
-    for (const sentence of sentences(section.text)) {
+    for (const sentencePair of sentences(section.text)) {
+      const sentence=sentencePair.normalizedText;
       for (const rule of rules) {
         const match = sentence.match(rule.pattern);
         if (!match) continue;
-        const candidate: CandidateEvidence = {candidatePredicate:rule.predicate,rawValue:rule.value(match,sentence),rawText:sentence,sourceId:document.url,sourceClass:'PAPER',locator:locator(section),section:section.heading,context:section.text,scopeHint:rule.scope,stageHint:rule.stage,triggerKind:rule.triggerKind,...(rule.subject?.(match) ? {subjectHint:rule.subject(match)} : {})};
+        const candidate: CandidateEvidence = {candidatePredicate:rule.predicate,rawValue:rule.value(match,sentence),rawText:sentencePair.rawText,normalizedText:sentence,sourceId:document.url,sourceClass:'PAPER',locator:locator(section),section:section.heading,context:normalizePdfText(section.text),scopeHint:rule.scope,stageHint:rule.stage,triggerKind:rule.triggerKind,...(rule.subject?.(match) ? {subjectHint:rule.subject(match)} : {})};
         candidates.push(candidate);
       }
     }
@@ -80,9 +83,10 @@ export function extractCandidateEvidence(document: ParsedDocument): CandidateEvi
 }
 
 export function validateCandidateEvidence(candidate: CandidateEvidence): { reason: ValidationReason; fact?: ResearchFact } {
-  const external = isExternal(candidate.section,candidate.rawText);
+  const sentence=candidate.normalizedText;
+  const external = isExternal(candidate.section,sentence);
   if (external) return {reason:external};
-  if (isNegated(candidate.rawText) && !(candidate.candidatePredicate === 'training.parameter_update' && /\bfrozen\b|\bfixed\b|does not receive gradient updates/i.test(candidate.rawText))) return {reason:'REJECT_NEGATION'};
+  if (isNegated(sentence) && !(candidate.candidatePredicate === 'training.parameter_update' && /\bfrozen\b|\bfixed\b|does not receive gradient updates/i.test(sentence))) return {reason:'REJECT_NEGATION'};
   if (!candidate.rawValue.trim()) return {reason:'REJECT_NORMALIZATION'};
   const value: FactValue = candidate.candidatePredicate === 'architecture.depth' ? Number(candidate.rawValue) : candidate.rawValue;
   if (typeof value === 'number' && !Number.isInteger(value)) return {reason:'REJECT_NORMALIZATION'};
