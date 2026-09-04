@@ -16,6 +16,10 @@ Every scope declares `EXHAUSTIVE_WITHIN_SCOPE`: all facts in the allowed predica
 
 Gold uses one canonical fact with multiple supporting locators when repeated evidence is semantically identical. Deterministic equivalence is limited to explicit rules: supervised fine-tuning/SFT, bfloat16/bf16, and direct preference optimization/DPO. There is no fuzzy semantic equivalence.
 
+The recorded unchanged baseline is `evals/results/v5-scoped-fact-baseline-f9d37d9113b5.json` (extractor commit `f9d37d9113b5060d2bd982ae68c846324d68290c`). It contains 6 papers and 7 gold facts. On the deliberately conservative adapter over current section-level output: 3 candidates, TP=0, FP=3, FN=7, OUT_OF_SCOPE=0, duplicate-equivalent=0, precision=0, recall=0, F1=0, mean candidate recall=0.5, and mean candidates/gold=0.4167. This is a real negative calibration signal, not a release-quality estimate: the current extractor emits broad section objects while the gold is fact-level, so the result demonstrates the measurement gap and justifies no validator tuning yet.
+
+The diagnostic LOPO artifact is `evals/results/v5-scoped-fact-lopo-f9d37d9113b5.json`; mean precision/recall/F1 are all 0. Since the current extractor has no learned or paper-specific rules, this is a transfer diagnostic, not a trained LOPO experiment.
+
 ## Metrics and diagnostics
 
 `evals/metrics/scoped-facts.mjs` provides schema validation, deterministic equivalence, per-paper scoring, aggregate TP/FP/FN, precision, recall, F1, candidate count, candidate recall, candidates per gold fact, OUT_OF_SCOPE, duplicate-equivalent count, locator/value/predicate/scope diagnostics, and validated-fact density. Error decomposition is machine-readable. Candidate density and validated density are diagnostic only and are not optimization targets.
