@@ -1,0 +1,828 @@
+{
+  "schemaVersion": "openpapers.real-source-v3-evaluation.v1",
+  "commit": "7af3828751fa664e83fb2e7c71d48af7bd94f710",
+  "dataset": "research-real-v3",
+  "split": "development",
+  "holdoutUsedForTuning": null,
+  "configuration": {
+    "extraction": "query-independent-facts",
+    "intent": "separate-query-intent",
+    "parser": "pymupdf-real-pdf"
+  },
+  "taskCount": 12,
+  "factMetrics": {
+    "precision": 0.0784313725490196,
+    "recall": 0.6666666666666666,
+    "valueAccuracy": 0.6666666666666666,
+    "locatorAccuracy": 1
+  },
+  "queryMetrics": {
+    "predicateAccuracy": 1
+  },
+  "answerMetrics": {
+    "answerCorrectness": 0.6666666666666666,
+    "evidenceSourceAccuracy": 0.8333333333333334,
+    "locatorAccuracy": 1,
+    "supportStatusAccuracy": 0.6666666666666666,
+    "falseUnknown": 0.16666666666666666,
+    "falseNotReported": 0,
+    "fabricatedAnswerRate": 0
+  },
+  "failureCategories": {
+    "fact selection/normalization": 4
+  },
+  "rows": [
+    {
+      "caseId": "v3-transformer-xl",
+      "taskId": "v3-transformer-xl-task",
+      "predicate": "architecture.recurrence",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.recurrence": "segment-level recurrence"
+      },
+      "actualAnswer": {
+        "architecture.recurrence": "segment-level recurrence"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "1901.02860",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/1901.02860v1-architecture.recurrence-segment-level recurrence",
+          "predicate": "architecture.recurrence",
+          "value": "segment-level recurrence",
+          "rawValue": "segment-level recurrence",
+          "sourceId": "https://arxiv.org/pdf/1901.02860v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "Concretely, it consists of a segment-level recurrence mechanism and a novel positional encoding scheme.",
+          "extractionMethod": "recurrent memory",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/1901.02860v1-architecture.recurrence-segment-level recurrence",
+          "sourceId": "https://arxiv.org/pdf/1901.02860v1",
+          "authors": [],
+          "title": "Extracted architecture.recurrence fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Concretely, it consists of a segment-level recurrence mechanism and a novel positional encoding scheme.",
+          "citationText": "https://arxiv.org/pdf/1901.02860v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 3,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 3
+    },
+    {
+      "caseId": "v3-electra",
+      "taskId": "v3-electra-task",
+      "predicate": "training.objective",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.objective": "replaced token detection"
+      },
+      "actualAnswer": {
+        "training.objective": "replaced token detection"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "CONFLICTING",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2003.10555",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-replaced token detection",
+          "predicate": "training.objective",
+          "value": "replaced token detection",
+          "rawValue": "replaced token detection",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "As an alternative, we propose a more sample-efﬁcient pre-training task called replaced token detection.",
+          "extractionMethod": "discriminator objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-masked language model",
+          "predicate": "training.objective",
+          "value": "masked language model",
+          "rawValue": "Masked language model",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "edu ABSTRACT Masked language modeling (MLM) pre-training methods such as BERT corrupt the input by replacing some tokens with [MASK] and then train a model to re- construct the original tokens.",
+          "extractionMethod": "masked objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-contrastive learning",
+          "predicate": "training.objective",
+          "value": "contrastive learning",
+          "rawValue": "Contrastive Learning",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 10"
+          },
+          "rawEvidence": "Contrastive Learning Broadly, contrastive learning methods distinguish observed data points from ﬁctitious negative samples.",
+          "extractionMethod": "contrastive objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-next sentence prediction",
+          "predicate": "training.objective",
+          "value": "next sentence prediction",
+          "rawValue": "next sentence prediction",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 13"
+          },
+          "rawEvidence": "Also, we did not use the next sentence prediction objective proposed in the original BERT paper, as recent work has suggested it does not improve scores (Yang et al.",
+          "extractionMethod": "pretraining objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-replaced token detection",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "As an alternative, we propose a more sample-efﬁcient pre-training task called replaced token detection.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 1"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-masked language model",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "edu ABSTRACT Masked language modeling (MLM) pre-training methods such as BERT corrupt the input by replacing some tokens with [MASK] and then train a model to re- construct the original tokens.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 1"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-contrastive learning",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 10"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Contrastive Learning Broadly, contrastive learning methods distinguish observed data points from ﬁctitious negative samples.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 10"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2003.10555v1-training.objective-next sentence prediction",
+          "sourceId": "https://arxiv.org/pdf/2003.10555v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 13"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Also, we did not use the next sentence prediction objective proposed in the original BERT paper, as recent work has suggested it does not improve scores (Yang et al.",
+          "citationText": "https://arxiv.org/pdf/2003.10555v1#Page 13"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 7,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 7
+    },
+    {
+      "caseId": "v3-linformer",
+      "taskId": "v3-linformer-task",
+      "predicate": "architecture.attention",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.attention": "linear attention"
+      },
+      "actualAnswer": {
+        "architecture.attention": "linear attention"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2006.04768",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2006.04768v1-architecture.attention-linear attention",
+          "predicate": "architecture.attention",
+          "value": "linear attention",
+          "rawValue": "Linear Complexity",
+          "sourceId": "https://arxiv.org/pdf/2006.04768v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "Linformer: Self-Attention with Linear Complexity Sinong Wang, Belinda Li, Madian Khabsa, Han Fang, Hao Ma Facebook AI, USA Abstract Large transformer models have shown extraordinary success in achieving state-of- the-art results in many natural language processing applications.",
+          "extractionMethod": "linear attention",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2006.04768v1-architecture.attention-linear attention",
+          "sourceId": "https://arxiv.org/pdf/2006.04768v1",
+          "authors": [],
+          "title": "Extracted architecture.attention fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Linformer: Self-Attention with Linear Complexity Sinong Wang, Belinda Li, Madian Khabsa, Han Fang, Hao Ma Facebook AI, USA Abstract Large transformer models have shown extraordinary success in achieving state-of- the-art results in many natural language processing applications.",
+          "citationText": "https://arxiv.org/pdf/2006.04768v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 7,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 7
+    },
+    {
+      "caseId": "v3-swin",
+      "taskId": "v3-swin-task",
+      "predicate": "architecture.attention",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.attention": "shifted-window attention"
+      },
+      "actualAnswer": {
+        "architecture.attention": "shifted-window attention"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2103.14030",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2103.14030v1-architecture.attention-shifted-window attention",
+          "predicate": "architecture.attention",
+          "value": "shifted-window attention",
+          "rawValue": "Shifted Window",
+          "sourceId": "https://arxiv.org/pdf/2103.14030v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows Ze Liu†* Yutong Lin†* Yue Cao* Han Hu*‡ Yixuan Wei† Zheng Zhang Stephen Lin Baining Guo Microsoft Research Asia {v-zeliu1,v-yutlin,yuecao,hanhu,v-yixwe,zhez,stevelin,bainguo}@microsoft.",
+          "extractionMethod": "windowed attention",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2103.14030v1-architecture.attention-shifted-window attention",
+          "sourceId": "https://arxiv.org/pdf/2103.14030v1",
+          "authors": [],
+          "title": "Extracted architecture.attention fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows Ze Liu†* Yutong Lin†* Yue Cao* Han Hu*‡ Yixuan Wei† Zheng Zhang Stephen Lin Baining Guo Microsoft Research Asia {v-zeliu1,v-yutlin,yuecao,hanhu,v-yixwe,zhez,stevelin,bainguo}@microsoft.",
+          "citationText": "https://arxiv.org/pdf/2103.14030v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 6,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 6
+    },
+    {
+      "caseId": "v3-vit",
+      "taskId": "v3-vit-task",
+      "predicate": "architecture.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.formulation": "image patches"
+      },
+      "actualAnswer": {
+        "architecture.formulation": "image patches"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2010.11929",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2010.11929v1-architecture.formulation-image patches",
+          "predicate": "architecture.formulation",
+          "value": "image patches",
+          "rawValue": "image patches",
+          "sourceId": "https://arxiv.org/pdf/2010.11929v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "We show that this reliance on CNNs is not necessary and a pure transformer applied directly to sequences of image patches can perform very well on image classiﬁcation tasks.",
+          "extractionMethod": "vision token formulation",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2010.11929v1-architecture.formulation-image patches",
+          "sourceId": "https://arxiv.org/pdf/2010.11929v1",
+          "authors": [],
+          "title": "Extracted architecture.formulation fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "We show that this reliance on CNNs is not necessary and a pure transformer applied directly to sequences of image patches can perform very well on image classiﬁcation tasks.",
+          "citationText": "https://arxiv.org/pdf/2010.11929v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 6,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 6
+    },
+    {
+      "caseId": "v3-mae",
+      "taskId": "v3-mae-task",
+      "predicate": "training.objective",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.objective": "masked reconstruction"
+      },
+      "actualAnswer": {
+        "training.objective": "contrastive learning"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "CONFLICTING",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2111.06377",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-contrastive learning",
+          "predicate": "training.objective",
+          "value": "contrastive learning",
+          "rawValue": "contrastive learning",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 3"
+          },
+          "rawEvidence": "Self-supervised learning approaches have seen signiﬁcant interest in computer vision, often focusing on different pre- text tasks for pre-training [15, 50, 35, 59, 38, 17].",
+          "extractionMethod": "contrastive objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-masked language model",
+          "predicate": "training.objective",
+          "value": "masked language model",
+          "rawValue": "Masked language model",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 3"
+          },
+          "rawEvidence": "Related Work Masked language modeling and its autoregressive coun- terparts, e.",
+          "extractionMethod": "masked objective",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-contrastive learning",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 3"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Self-supervised learning approaches have seen signiﬁcant interest in computer vision, often focusing on different pre- text tasks for pre-training [15, 50, 35, 59, 38, 17].",
+          "citationText": "https://arxiv.org/pdf/2111.06377v1#Page 3"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2111.06377v1-training.objective-masked language model",
+          "sourceId": "https://arxiv.org/pdf/2111.06377v1",
+          "authors": [],
+          "title": "Extracted training.objective fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 3"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Related Work Masked language modeling and its autoregressive coun- terparts, e.",
+          "citationText": "https://arxiv.org/pdf/2111.06377v1#Page 3"
+        }
+      ],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 9,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 9
+    },
+    {
+      "caseId": "v3-opt",
+      "taskId": "v3-opt-task",
+      "predicate": "model.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "model.formulation": "decoder-only Transformer"
+      },
+      "actualAnswer": {
+        "model.formulation": "decoder-only Transformer"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2205.01068",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2205.01068v1-model.formulation-decoder-only Transformer",
+          "predicate": "model.formulation",
+          "value": "decoder-only Transformer",
+          "rawValue": "decoder-only",
+          "sourceId": "https://arxiv.org/pdf/2205.01068v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "We present Open Pre-trained Transformers (OPT), a suite of decoder-only pre-trained transformers ranging from 125M to 175B parameters, which we aim to fully and responsibly share with interested researchers.",
+          "extractionMethod": "language-model architecture",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2205.01068v1-model.formulation-decoder-only Transformer",
+          "sourceId": "https://arxiv.org/pdf/2205.01068v1",
+          "authors": [],
+          "title": "Extracted model.formulation fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "We present Open Pre-trained Transformers (OPT), a suite of decoder-only pre-trained transformers ranging from 125M to 175B parameters, which we aim to fully and responsibly share with interested researchers.",
+          "citationText": "https://arxiv.org/pdf/2205.01068v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 8,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 8
+    },
+    {
+      "caseId": "v3-flan",
+      "taskId": "v3-flan-task",
+      "predicate": "training.stage",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.stage": "instruction fine-tuning"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2210.11416",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 11,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 11
+    },
+    {
+      "caseId": "v3-gpt4",
+      "taskId": "v3-gpt4-task",
+      "predicate": "model.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "model.formulation": "multimodal model"
+      },
+      "actualAnswer": {
+        "model.formulation": "multimodal model"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2303.08774",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2303.08774v1-model.formulation-multimodal model",
+          "predicate": "model.formulation",
+          "value": "multimodal model",
+          "rawValue": "multimodal",
+          "sourceId": "https://arxiv.org/pdf/2303.08774v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "GPT-4 Technical Report OpenAI∗ Abstract We report the development of GPT-4, a large-scale, multimodal model which can accept image and text inputs and produce text outputs.",
+          "extractionMethod": "multimodal capability",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2303.08774v1-model.formulation-multimodal model",
+          "sourceId": "https://arxiv.org/pdf/2303.08774v1",
+          "authors": [],
+          "title": "Extracted model.formulation fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "GPT-4 Technical Report OpenAI∗ Abstract We report the development of GPT-4, a large-scale, multimodal model which can accept image and text inputs and produce text outputs.",
+          "citationText": "https://arxiv.org/pdf/2303.08774v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 11,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 11
+    },
+    {
+      "caseId": "v3-mtbench",
+      "taskId": "v3-mtbench-task",
+      "predicate": "evaluation.method",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "evaluation.method": "pairwise judging"
+      },
+      "actualAnswer": {
+        "evaluation.method": "pairwise judging"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2306.05685",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2306.05685v1-evaluation.method-pairwise judging",
+          "predicate": "evaluation.method",
+          "value": "pairwise judging",
+          "rawValue": "LLM-as-a-judge",
+          "sourceId": "https://arxiv.org/pdf/2306.05685v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "Judging LLM-as-a-judge with MT-Bench and Chatbot Arena Lianmin Zheng1∗ Wei-Lin Chiang1∗ Ying Sheng4∗ Siyuan Zhuang1 Zhanghao Wu1 Yonghao Zhuang3 Zi Lin2 Zhuohan Li1 Dacheng Li135 Eric.",
+          "extractionMethod": "evaluation method",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2306.05685v1-evaluation.method-pairwise judging",
+          "sourceId": "https://arxiv.org/pdf/2306.05685v1",
+          "authors": [],
+          "title": "Extracted evaluation.method fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Judging LLM-as-a-judge with MT-Bench and Chatbot Arena Lianmin Zheng1∗ Wei-Lin Chiang1∗ Ying Sheng4∗ Siyuan Zhuang1 Zhanghao Wu1 Yonghao Zhuang3 Zi Lin2 Zhuohan Li1 Dacheng Li135 Eric.",
+          "citationText": "https://arxiv.org/pdf/2306.05685v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 9,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 9
+    },
+    {
+      "caseId": "v3-deepseekv2",
+      "taskId": "v3-deepseekv2-task",
+      "predicate": "architecture.moe",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.moe": "mixture of experts"
+      },
+      "actualAnswer": {
+        "architecture.moe": "sparse mixture of experts"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2405.04434",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2405.04434v1-architecture.moe-sparse mixture of experts",
+          "predicate": "architecture.moe",
+          "value": "sparse mixture of experts",
+          "rawValue": "Mixture-of-Experts",
+          "sourceId": "https://arxiv.org/pdf/2405.04434v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model DeepSeek-AI research@deepseek.",
+          "extractionMethod": "mixture of experts",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2405.04434v1-architecture.moe-sparse mixture of experts",
+          "sourceId": "https://arxiv.org/pdf/2405.04434v1",
+          "authors": [],
+          "title": "Extracted architecture.moe fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model DeepSeek-AI research@deepseek.",
+          "citationText": "https://arxiv.org/pdf/2405.04434v1#Page 1"
+        }
+      ],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 15,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 15
+    },
+    {
+      "caseId": "v3-gemma",
+      "taskId": "v3-gemma-task",
+      "predicate": "training.objective",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "training.objective": "knowledge distillation"
+      },
+      "actualAnswer": {},
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "UNKNOWN",
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2403.08295",
+        "failures": []
+      },
+      "facts": [],
+      "evidence": [],
+      "failureCategory": "fact selection/normalization",
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 10,
+      "factTruePositive": 0,
+      "goldFactCount": 1,
+      "actualFactCount": 10
+    }
+  ]
+}
