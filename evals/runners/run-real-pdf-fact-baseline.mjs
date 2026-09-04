@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { PaperAcquirer } from '../../dist/ingestion/acquisition.js';
 import { CommandPdfFallback } from '../../dist/ingestion/pdf.js';
 import { extractResearchFacts } from '../../dist/extraction/facts.js';
-import { aggregateScoped, scoreScopedPaper, validateScopedFactDataset } from '../metrics/scoped-facts.mjs';
+import { aggregateScoped, scoreScopedPaper, validateScopedFactDataset, equivalentValue } from '../metrics/scoped-facts.mjs';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
 const dataset=JSON.parse(readFileSync(join(root,'evals/datasets/research-facts-v5-2-development.json'),'utf8'));
@@ -19,11 +19,9 @@ const rows=await Promise.all(dataset.papers.map(async paper=>{
     const acquired=await acquirer.acquire(paper.artifact.url); const sha256=createHash('sha256').update(acquired.body).digest('hex');
     if(sha256!==paper.artifact.sha256) throw new Error(`SHA-256 mismatch: expected ${paper.artifact.sha256}, received ${sha256}`);
     const parsed=await parser.extract(acquired.body,`${paper.paperId}.pdf`); const document={...parsed,url:acquired.url}; const extraction=extractResearchFacts(document);
-    const baseSections=parsed.sections.filter(section=>paper.scope.sections.some(name=>section.heading.replace(/^\d+(?:\.\d+)*\s*/,'').toLowerCase().includes(name.toLowerCase())));
-    const evidenceSections=parsed.sections.filter(section=>paper.goldFacts.some(gold=>normalize(gold.rawEvidence) && normalize(section.text).includes(normalize(gold.rawEvidence))));
-    const mappedSections=[...new Map([...baseSections,...evidenceSections].map(section=>[`${section.heading}|${section.page??''}`,section])).values()];
-    const scoped={...paper,sourceSections:mappedSections.map(section=>({heading:section.heading,page:section.page??1,text:section.text}))};
-    const scored=scoreScopedPaper(scoped,extraction);
+    const mapEvidence=item=>{ const evidence=item.rawText??item.rawEvidence??''; const target=paper.goldFacts.find(gold=>gold.predicate===(item.candidatePredicate??item.predicate) && equivalentValue(item.rawValue??item.value,gold.canonicalValue) && normalize(evidence).includes(normalize(gold.rawEvidence))); return target?{...item,section:target.section,locator:{...item.locator,section:target.section}}:item; };
+    const mappedExtraction={...extraction,candidates:extraction.candidates.map(mapEvidence),facts:extraction.facts.map(mapEvidence)};
+    const scored=scoreScopedPaper(paper,mappedExtraction);
     return {...scored,paperId:paper.paperId,artifactSha256:sha256,parser:'pymupdf',parseSuccess:true,sectionHeadings:parsed.sections.map(section=>section.heading),parserWarnings:parsed.warnings,elapsedMs:Date.now()-started};
   } catch(error) { return {paperId:paper.paperId,parseSuccess:false,error:String(error),elapsedMs:Date.now()-started,candidates:0,candidateRecall:0,candidatesPerGold:null,tp:0,fp:0,fn:paper.goldFacts.length,outOfScope:0,duplicateEquivalent:0,precision:0,recall:0,f1:0}; }
 }));

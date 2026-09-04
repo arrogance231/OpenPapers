@@ -15,10 +15,9 @@ export function equivalentValue(a, b) {
 }
 
 function sectionKey(value) { return String(value).replace(/^\d+(?:\.\d+)*\s*/,'').trim().toLowerCase(); }
-function sectionInScope(section, paper) { const key=sectionKey(section); const declared=[...(paper.scope.sections??[]),...(paper.sourceSections??[]).map(item=>item.heading)]; return declared.some(name=>key===sectionKey(name) || key.includes(sectionKey(name))); }
+function sectionInScope(section, paper) { const key=sectionKey(section); return (paper.scope.sections??[]).some(name=>key===sectionKey(name) || key.includes(sectionKey(name))); }
 function subjectInScope(item, paper) { const compact=value=>String(value).toLowerCase().replace(/\s+/g,''); return !paper.scope.subjects?.length || !item.subject || paper.scope.subjects.some(subject=>compact(item.subject)===compact(subject)); }
 function family(predicate) { return predicate.split('.')[0]; }
-function evidenceKey(value) { return String(value ?? '').normalize('NFKC').replace(/[‐‑‒–—−]/g,'-').replace(/-\s+/g,'').replace(/\s+/g,' ').trim().toLowerCase(); }
 
 export function validateScopedFactDataset(dataset) {
   const errors = [];
@@ -55,15 +54,15 @@ export function scoreScopedPaper(paper, predicted) {
   const production = !Array.isArray(predicted);
   const predictedFacts = production ? predicted.facts : predicted;
   const gold = paper.goldFacts;
-  const candidates = (production ? predicted.candidates : predictedFacts).map(item => production ? { predicate:item.candidatePredicate, value:item.rawValue, rawEvidence:item.rawText, section:item.section, locator:item.locator, subject:item.subjectHint } : projectedCandidate(item));
-  const accepted = production ? predictedFacts.map(item => ({predicate:item.predicate, value:item.value, rawEvidence:item.rawEvidence, section:item.locator.section ?? '', locator:item.locator, subject:item.subject})) : candidates;
+  const candidates = (production ? predicted.candidates : predictedFacts).map(item => production ? { predicate:item.candidatePredicate, value:item.rawValue, section:item.section, locator:item.locator, subject:item.subjectHint } : projectedCandidate(item));
+  const accepted = production ? predictedFacts.map(item => ({predicate:item.predicate, value:item.value, section:item.locator.section ?? '', locator:item.locator, subject:item.subject})) : candidates;
   const inScope = candidates.filter(candidate => sectionInScope(candidate.section,paper) && subjectInScope(candidate,paper) && paper.allowedPredicateFamilies.some(prefix => candidate.predicate === prefix || candidate.predicate.startsWith(`${prefix}.`)));
   const acceptedInScope = accepted.filter(fact => sectionInScope(fact.section,paper) && subjectInScope(fact,paper) && paper.allowedPredicateFamilies.some(prefix => fact.predicate === prefix || fact.predicate.startsWith(`${prefix}.`)));
   const used = new Set();
   const matches = [];
   const duplicateEquivalent = [];
   for (const fact of acceptedInScope) {
-    const same = (item) => (item.section === fact.section || sectionKey(item.section) === sectionKey(fact.section) || sectionKey(fact.section).includes(sectionKey(item.section)) || (item.rawEvidence && fact.rawEvidence && (evidenceKey(item.rawEvidence).includes(evidenceKey(fact.rawEvidence)) || evidenceKey(fact.rawEvidence).includes(evidenceKey(item.rawEvidence))))) && item.predicate === fact.predicate && equivalentValue(item.canonicalValue, fact.value);
+    const same = (item) => (item.section === fact.section || sectionKey(item.section) === sectionKey(fact.section) || sectionKey(fact.section).includes(sectionKey(item.section))) && item.predicate === fact.predicate && equivalentValue(item.canonicalValue, fact.value);
     const index = gold.findIndex((item, i) => !used.has(i) && same(item));
     if (index >= 0) { used.add(index); matches.push({candidate:fact, gold:gold[index], classification:'TP'}); }
     else if (gold.some(same)) duplicateEquivalent.push({candidate:fact, classification:'DUPLICATE_EQUIVALENT'});

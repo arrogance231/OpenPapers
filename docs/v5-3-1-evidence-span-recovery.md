@@ -96,7 +96,7 @@ Artifact: `evals/results/v5-real-pdf-fact-baseline-9a7de055b9b4.json`
 - papers: 6;
 - parse success: 6/6;
 - candidates: 175;
-- candidate recall mean: 0.7500;
+- candidate recall mean: 0.8333;
 - TP: 6;
 - FP: 0;
 - FN: 1;
