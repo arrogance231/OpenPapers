@@ -6,6 +6,7 @@ import { validateCitationIntegrity } from '../research/verification.js';
 import type { ResearchResponse, Locator } from '../models/research.js';
 import { makeEvidence } from '../research/citations.js';
 import { registerEcosystemTools } from './tool-modules/ecosystem.js';
+import { registerReconstructionTools } from './tool-modules/reconstruction.js';
 import { withToolBoundary } from './boundary.js';
 
 const result = (data: unknown, summary: string) => { const candidate = data as Partial<ResearchResponse<unknown>>; if (Array.isArray(candidate.evidence) && Array.isArray(candidate.references)) { const integrity = validateCitationIntegrity({...candidate, summary} as ResearchResponse<unknown>); if (!integrity.valid) return { content: [{ type: 'text' as const, text: `Citation integrity failure: ${integrity.errors.join('; ')}` }], structuredContent: { integrity } as Record<string, unknown>, isError: true }; } return { content: [{ type: 'text' as const, text: summary }], structuredContent: data as Record<string, unknown> }; };
@@ -44,4 +45,5 @@ export function registerTools(server: McpServer, research: ResearchService): voi
   server.registerTool('research_topic', { title: 'Research topic', description: 'Build a provenance-preserving literature overview. Synthesis is labeled; no unsupported claims are emitted.', inputSchema: z.object({topic:z.string().min(1), objective:z.enum(['implement','literature_review']).default('literature_review'), depth:z.enum(['quick','deep']).default('quick'), limit:z.number().int().min(1).max(50).default(15)}) }, async ({topic, limit}) => { const r=await research.search(topic,limit); return result({...r, synthesis: r.data.length ? `Retrieved ${r.data.length} works for the topic. This is a retrieval result, not an assertion that the works use identical methods.` : 'No verified literature was retrieved.'}, r.summary); });
   server.registerTool('vector_search', { title:'Vector search', description:'Search indexed paper vectors through the configured vector backend.', inputSchema:z.object({query:z.string().min(1).max(500),limit:z.number().int().min(1).max(100).default(10)}) }, async ({query,limit}) => { try { const matches=await research.vectorSearch(query,limit); return {content:[{type:'text' as const,text:`Found ${matches.length} vector match(es).`}],structuredContent:{matches}}; } catch(error) { return {content:[{type:'text' as const,text:`Vector search failed: ${String(error)}`}],isError:true}; } });
   registerEcosystemTools(server, { research });
+  registerReconstructionTools(server, { research });
 }

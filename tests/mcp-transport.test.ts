@@ -14,7 +14,7 @@ describe('MCP SDK transport boundary',()=>{
     const initialized=await call(handler,'initialize',{protocolVersion:'2025-06-18',capabilities:{},clientInfo:{name:'test',version:'1'}});
     expect(initialized.status).toBe(200); expect(initialized.body.result.protocolVersion).toBeTruthy();
     const listed=await call(handler,'tools/list');
-    expect(listed.status).toBe(200); expect(listed.body.result.tools.length).toBe(36); await handler.close();
+    expect(listed.status).toBe(200); expect(listed.body.result.tools.length).toBe(37); await handler.close();
   });
   it('returns protocol-level errors for invalid input',async()=>{
     const handler=createHttpHandler(new ResearchService());
