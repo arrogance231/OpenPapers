@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "openpapers.v4-candidate-audit.v1",
+  "dataset": "research-real-v3",
+  "split": "development",
+  "holdoutUsedForTuning": false,
+  "aggregate": {
+    "papers": 12,
+    "goldFacts": 12,
+    "candidateCount": 454,
+    "validatedFactCount": 89,
+    "candidateRecall": 1,
+    "factRecall": 1,
+    "candidatesPerGoldFact": 37.833333333333336,
+    "validatorFalseRejections": 0
+  },
+  "cases": [
+    {
+      "caseId": "v3-transformer-xl",
+      "goldFacts": 1,
+      "candidateCount": 13,
+      "validatedFactCount": 2,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-electra",
+      "goldFacts": 1,
+      "candidateCount": 48,
+      "validatedFactCount": 5,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-linformer",
+      "goldFacts": 1,
+      "candidateCount": 9,
+      "validatedFactCount": 4,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-swin",
+      "goldFacts": 1,
+      "candidateCount": 15,
+      "validatedFactCount": 6,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-vit",
+      "goldFacts": 1,
+      "candidateCount": 28,
+      "validatedFactCount": 6,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-mae",
+      "goldFacts": 1,
+      "candidateCount": 21,
+      "validatedFactCount": 6,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-opt",
+      "goldFacts": 1,
+      "candidateCount": 37,
+      "validatedFactCount": 7,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-flan",
+      "goldFacts": 1,
+      "candidateCount": 91,
+      "validatedFactCount": 11,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-gpt4",
+      "goldFacts": 1,
+      "candidateCount": 77,
+      "validatedFactCount": 11,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-mtbench",
+      "goldFacts": 1,
+      "candidateCount": 37,
+      "validatedFactCount": 8,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-deepseekv2",
+      "goldFacts": 1,
+      "candidateCount": 56,
+      "validatedFactCount": 14,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    },
+    {
+      "caseId": "v3-gemma",
+      "goldFacts": 1,
+      "candidateCount": 22,
+      "validatedFactCount": 9,
+      "candidateGoldRecall": 1,
+      "factGoldRecall": 1,
+      "falseRejectionCount": 0
+    }
+  ]
+}

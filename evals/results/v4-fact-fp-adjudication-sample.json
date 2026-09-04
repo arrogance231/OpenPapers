@@ -1,0 +1,291 @@
+{
+  "dataset": "research-real-v3",
+  "split": "development",
+  "sampleSize": 30,
+  "policy": "manual development-only adjudication; unannotated facts are not presumed false",
+  "sample": [
+    {
+      "caseId": "v3-transformer-xl",
+      "predicate": "system.zero_stage",
+      "value": "parameters",
+      "rawEvidence": "(self-attention + feed-forward) where the function SG(\u00b7) stands for stop-gradient, the notation [hu \u25e6hv] indicates the concatenation of two hidden sequences along the length dimension, and W\u00b7 denotes model parameters.",
+      "section": "Page 4",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-transformer-xl",
+      "predicate": "architecture.moe",
+      "value": "mixture of experts",
+      "rawEvidence": "Outrageously large neural networks: The sparsely-gated mixture-of-experts layer.",
+      "section": "Page 13",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "training.objective",
+      "value": "masked language model",
+      "rawEvidence": "edu ABSTRACT Masked language modeling (MLM) pre-training methods such as BERT corrupt the input by replacing some tokens with [MASK] and then train a model to re- construct the original tokens.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "WRONG_ROLE"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "retrieval.component",
+      "value": "generator",
+      "rawEvidence": "Instead of masking the input, our approach cor- rupts it by replacing some tokens with plausible alternatives sampled from a small generator network.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "WRONG_ROLE"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "training.stage",
+      "value": "fine-tuning",
+      "rawEvidence": "This corruption proce- dure solves a mismatch in BERT (although not in XLNet) where the network sees arti\ufb01cial [MASK] tokens during pre-training but not when being \ufb01ne-tuned on downstream tasks.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "WRONG_ROLE"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "system.zero_stage",
+      "value": "parameters",
+      "rawEvidence": ", 2019), de- spite having fewer parameters and using 1/4 of the compute for training.",
+      "section": "Page 2",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "reasoning.trace_type",
+      "value": "action",
+      "rawEvidence": "We believe the worse accuracy is mainly due to the poor sample ef\ufb01ciency of reinforcement learning when working in the large action space of generating text.",
+      "section": "Page 6",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "training.objective",
+      "value": "contrastive learning",
+      "rawEvidence": "Contrastive Learning Broadly, contrastive learning methods distinguish observed data points from \ufb01ctitious negative samples.",
+      "section": "Page 10",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-electra",
+      "predicate": "training.objective",
+      "value": "next sentence prediction",
+      "rawEvidence": "Also, we did not use the next sentence prediction objective proposed in the original BERT paper, as recent work has suggested it does not improve scores (Yang et al.",
+      "section": "Page 13",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-linformer",
+      "predicate": "system.zero_stage",
+      "value": "parameters",
+      "rawEvidence": "Over the last couple of years, the number of parameters in state-of-the-art NLP transformers has grown drastically, from the original 3 billion introduced in BERT-Large to 175 billion in GPT-3 (Brown et al.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-linformer",
+      "predicate": "reasoning.trace_type",
+      "value": "observation",
+      "rawEvidence": "Our approach is inspired by the key observation that self-attention is low rank.",
+      "section": "Page 2",
+      "page": null,
+      "classification": "WRONG_ROLE"
+    },
+    {
+      "caseId": "v3-linformer",
+      "predicate": "training.objective",
+      "value": "knowledge distillation",
+      "rawEvidence": "Knowledge Distillation (Hinton et al.",
+      "section": "Page 3",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-linformer",
+      "predicate": "system.zero_stage",
+      "value": "gradients",
+      "rawEvidence": ", 2020), where the weights are quantized during training and the gradients are approximated with the Straight-Through Estimator.",
+      "section": "Page 3",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-linformer",
+      "predicate": "evaluation.regime",
+      "value": "few-shot",
+      "rawEvidence": "Language models are few-shot learners.",
+      "section": "Page 9",
+      "page": null,
+      "classification": "WRONG_SCOPE"
+    },
+    {
+      "caseId": "v3-linformer",
+      "predicate": "architecture.formulation",
+      "value": "text-to-text",
+      "rawEvidence": "Exploring the limits of transfer learning with a uni\ufb01ed text-to-text transformer.",
+      "section": "Page 10",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-swin",
+      "predicate": "architecture.formulation",
+      "value": "image patches",
+      "rawEvidence": "(a) The proposed Swin Transformer builds hierarchical feature maps by merging image patches (shown in gray) in deeper layers and has linear computation complexity to input image size due to computation of self-attention only within each local win- dow (shown in red).",
+      "section": "Page 1",
+      "page": null,
+      "classification": "VALID_FACT_MISSING_FROM_GOLD"
+    },
+    {
+      "caseId": "v3-swin",
+      "predicate": "model.formulation",
+      "value": "multimodal model",
+      "rawEvidence": "Its tremendous success in the language domain has led re- searchers to investigate its adaptation to computer vision, where it has recently demonstrated promising results on cer- tain tasks, speci\ufb01cally image classi\ufb01cation [19] and joint vision-language modeling [46].",
+      "section": "Page 1",
+      "page": null,
+      "classification": "WRONG_SCOPE"
+    },
+    {
+      "caseId": "v3-swin",
+      "predicate": "system.zero_stage",
+      "value": "parameters",
+      "rawEvidence": "The architecture hyper-parameters of these model variants are: \u2022 Swin-T: C = 96, layer numbers = {2, 2, 6, 2} \u2022 Swin-S: C = 96, layer numbers ={2, 2, 18, 2} \u2022 Swin-B: C = 128, layer numbers ={2, 2, 18, 2} \u2022 Swin-L: C = 192, layer numbers ={2, 2, 18, 2} where C is the channel number of the hidden layers in the \ufb01rst stage.",
+      "section": "Page 5",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-swin",
+      "predicate": "training.stage",
+      "value": "fine-tuning",
+      "rawEvidence": "The learnt relative position bias in pre-training can be also used to initialize a model for \ufb01ne-tuning with a differ- ent window size through bi-cubic interpolation [19, 60].",
+      "section": "Page 5",
+      "page": null,
+      "classification": "WRONG_ROLE"
+    },
+    {
+      "caseId": "v3-swin",
+      "predicate": "training.objective",
+      "value": "masked language model",
+      "rawEvidence": "Unilmv2: Pseudo-masked language models for uni\ufb01ed language model pre-training.",
+      "section": "Page 10",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-swin",
+      "predicate": "architecture.formulation",
+      "value": "text-to-text",
+      "rawEvidence": "Exploring the limits of transfer learning with a uni\ufb01ed text-to-text transformer.",
+      "section": "Page 12",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-vit",
+      "predicate": "system.zero_stage",
+      "value": "parameters",
+      "rawEvidence": "Thanks to Transformers\u2019 computational ef\ufb01ciency and scalability, it has become possible to train models of unprecedented size, with over 100B parameters.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-vit",
+      "predicate": "training.stage",
+      "value": "fine-tuning",
+      "rawEvidence": "The dominant approach is to pre-train on a large text corpus and then \ufb01ne-tune on a smaller task-speci\ufb01c dataset (Devlin et al.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "WRONG_ROLE"
+    },
+    {
+      "caseId": "v3-vit",
+      "predicate": "architecture.attention",
+      "value": "multi-head attention",
+      "rawEvidence": "Embedded Patches Multi-Head Attention Norm MLP Norm + L x + Transformer Encoder Figure 1: Model overview.",
+      "section": "Page 3",
+      "page": null,
+      "classification": "VALID_FACT_MISSING_FROM_GOLD"
+    },
+    {
+      "caseId": "v3-vit",
+      "predicate": "evaluation.regime",
+      "value": "few-shot",
+      "rawEvidence": "We report results on downstream datasets either through few-shot or \ufb01ne-tuning accuracy.",
+      "section": "Page 5",
+      "page": null,
+      "classification": "VALID_FACT_MISSING_FROM_GOLD"
+    },
+    {
+      "caseId": "v3-vit",
+      "predicate": "training.objective",
+      "value": "masked language model",
+      "rawEvidence": "We also perform a preliminary exploration on masked patch prediction for self-supervision, mimicking the masked language modeling task used in BERT.",
+      "section": "Page 9",
+      "page": null,
+      "classification": "NORMALIZATION_MISMATCH"
+    },
+    {
+      "caseId": "v3-vit",
+      "predicate": "training.objective",
+      "value": "contrastive learning",
+      "rawEvidence": "A simple framework for contrastive learning of visual representations.",
+      "section": "Page 10",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-mae",
+      "predicate": "architecture.formulation",
+      "value": "image patches",
+      "rawEvidence": "During pre-training, a large random subset of image patches (e.",
+      "section": "Page 1",
+      "page": null,
+      "classification": "VALID_FACT_MISSING_FROM_GOLD"
+    },
+    {
+      "caseId": "v3-mae",
+      "predicate": "system.zero_stage",
+      "value": "parameters",
+      "rawEvidence": "These methods now enable training of generalizable NLP models containing over one hundred billion parameters [4].",
+      "section": "Page 1",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    },
+    {
+      "caseId": "v3-mae",
+      "predicate": "training.objective",
+      "value": "contrastive learning",
+      "rawEvidence": "Self-supervised learning approaches have seen signi\ufb01cant interest in computer vision, often focusing on different pre- text tasks for pre-training [15, 50, 35, 59, 38, 17].",
+      "section": "Page 3",
+      "page": null,
+      "classification": "TRUE_UNSUPPORTED_FACT"
+    }
+  ],
+  "adjudicationComplete": true,
+  "classificationCounts": {
+    "TRUE_UNSUPPORTED_FACT": 17,
+    "WRONG_ROLE": 6,
+    "WRONG_SCOPE": 2,
+    "VALID_FACT_MISSING_FROM_GOLD": 4,
+    "NORMALIZATION_MISMATCH": 1
+  },
+  "interpretation": {
+    "validOrEquivalentUnannotatedRate": 0.13333333333333333,
+    "genuineUnsupportedRate": 0.5666666666666667,
+    "metricConclusion": "Global fact precision is invalid for the existing sparse, non-exhaustive gold; extras must not automatically be counted as false positives."
+  }
+}

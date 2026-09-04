@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "openpapers.query-intent-v2",
+  "dataset": "research-real-v3",
+  "split": "development",
+  "goldPredicateInjection": false,
+  "metrics": {
+    "predicateAccuracy": 1,
+    "stageAccuracy": 0.9166666666666666
+  },
+  "rows": [
+    {
+      "taskId": "v3-transformer-xl-task",
+      "question": "How does the model carry information beyond a fixed context?",
+      "expectedPredicate": "architecture.recurrence",
+      "actualPredicates": [
+        "architecture.recurrence"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-electra-task",
+      "question": "What pretraining signal trains the encoder as a discriminator?",
+      "expectedPredicate": "training.objective",
+      "actualPredicates": [
+        "training.objective",
+        "training.stage"
+      ],
+      "predicateCorrect": true,
+      "expectedStage": "training",
+      "actualStage": "training"
+    },
+    {
+      "taskId": "v3-linformer-task",
+      "question": "What attention formulation reduces the self-attention complexity?",
+      "expectedPredicate": "architecture.attention",
+      "actualPredicates": [
+        "architecture.attention",
+        "architecture.formulation"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-swin-task",
+      "question": "Which windowing mechanism structures the attention layers?",
+      "expectedPredicate": "architecture.attention",
+      "actualPredicates": [
+        "architecture.attention"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-vit-task",
+      "question": "How are images represented before entering the Transformer?",
+      "expectedPredicate": "architecture.formulation",
+      "actualPredicates": [
+        "architecture.formulation"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-mae-task",
+      "question": "What reconstruction task is used for visual pretraining?",
+      "expectedPredicate": "training.objective",
+      "actualPredicates": [
+        "training.objective",
+        "training.stage"
+      ],
+      "predicateCorrect": true,
+      "expectedStage": "training",
+      "actualStage": "training"
+    },
+    {
+      "taskId": "v3-opt-task",
+      "question": "What model family is used for OPT language modeling?",
+      "expectedPredicate": "model.formulation",
+      "actualPredicates": [
+        "model.formulation"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-flan-task",
+      "question": "What post-training stage scales the language models?",
+      "expectedPredicate": "training.stage",
+      "actualPredicates": [
+        "training.stage"
+      ],
+      "predicateCorrect": true,
+      "expectedStage": "training",
+      "actualStage": "training"
+    },
+    {
+      "taskId": "v3-gpt4-task",
+      "question": "What modality capability is described for GPT-4?",
+      "expectedPredicate": "model.formulation",
+      "actualPredicates": [
+        "model.formulation"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-mtbench-task",
+      "question": "How are model responses compared in the evaluation?",
+      "expectedPredicate": "evaluation.method",
+      "actualPredicates": [
+        "evaluation.method"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-deepseekv2-task",
+      "question": "What sparse architecture is used to scale DeepSeek-V2?",
+      "expectedPredicate": "architecture.moe",
+      "actualPredicates": [
+        "architecture.moe"
+      ],
+      "predicateCorrect": true,
+      "actualStage": null
+    },
+    {
+      "taskId": "v3-gemma-task",
+      "question": "What adaptation stage is described in the model development?",
+      "expectedPredicate": "training.stage",
+      "actualPredicates": [
+        "training.stage"
+      ],
+      "predicateCorrect": true,
+      "expectedStage": "training",
+      "actualStage": null
+    }
+  ]
+}

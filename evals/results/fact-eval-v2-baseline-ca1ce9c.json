@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "openpapers.fact-evaluation-v2",
+  "sourceDataset": "research-real-v3",
+  "sourceResult": "real-source-v3-development-9ec9934b2290.json",
+  "oldMetric": {
+    "tp": 12,
+    "fp": 102,
+    "fn": 0,
+    "precision": 0.10526315789473684,
+    "recall": 1.0,
+    "policy": "all emitted facts scored against one sparse task fact per paper"
+  },
+  "goldAudit": {
+    "caseCount": 12,
+    "goldFacts": 12,
+    "factsPerCase": "1 task-linked fact; non-exhaustive",
+    "adjudicationSample": "v4-fact-fp-adjudication-sample.json",
+    "validUnannotatedSampleRate": 0.13333333333333333,
+    "genuineUnsupportedSampleRate": 0.5666666666666667
+  },
+  "repairedMetrics": {
+    "scope": "task_linked_facts_only",
+    "tp": 12,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "outOfScopeEmittedFacts": 102,
+    "outOfScopeScored": false
+  },
+  "conclusion": "The old global precision is not valid as a complete-fact precision metric. V4 must use exhaustive gold within declared scope or report extras as OUT_OF_SCOPE."
+}
