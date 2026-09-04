@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "openpapers.real-source-v3-evaluation.v1",
+  "commit": "7f63d91e9e5f90c02333ce3a4d5e6e8033a9a124",
+  "dataset": "research-real-v4",
+  "split": "holdout",
+  "holdoutUsedForTuning": false,
+  "configuration": {
+    "extraction": "query-independent-facts",
+    "intent": "separate-query-intent",
+    "parser": "pymupdf-real-pdf"
+  },
+  "taskCount": 3,
+  "factMetrics": {
+    "precision": 0.09375,
+    "recall": 1,
+    "valueAccuracy": 1,
+    "locatorAccuracy": 1
+  },
+  "queryMetrics": {
+    "predicateAccuracy": 1
+  },
+  "answerMetrics": {
+    "answerCorrectness": 1,
+    "evidenceSourceAccuracy": 1,
+    "locatorAccuracy": 1,
+    "supportStatusAccuracy": 0.6666666666666666,
+    "falseUnknown": 0,
+    "falseNotReported": 0,
+    "fabricatedAnswerRate": 0
+  },
+  "failureCategories": {},
+  "rows": [
+    {
+      "caseId": "v4-gpt4",
+      "taskId": "v4-gpt4-task",
+      "predicate": "model.formulation",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "model.formulation": "multimodal model"
+      },
+      "actualAnswer": {
+        "model.formulation": "multimodal model"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2303.08774",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2303.08774v1-model.formulation-multimodal model",
+          "predicate": "model.formulation",
+          "value": "multimodal model",
+          "rawValue": "multimodal",
+          "sourceId": "https://arxiv.org/pdf/2303.08774v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "GPT-4 Technical Report OpenAI∗ Abstract We report the development of GPT-4, a large-scale, multimodal model which can accept image and text inputs and produce text outputs.",
+          "extractionMethod": "multimodal capability",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2303.08774v1-model.formulation-multimodal model",
+          "sourceId": "https://arxiv.org/pdf/2303.08774v1",
+          "authors": [],
+          "title": "Extracted model.formulation fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "GPT-4 Technical Report OpenAI∗ Abstract We report the development of GPT-4, a large-scale, multimodal model which can accept image and text inputs and produce text outputs.",
+          "citationText": "https://arxiv.org/pdf/2303.08774v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 12,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 12
+    },
+    {
+      "caseId": "v4-deepseek",
+      "taskId": "v4-deepseek-task",
+      "predicate": "architecture.moe",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.moe": "mixture of experts"
+      },
+      "actualAnswer": {
+        "architecture.moe": "mixture of experts"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "SUPPORTED",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2405.04434",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2405.04434v1-architecture.moe-mixture of experts",
+          "predicate": "architecture.moe",
+          "value": "mixture of experts",
+          "rawValue": "Mixture-of-Experts",
+          "sourceId": "https://arxiv.org/pdf/2405.04434v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model DeepSeek-AI research@deepseek.",
+          "extractionMethod": "mixture of experts",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2405.04434v1-architecture.moe-mixture of experts",
+          "sourceId": "https://arxiv.org/pdf/2405.04434v1",
+          "authors": [],
+          "title": "Extracted architecture.moe fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model DeepSeek-AI research@deepseek.",
+          "citationText": "https://arxiv.org/pdf/2405.04434v1#Page 1"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 15,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 15
+    },
+    {
+      "caseId": "v4-reformer",
+      "taskId": "v4-reformer-task",
+      "predicate": "architecture.attention",
+      "predicateCorrect": true,
+      "expectedAnswer": {
+        "architecture.attention": "locality-sensitive hashing attention"
+      },
+      "actualAnswer": {
+        "architecture.attention": "locality-sensitive hashing attention"
+      },
+      "expectedStatus": "SUPPORTED",
+      "actualStatus": "CONFLICTING",
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "providerResolution": {
+        "mode": "known-work",
+        "actualWork": "2001.04451",
+        "failures": []
+      },
+      "facts": [
+        {
+          "factId": "fact-https://arxiv.org/pdf/2001.04451v1-architecture.attention-locality-sensitive hashing attention",
+          "predicate": "architecture.attention",
+          "value": "locality-sensitive hashing attention",
+          "rawValue": "locality-sensitive hashing",
+          "sourceId": "https://arxiv.org/pdf/2001.04451v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 1"
+          },
+          "rawEvidence": "For one, we replace dot-product attention by one that uses locality-sensitive hashing, changing its complexity from O(L2) to O(L log L), where L is the length of the sequence.",
+          "extractionMethod": "hashed attention",
+          "supportState": "NORMALIZED_EXPLICIT"
+        },
+        {
+          "factId": "fact-https://arxiv.org/pdf/2001.04451v1-architecture.attention-multi-head attention",
+          "predicate": "architecture.attention",
+          "value": "multi-head attention",
+          "rawValue": "Multi-head attention",
+          "sourceId": "https://arxiv.org/pdf/2001.04451v1",
+          "sourceClass": "PAPER",
+          "locator": {
+            "section": "Page 2"
+          },
+          "rawEvidence": "Assuming the keys and values are also packed together into matrices K and V , the matrix of outputs is deﬁned as: Attention(Q, K, V ) = softmax(QKT √dk )V (1) Multi-head attention.",
+          "extractionMethod": "attention topology",
+          "supportState": "NORMALIZED_EXPLICIT"
+        }
+      ],
+      "evidence": [
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2001.04451v1-architecture.attention-locality-sensitive hashing attention",
+          "sourceId": "https://arxiv.org/pdf/2001.04451v1",
+          "authors": [],
+          "title": "Extracted architecture.attention fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "For one, we replace dot-product attention by one that uses locality-sensitive hashing, changing its complexity from O(L2) to O(L log L), where L is the length of the sequence.",
+          "citationText": "https://arxiv.org/pdf/2001.04451v1#Page 1"
+        },
+        {
+          "evidenceId": "fact-https://arxiv.org/pdf/2001.04451v1-architecture.attention-multi-head attention",
+          "sourceId": "https://arxiv.org/pdf/2001.04451v1",
+          "authors": [],
+          "title": "Extracted architecture.attention fact",
+          "identifiers": {},
+          "locator": {
+            "section": "Page 2"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Assuming the keys and values are also packed together into matrices K and V , the matrix of outputs is deﬁned as: Attention(Q, K, V ) = softmax(QKT √dk )V (1) Multi-head attention.",
+          "citationText": "https://arxiv.org/pdf/2001.04451v1#Page 2"
+        }
+      ],
+      "failureCategory": null,
+      "artifactStatus": "ACQUIRED",
+      "parserError": null,
+      "factCount": 5,
+      "factTruePositive": 1,
+      "goldFactCount": 1,
+      "actualFactCount": 5
+    }
+  ]
+}

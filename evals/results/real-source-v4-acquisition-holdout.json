@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "openpapers.real-source-acquisition.v1",
+  "dataset": "research-real-v4",
+  "split": "holdout",
+  "metadataOnly": false,
+  "rows": [
+    {
+      "caseId": "v4-gpt4",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2303.08774v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T11:17:10.678Z",
+      "sha256": "053056a10114d22e4c47b6b5be25e54c320b5f1beeae7466e8638dac0f5f5f66",
+      "bytes": 5229731,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v4-gpt4-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v4-deepseek",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2405.04434v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T11:17:12.073Z",
+      "sha256": "e930bb96dd1f0ecbe57b47b7a27141f8c165cd4a9de41b1cc2e46f54ec96e96b",
+      "bytes": 1576608,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v4-deepseek-v1.pdf",
+      "error": null
+    },
+    {
+      "caseId": "v4-reformer",
+      "split": "holdout",
+      "pdfUrl": "https://arxiv.org/pdf/2001.04451v1",
+      "status": "ACQUIRED",
+      "retrievedAt": "2026-09-04T11:17:12.936Z",
+      "sha256": "d0b4fc9abb332faf697a7d1113e5358a971ba09df5e97a5fe7e57c814d569fc6",
+      "bytes": 648517,
+      "path": "C:\\Users\\arro\\Downloads\\OpenPapers\\.cache\\real-source\\v4-reformer-v1.pdf",
+      "error": null
+    }
+  ]
+}
