@@ -1,0 +1,1070 @@
+{
+  "schemaVersion": "openpapers.real-source-evaluation.v1",
+  "kind": "real-source-development",
+  "commit": "cbeebf9e247e515776f7031e4b5e3cbcb3f08670",
+  "dataset": "research-real-v1",
+  "split": "development",
+  "holdoutInfluencedTuning": null,
+  "configuration": {
+    "providerMode": "offline-pinned-artifact",
+    "parserMode": "pymupdf-real-pdf",
+    "liveProviders": false
+  },
+  "taskCount": 13,
+  "metrics": {
+    "workAccuracy": 0.6153846153846154,
+    "identifierAccuracy": 0.6153846153846154,
+    "answerCorrectness": 0.8461538461538461,
+    "evidenceSourceAccuracy": 0.7692307692307693,
+    "locatorAccuracy": 0.8461538461538461,
+    "supportStatusAccuracy": 0.7692307692307693,
+    "correctUNKNOWN": 1,
+    "correctNOT_REPORTED": 0,
+    "falseUNKNOWN": 0.23076923076923078,
+    "falseNOT_REPORTED": 0,
+    "fabricatedAnswerRate": 0,
+    "conflictPrecision": null,
+    "conflictRecall": null,
+    "taskCount": 13,
+    "expectedUnknown": 1,
+    "expectedNotReported": 1,
+    "actualUnknown": 4,
+    "actualNotReported": 0
+  },
+  "failureCategories": {
+    "field extraction failure": 1,
+    "pdf acquisition unavailable": 1
+  },
+  "rows": [
+    {
+      "caseId": "rp-transformer-1706",
+      "taskId": "real-transformer-optimizer",
+      "query": "What optimizer was used to train the Transformer base model?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "optimizer": "Adam"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 5.3 Optimizer",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualEvidence": [],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": null,
+      "workCorrect": false,
+      "identifierCorrect": false,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": false,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": null,
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "harvardnlp/annotated-transformer",
+        "commitSha": "debc9fd747bb2123160a98046ad1c2d4da44a567",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": "field extraction failure"
+    },
+    {
+      "caseId": "rp-bert-1810",
+      "taskId": "real-bert-objective",
+      "query": "Which two self-supervised objectives were used during BERT pre-training?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "objectives": [
+          "masked language model",
+          "next sentence prediction"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 3.1 Pre-training BERT",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "objectives": [
+          "masked language model",
+          "next sentence prediction"
+        ]
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-bert-1810-objectives-0",
+          "sourceId": "https://arxiv.org/pdf/1810.04805v1",
+          "authors": [],
+          "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+          "identifiers": {
+            "arxiv": "1810.04805"
+          },
+          "locator": {
+            "section": "Page 2"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "The masked language model randomly masks some of the tokens from the input, and the objective is to predict the original vocabulary id of the masked word based only on its context.",
+          "citationText": "https://arxiv.org/pdf/1810.04805v1#Page 2"
+        },
+        {
+          "evidenceId": "real-paper-rp-bert-1810-objectives-1",
+          "sourceId": "https://arxiv.org/pdf/1810.04805v1",
+          "authors": [],
+          "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+          "identifiers": {
+            "arxiv": "1810.04805"
+          },
+          "locator": {
+            "section": "Page 11"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "“No NSP” is trained without the next sentence prediction task.",
+          "citationText": "https://arxiv.org/pdf/1810.04805v1#Page 11"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "1810.04805",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "google-research/bert",
+        "commitSha": "eedf5716ce1268e56f0a50264a88cafad334ac61",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-t5-1910",
+      "taskId": "real-t5-format",
+      "query": "How does T5 frame different NLP tasks?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "formulation": "text-to-text"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2.1 Text-to-Text Framework",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "formulation": "text-to-text"
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-t5-1910-formulation-0",
+          "sourceId": "https://arxiv.org/pdf/1910.10683v1",
+          "authors": [],
+          "title": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer",
+          "identifiers": {
+            "arxiv": "1910.10683"
+          },
+          "locator": {
+            "section": "Page 43"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Noam contributed many of the ideas, including the text-to-text framework, unsupervised objectives, and dataset mixing strategies; implemented our base Transformer model and its architectural variants; and ran the experiments in Section 3.",
+          "citationText": "https://arxiv.org/pdf/1910.10683v1#Page 43"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 9"
+      },
+      "workCorrect": false,
+      "identifierCorrect": false,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": null,
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "google-research/text-to-text-transfer-transformer",
+        "commitSha": "6819e989bb733171706b9228d05468a4230e14c0",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-megatron-1909",
+      "taskId": "real-megatron-parallel",
+      "query": "Which parallelism dimension is central to Megatron-LM's model-parallel approach?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "parallelism": "tensor model parallelism"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2.2 Intra-layer Model Parallelism",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "parallelism": "tensor model parallelism"
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-megatron-1909-parallelism-0",
+          "sourceId": "https://arxiv.org/pdf/1909.08053v1",
+          "authors": [],
+          "title": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism",
+          "identifiers": {
+            "arxiv": "1909.08053"
+          },
+          "locator": {
+            "section": "Page 1"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "In this work, we implement a simple, efﬁcient intra-layer model parallel approach that enables training state of the art transformer language models with billions of parameters.",
+          "citationText": "https://arxiv.org/pdf/1909.08053v1#Page 1"
+        },
+        {
+          "evidenceId": "real-paper-rp-megatron-1909-parallelism-1",
+          "sourceId": "https://arxiv.org/pdf/1909.08053v1",
+          "authors": [],
+          "title": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism",
+          "identifiers": {
+            "arxiv": "1909.08053"
+          },
+          "locator": {
+            "section": "Page 6"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "It does not require a compiler, and is orthogonal and complementary to the pipeline model parallelism advocated by approaches such as (Huang et al.",
+          "citationText": "https://arxiv.org/pdf/1909.08053v1#Page 6"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 6"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "1909.08053",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "NVIDIA/Megatron-LM",
+        "commitSha": "91149c04c9aed830353be7795ec7d58461b8828a",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-zero-1910",
+      "taskId": "real-zero-stages",
+      "query": "What does ZeRO partition across data-parallel processes?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "partitioned_state": "optimizer states, gradients, and parameters"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2 ZeRO Overview",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualEvidence": [],
+      "actualSourceClass": [],
+      "actualLocator": null,
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": false,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": false,
+      "supportStatusCorrect": false,
+      "artifactStatus": "UNAVAILABLE",
+      "parserMode": "not_configured",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "1910.02054",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "microsoft/DeepSpeed",
+        "commitSha": "05daf0598b1657da832288f5e89d9e22a9a92ee5",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": "pdf acquisition unavailable"
+    },
+    {
+      "caseId": "rp-scaling-laws-2001",
+      "taskId": "real-scaling-gpu-count",
+      "query": "What GPU count did the paper report for every experiment?",
+      "expectedStatus": "NOT_REPORTED",
+      "expectedAnswer": {
+        "gpu_count": null
+      },
+      "expectedSourceClass": [
+        "paper_review"
+      ],
+      "expectedLocator": "experiments and methods scope",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualEvidence": [],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 7"
+      },
+      "workCorrect": false,
+      "identifierCorrect": false,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": false,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": null,
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": null,
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-rag-2005",
+      "taskId": "real-rag-components",
+      "query": "Which two components make up the RAG model?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "components": [
+          "retriever",
+          "generator"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2 Methods",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "components": [
+          "retriever",
+          "generator"
+        ]
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-rag-2005-components-0",
+          "sourceId": "https://arxiv.org/pdf/2005.11401v1",
+          "authors": [],
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "identifiers": {
+            "arxiv": "2005.11401"
+          },
+          "locator": {
+            "section": "Page 18"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "The collapse could be due to a less-explicit requirement for factual knowledge in some tasks, or the longer target sequences, which could result in less informative gradients for the retriever.",
+          "citationText": "https://arxiv.org/pdf/2005.11401v1#Page 18"
+        },
+        {
+          "evidenceId": "real-paper-rp-rag-2005-components-1",
+          "sourceId": "https://arxiv.org/pdf/2005.11401v1",
+          "authors": [],
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "identifiers": {
+            "arxiv": "2005.11401"
+          },
+          "locator": {
+            "section": "Page 18"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "In these cases, once retrieval had collapsed, the generator would learn to ignore the documents, and the RAG model would perform equivalently to BART.",
+          "citationText": "https://arxiv.org/pdf/2005.11401v1#Page 18"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 13"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "2005.11401",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": []
+      },
+      "repositoryEvidence": null,
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-gpt3-2005",
+      "taskId": "real-gpt3-regimes",
+      "query": "Which evaluation regimes does GPT-3 compare?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "regimes": [
+          "zero-shot",
+          "one-shot",
+          "few-shot"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "abstract and section 1",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "regimes": [
+          "zero-shot",
+          "one-shot",
+          "few-shot"
+        ]
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-gpt3-2005-regimes-0",
+          "sourceId": "https://arxiv.org/pdf/2005.14165v1",
+          "authors": [],
+          "title": "Language Models are Few-Shot Learners",
+          "identifiers": {
+            "arxiv": "2005.14165"
+          },
+          "locator": {
+            "section": "Page 71"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Exploiting cloze questions for few-shot text classiﬁcation and natural language inference.",
+          "citationText": "https://arxiv.org/pdf/2005.14165v1#Page 71"
+        },
+        {
+          "evidenceId": "real-paper-rp-gpt3-2005-regimes-1",
+          "sourceId": "https://arxiv.org/pdf/2005.14165v1",
+          "authors": [],
+          "title": "Language Models are Few-Shot Learners",
+          "identifiers": {
+            "arxiv": "2005.14165"
+          },
+          "locator": {
+            "section": "Page 68"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "SummAE: Zero-shot abstractive text summarization using length-agnostic auto-encoders.",
+          "citationText": "https://arxiv.org/pdf/2005.14165v1#Page 68"
+        },
+        {
+          "evidenceId": "real-paper-rp-gpt3-2005-regimes-2",
+          "sourceId": "https://arxiv.org/pdf/2005.14165v1",
+          "authors": [],
+          "title": "Language Models are Few-Shot Learners",
+          "identifiers": {
+            "arxiv": "2005.14165"
+          },
+          "locator": {
+            "section": "Page 71"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Matching Networks for One Shot Learning.",
+          "citationText": "https://arxiv.org/pdf/2005.14165v1#Page 71"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 36"
+      },
+      "workCorrect": false,
+      "identifierCorrect": false,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": null,
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": null,
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-lora-2106",
+      "taskId": "real-lora-rank",
+      "query": "What low-rank adaptation parameter controls the update rank?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "parameter": "r"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 4 LoRA",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "parameter": "r"
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-lora-2106-parameter-0",
+          "sourceId": "https://arxiv.org/pdf/2106.09685v1",
+          "authors": [],
+          "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+          "identifiers": {
+            "arxiv": "2106.09685"
+          },
+          "locator": {
+            "section": "Page 19"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "8 1 7 13 19 25 31 37 43 49 55 61 Layer 1 i Wq Wv Layer 32 Wq Wv 1 6 11 16 21 26 31 36 41 46 51 56 61 j 1 7 13 19 25 31 37 43 49 55 61 Layer 64 i 1 6 11 16 21 26 31 36 41 46 51 56 61 j 1 6 11 16 21 26 31 36 41 46 51 56 61 j Layer 96 1 6 11 16 21 26 31 36 41 46 51 56 61 j (Ar = 64, A′r = 64, i, j) Figure 6: Normalized subspace similarity between the column vectors of Ar=64 from two randomly seeded runs, for both ∆Wq and ∆Wv from the 1st, 32nd, 64th, and 96th layers in a 96-layer Transformer.",
+          "citationText": "https://arxiv.org/pdf/2106.09685v1#Page 19"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "2106.09685",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "microsoft/LoRA",
+        "commitSha": "c4593f060e6a368d7bb5af5273b8e42810cdef90",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-instructgpt-2203",
+      "taskId": "real-instructgpt-stages",
+      "query": "What three stages are described in the InstructGPT training procedure?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "stages": [
+          "SFT",
+          "reward model",
+          "PPO"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 2.1 Training procedure",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "stages": [
+          "SFT",
+          "reward model",
+          "PPO"
+        ]
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-instructgpt-2203-stages-0",
+          "sourceId": "https://arxiv.org/pdf/2203.02155v1",
+          "authors": [],
+          "title": "Training language models to follow instructions with human feedback",
+          "identifiers": {
+            "arxiv": "2203.02155"
+          },
+          "locator": {
+            "section": "Page 60"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "no_prompt respectful_prompt 0 2 4 6 Toxicity Continuity Model GPT SFT PPO-ptx no_prompt respectful_prompt Prompt 0.",
+          "citationText": "https://arxiv.org/pdf/2203.02155v1#Page 60"
+        },
+        {
+          "evidenceId": "real-paper-rp-instructgpt-2203-stages-1",
+          "sourceId": "https://arxiv.org/pdf/2203.02155v1",
+          "authors": [],
+          "title": "Training language models to follow instructions with human feedback",
+          "identifiers": {
+            "arxiv": "2203.02155"
+          },
+          "locator": {
+            "section": "Page 53"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "The pretrained GPT model is used as the KL reward model, in these experiments.",
+          "citationText": "https://arxiv.org/pdf/2203.02155v1#Page 53"
+        },
+        {
+          "evidenceId": "real-paper-rp-instructgpt-2203-stages-2",
+          "sourceId": "https://arxiv.org/pdf/2203.02155v1",
+          "authors": [],
+          "title": "Training language models to follow instructions with human feedback",
+          "identifiers": {
+            "arxiv": "2203.02155"
+          },
+          "locator": {
+            "section": "Page 61"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "F Model samples In this section, we provide some additional samples from both the 175B GPT-3 and 175B InstructGPT (PPO-ptx) models.",
+          "citationText": "https://arxiv.org/pdf/2203.02155v1#Page 61"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 8"
+      },
+      "workCorrect": false,
+      "identifierCorrect": false,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": null,
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": null,
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-flashattn-2205",
+      "taskId": "real-flashattn-exact",
+      "query": "Is FlashAttention an exact or approximate attention algorithm?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "attention": "exact"
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "abstract",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "attention": "exact"
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-flashattn-2205-attention-0",
+          "sourceId": "https://arxiv.org/pdf/2205.14135v1",
+          "authors": [],
+          "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+          "identifiers": {
+            "arxiv": "2205.14135"
+          },
+          "locator": {
+            "section": "Page 27"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Baselines We compare against reference implementations for exact attention from PyTorch/HuggingFace and Megatron, approximate attention, and sparse attention.",
+          "citationText": "https://arxiv.org/pdf/2205.14135v1#Page 27"
+        },
+        {
+          "evidenceId": "real-paper-rp-flashattn-2205-attention-1",
+          "sourceId": "https://arxiv.org/pdf/2205.14135v1",
+          "authors": [],
+          "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+          "identifiers": {
+            "arxiv": "2205.14135"
+          },
+          "locator": {
+            "section": "Page 31"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "26 - - - FlashAttention 0.",
+          "citationText": "https://arxiv.org/pdf/2205.14135v1#Page 31"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 6"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "2205.14135",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "Dao-AILab/flash-attention",
+        "commitSha": "ce088ab9ce0fc0434dcd8afa0a791da9fcc3a820",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-react-2210",
+      "taskId": "real-react-trace",
+      "query": "What three event types alternate in a ReAct trajectory?",
+      "expectedStatus": "SUPPORTED",
+      "expectedAnswer": {
+        "trace": [
+          "thought",
+          "action",
+          "observation"
+        ]
+      },
+      "expectedSourceClass": [
+        "paper"
+      ],
+      "expectedLocator": "section 3 ReAct",
+      "actualStatus": "SUPPORTED",
+      "actualAnswer": {
+        "trace": [
+          "thought",
+          "action",
+          "observation"
+        ]
+      },
+      "actualEvidence": [
+        {
+          "evidenceId": "real-paper-rp-react-2210-trace-0",
+          "sourceId": "https://arxiv.org/pdf/2210.03629v1",
+          "authors": [],
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "identifiers": {
+            "arxiv": "2210.03629"
+          },
+          "locator": {
+            "section": "Page 31"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Failure: Search error ReAct Question: What does the goddess associated with the goddess frigg consists of what tales? Thought 1: I need to search goddess frigg and find its associated goddess.",
+          "citationText": "https://arxiv.org/pdf/2210.03629v1#Page 31"
+        },
+        {
+          "evidenceId": "real-paper-rp-react-2210-trace-1",
+          "sourceId": "https://arxiv.org/pdf/2210.03629v1",
+          "authors": [],
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "identifiers": {
+            "arxiv": "2210.03629"
+          },
+          "locator": {
+            "section": "Page 31"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Action 1: Search[goddess frigg] Observation 1: Could not find goddess frigg.",
+          "citationText": "https://arxiv.org/pdf/2210.03629v1#Page 31"
+        },
+        {
+          "evidenceId": "real-paper-rp-react-2210-trace-2",
+          "sourceId": "https://arxiv.org/pdf/2210.03629v1",
+          "authors": [],
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "identifiers": {
+            "arxiv": "2210.03629"
+          },
+          "locator": {
+            "section": "Page 31"
+          },
+          "evidenceType": "DERIVED",
+          "sourceQuality": "C",
+          "evidence": "Action 1: Search[goddess frigg] Observation 1: Could not find goddess frigg.",
+          "citationText": "https://arxiv.org/pdf/2210.03629v1#Page 31"
+        }
+      ],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": true,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "2210.03629",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "crossref: Error: invalid Crossref response: item title is missing",
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": {
+        "repository": "ysymyth/ReAct",
+        "commitSha": "6bdb3a1fd38b8188fc7ba4102969fe483df8fdc9",
+        "filesRead": 0,
+        "evidenceCount": 0,
+        "manifest": [],
+        "failures": [
+          "directory /: Error: GitHub request failed: 403"
+        ]
+      },
+      "failureCategory": null
+    },
+    {
+      "caseId": "rp-toolformer-2302",
+      "taskId": "real-toolformer-abstain",
+      "query": "Does the paper report the exact API-call filtering threshold for every tool?",
+      "expectedStatus": "UNKNOWN",
+      "expectedAnswer": {
+        "threshold": null
+      },
+      "expectedSourceClass": [
+        "paper_review"
+      ],
+      "expectedLocator": "tool-use filtering scope",
+      "actualStatus": "UNKNOWN",
+      "actualAnswer": {},
+      "actualEvidence": [],
+      "actualSourceClass": [
+        "paper_pdf"
+      ],
+      "actualLocator": {
+        "section": "Page 5"
+      },
+      "workCorrect": true,
+      "identifierCorrect": true,
+      "answerCorrect": true,
+      "evidenceSourceCorrect": false,
+      "locatorCorrect": true,
+      "supportStatusCorrect": true,
+      "artifactStatus": "ACQUIRED",
+      "parserMode": "pymupdf-real-pdf",
+      "parserError": null,
+      "providerResolution": {
+        "candidates": 10,
+        "actualWork": "2302.04761",
+        "providers": [
+          "arxiv",
+          "crossref",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "failures": [
+          "semantic_scholar: Error: HTTP 429: Semantic Scholar rate limit reached"
+        ]
+      },
+      "repositoryEvidence": null,
+      "failureCategory": null
+    }
+  ]
+}
