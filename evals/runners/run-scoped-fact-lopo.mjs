@@ -1,0 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { extractPaperFacts } from '../../dist/extraction/heuristic.js';
+import { scoreScopedPaper } from '../metrics/scoped-facts.mjs';
+const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
+const dataset=JSON.parse(readFileSync(join(root,'evals/datasets/research-facts-v5-development.json'),'utf8'));
+const rows=dataset.papers.map(heldOut=>{const paper=heldOut;const doc={format:'html',url:paper.artifact.url,sections:paper.sourceSections.map(s=>({level:1,heading:s.heading,text:s.text,page:s.page})),references:[],warnings:[]};const scored=scoreScopedPaper(paper,extractPaperFacts(doc));return{heldOutPaperId:heldOut.paperId,trainingPapers:dataset.papers.length-1,tp:scored.tp,fp:scored.fp,fn:scored.fn,precision:scored.precision,recall:scored.recall,f1:scored.f1};});
+const mean=k=>rows.reduce((n,r)=>n+r[k],0)/rows.length; const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+const result={schemaVersion:'openpapers.scoped-fact-lopo.v1',benchmark:'research-facts-v5-development',commit,timestamp:new Date().toISOString(),method:'diagnostic leave-one-paper-out; no learned or paper-specific rules exist in current extractor',mean:{precision:mean('precision'),recall:mean('recall'),f1:mean('f1')},perPaper:rows,holdout:{created:false,usedForTuning:false}};
+console.log(JSON.stringify(result,null,2));
