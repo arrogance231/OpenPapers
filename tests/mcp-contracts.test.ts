@@ -14,7 +14,7 @@ describe('MCP tool contract surface', () => {
 
     registerTools(server as any, {} as any);
 
-    expect(registrations).toHaveLength(36);
+    expect(registrations).toHaveLength(37);
     expect(new Set(registrations.map(item => item.name)).size).toBe(registrations.length);
     for (const registration of registrations) {
       expect(registration.name).toMatch(/^[a-z][a-z0-9_]+$/);

@@ -19,8 +19,8 @@ This document records the production integration status for `research-real-v1`. 
 | Evidence source separation | Paper and repository evidence remain separate in row diagnostics | Partially | PARTIAL |
 | Temporal alignment | Dataset metadata is preserved; commit dates are mostly unavailable | Recorded, not inferred | UNKNOWN / PARTIAL |
 | Evidence reconciliation | Existing paper/code comparator accepts structured fields | Not yet end-to-end wired for every real task | PARTIAL |
-| Structured answer assembly | Existing recipe/report paths; real runner still has legacy answer projection | Not fully | PARTIAL |
+| Structured answer assembly | `reconstruct_research` combines bounded parameter/proposition evidence; real runner uses the same assembly | Yes | COMPLETE for supported V1 fields |
 | Anti-fabrication | Provider/repository/parser failures are recorded distinctly | Yes for diagnostics; answer policy still needs hardening | PARTIAL |
-| MCP real-source transport | Existing paper and repository tools, no pinned reconstruction scenario | No | MISSING |
+| MCP real-source transport | `reconstruct_research` exposes bounded paper/repository reconstruction and explicit UNKNOWN diagnostics | Deterministic boundary tests pass | COMPLETE for transport contract |
 
-The benchmark remains split into 13 development tasks and 6 holdout tasks. Holdout artifacts are not acquired or inspected during development.
+The benchmark remains split into 13 development cases and 6 holdout cases. Development was frozen before holdout acquisition. Holdout artifacts were acquired and evaluated once; no tuning followed.
