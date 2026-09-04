@@ -30,6 +30,6 @@ The current validator is deterministic and rule/evidence based; it does not emit
 
 ## Checkpoint
 
-The production baseline at `evals/results/v5-scoped-fact-baseline-e30de691e4df.json` reports 9 candidates, candidate recall 1.0, 6 TP, 2 FP, 1 FN, precision 0.75, recall 0.8571, and F1 0.8 across the unchanged six-paper/seven-fact corpus. LOPO at `evals/results/v5-scoped-fact-lopo-e30de691e4df.json` reports mean precision 0.6667, recall 0.8333, and F1 0.7222. This demonstrates non-zero cross-paper recovery without production benchmark IDs.
+The production baseline at `evals/results/v5-scoped-fact-baseline-2fb8669d5c95.json` reports 9 candidates, candidate recall 1.0, 6 TP, 2 FP, 1 FN, precision 0.75, recall 0.8571, and F1 0.8 across the unchanged six-paper/seven-fact corpus. LOPO at `evals/results/v5-scoped-fact-lopo-2fb8669d5c95.json` reports mean precision 0.6667, recall 0.8333, and F1 0.7222. This demonstrates non-zero cross-paper recovery without production benchmark IDs.
 
 The result is an architecture checkpoint, not final validator calibration. The corpus remains intentionally unchanged, no V5 holdout was created, and the previous pre-architecture artifact remains immutable.
