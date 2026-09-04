@@ -1,0 +1,735 @@
+{
+  "version": "research-real-v2",
+  "status": "curated-real-source-metadata",
+  "annotationPolicy": "New independently curated real-source metadata. Gold answers are bounded propositions and are never changed to match implementation output. V2 holdout is frozen before capability tuning.",
+  "splitPolicy": {
+    "development": "15 new cases for capability development.",
+    "holdout": "5 new cases frozen for one-shot generalization evaluation.",
+    "holdoutInfluencedTuning": false
+  },
+  "cases": [
+    {
+      "caseId": "v2-bart",
+      "split": "development",
+      "title": "BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension",
+      "authors": [],
+      "category": "objective",
+      "source": {
+        "arxivId": "1910.13461",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/1910.13461v1",
+        "pdfUrl": "https://arxiv.org/pdf/1910.13461v1",
+        "paperRevisionDate": "2019-10-31",
+        "repositoryUrl": "https://github.com/facebookresearch/fairseq",
+        "repositoryCommitSha": "3d262bb25690e4eb2e7d3c1309b1e9c406ca4b99",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-bart-task",
+          "query": "Which corruption objective is used during pretraining?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "objective": "text infilling"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-simcse",
+      "split": "development",
+      "title": "SimCSE: Simple Contrastive Learning of Sentence Embeddings",
+      "authors": [],
+      "category": "objective",
+      "source": {
+        "arxivId": "2011.00677",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2011.00677v1",
+        "pdfUrl": "https://arxiv.org/pdf/2011.00677v1",
+        "paperRevisionDate": "2020-11-02",
+        "repositoryUrl": "https://github.com/google-research/simclr",
+        "repositoryCommitSha": "383d4143fd8cf7879ae10f1046a9baeb753ff438",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-simcse-task",
+          "query": "What learning signal trains SimCSE representations?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "objective": "contrastive learning"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-switch",
+      "split": "development",
+      "title": "Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity",
+      "authors": [],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2101.03961",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2101.03961v1",
+        "pdfUrl": "https://arxiv.org/pdf/2101.03961v1",
+        "paperRevisionDate": "2021-01-11",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-switch-task",
+          "query": "How does Switch distribute tokens among experts?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "architecture": "sparse mixture of experts"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-palm",
+      "split": "development",
+      "title": "PaLM: Scaling Language Modeling with Pathways",
+      "authors": [],
+      "category": "systems",
+      "source": {
+        "arxivId": "2204.02311",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2204.02311v1",
+        "pdfUrl": "https://arxiv.org/pdf/2204.02311v1",
+        "paperRevisionDate": "2022-04-05",
+        "repositoryUrl": "https://github.com/google-research/t5x",
+        "repositoryCommitSha": "2045b332cf19887885a74ef1bd6b2adb2a7ca634",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-palm-task",
+          "query": "What parallel computation approach is used to train PaLM?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "parallelism": "data parallelism"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-flamingo",
+      "split": "development",
+      "title": "Flamingo: a Visual Language Model for Few-Shot Learning",
+      "authors": [],
+      "category": "multimodal",
+      "source": {
+        "arxivId": "2204.14198",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2204.14198v1",
+        "pdfUrl": "https://arxiv.org/pdf/2204.14198v1",
+        "paperRevisionDate": "2022-04-28",
+        "repositoryUrl": "https://github.com/OpenGVLab/InternVL",
+        "repositoryCommitSha": "2410d1dbf208f0e799459aff9376e5747dbf41a2",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-flamingo-task",
+          "query": "How does Flamingo connect visual inputs to language modeling?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "formulation": "cross-attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-blip2",
+      "split": "development",
+      "title": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models",
+      "authors": [],
+      "category": "multimodal",
+      "source": {
+        "arxivId": "2301.12597",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2301.12597v1",
+        "pdfUrl": "https://arxiv.org/pdf/2301.12597v1",
+        "paperRevisionDate": "2023-01-30",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-blip2-task",
+          "query": "What intermediary module bridges the frozen vision encoder and language model?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "component": "Q-Former"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-orpo",
+      "split": "development",
+      "title": "ORPO: Monolithic Preference Optimization without Reference Model",
+      "authors": [],
+      "category": "preference",
+      "source": {
+        "arxivId": "2403.07691",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2403.07691v1",
+        "pdfUrl": "https://arxiv.org/pdf/2403.07691v1",
+        "paperRevisionDate": "2024-03-12",
+        "repositoryUrl": "https://github.com/huggingface/alignment-handbook",
+        "repositoryCommitSha": "1de1fc996972aa76b7d40c64c07b66dec8b6976a",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-orpo-task",
+          "query": "Which preference-optimization method removes the reference model?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "method": "odds ratio preference optimization"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-deepseekmath",
+      "split": "development",
+      "title": "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models",
+      "authors": [],
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2402.03300",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2402.03300v1",
+        "pdfUrl": "https://arxiv.org/pdf/2402.03300v1",
+        "paperRevisionDate": "2024-02-05",
+        "repositoryUrl": "https://github.com/deepseek-ai/DeepSeek-Math",
+        "repositoryCommitSha": "b8b0f8ce093d80bf8e9a641e44142f06d092c305",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-deepseekmath-task",
+          "query": "Which reinforcement-learning algorithm is used for mathematical reasoning?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "algorithm": "GRPO"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-gqa",
+      "split": "development",
+      "title": "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints",
+      "authors": [],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2305.13245",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2305.13245v1",
+        "pdfUrl": "https://arxiv.org/pdf/2305.13245v1",
+        "paperRevisionDate": "2023-05-22",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-gqa-task",
+          "query": "What attention topology reduces key/value heads while retaining query heads?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "attention": "grouped-query attention"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-hyena",
+      "split": "development",
+      "title": "Hyena Hierarchy: Towards Larger Convolutional Language Models",
+      "authors": [],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2302.10866",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2302.10866v1",
+        "pdfUrl": "https://arxiv.org/pdf/2302.10866v1",
+        "paperRevisionDate": "2023-02-21",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-hyena-task",
+          "query": "What non-attention operator is central to Hyena?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "operator": "long convolutions"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-colbert",
+      "split": "development",
+      "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+      "authors": [],
+      "category": "retrieval",
+      "source": {
+        "arxivId": "2004.12832",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2004.12832v1",
+        "pdfUrl": "https://arxiv.org/pdf/2004.12832v1",
+        "paperRevisionDate": "2020-04-27",
+        "repositoryUrl": "https://github.com/stanford-futuredata/ColBERT",
+        "repositoryCommitSha": "cc4f3dc91c0b45d2d08c251d9d95178285c65f1c",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-colbert-task",
+          "query": "How does ColBERT compare query and document representations?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "interaction": "late interaction"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-dpr",
+      "split": "development",
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "authors": [],
+      "category": "retrieval",
+      "source": {
+        "arxivId": "2004.04906",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2004.04906v1",
+        "pdfUrl": "https://arxiv.org/pdf/2004.04906v1",
+        "paperRevisionDate": "2020-04-09",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-dpr-task",
+          "query": "What retrieval representation does DPR learn?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "retriever": "dual-encoder dense retriever"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-cot",
+      "split": "development",
+      "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+      "authors": [],
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2201.11903",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2201.11903v1",
+        "pdfUrl": "https://arxiv.org/pdf/2201.11903v1",
+        "paperRevisionDate": "2022-01-25",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-cot-task",
+          "query": "What intermediate outputs does chain-of-thought prompting elicit?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "trace": "intermediate reasoning steps"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-selfconsistency",
+      "split": "development",
+      "title": " self-consistency improves chain of thought reasoning in language models",
+      "authors": [],
+      "category": "reasoning",
+      "source": {
+        "arxivId": "2203.11171",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2203.11171v1",
+        "pdfUrl": "https://arxiv.org/pdf/2203.11171v1",
+        "paperRevisionDate": "2022-03-21",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-selfconsistency-task",
+          "query": "How does self-consistency select a final answer?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "method": "majority vote over sampled reasoning paths"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-wav2vec",
+      "split": "development",
+      "title": "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations",
+      "authors": [],
+      "category": "speech",
+      "source": {
+        "arxivId": "2006.11477",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2006.11477v1",
+        "pdfUrl": "https://arxiv.org/pdf/2006.11477v1",
+        "paperRevisionDate": "2020-06-19",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-wav2vec-task",
+          "query": "What type of pretraining signal does wav2vec 2.0 use?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "objective": "contrastive learning"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-ul2",
+      "split": "holdout",
+      "title": "Unifying Language Learning Paradigms",
+      "authors": [],
+      "category": "objective",
+      "source": {
+        "arxivId": "2205.05131",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2205.05131v1",
+        "pdfUrl": "https://arxiv.org/pdf/2205.05131v1",
+        "paperRevisionDate": "2022-05-10",
+        "repositoryUrl": "https://github.com/google-research/t5x",
+        "repositoryCommitSha": "2045b332cf19887885a74ef1bd6b2adb2a7ca634",
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-ul2-task",
+          "query": "Which denoising mixture unifies multiple language-learning objectives?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "objective": "mixture of denoisers"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-mistral",
+      "split": "holdout",
+      "title": "Mistral 7B",
+      "authors": [],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2310.06825",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2310.06825v1",
+        "pdfUrl": "https://arxiv.org/pdf/2310.06825v1",
+        "paperRevisionDate": "2023-10-10",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-mistral-task",
+          "query": "Which two efficiency mechanisms are emphasized in Mistral 7B attention?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "attention": [
+              "grouped-query attention",
+              "sliding-window attention"
+            ]
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-mixtral",
+      "split": "holdout",
+      "title": "Mixtral of Experts",
+      "authors": [],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2401.04088",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2401.04088v1",
+        "pdfUrl": "https://arxiv.org/pdf/2401.04088v1",
+        "paperRevisionDate": "2024-01-08",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-mixtral-task",
+          "query": "How many experts are selected per token in Mixtral?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "experts_per_token": 2
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-qwen",
+      "split": "holdout",
+      "title": "Qwen Technical Report",
+      "authors": [],
+      "category": "architecture",
+      "source": {
+        "arxivId": "2309.16609",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2309.16609v1",
+        "pdfUrl": "https://arxiv.org/pdf/2309.16609v1",
+        "paperRevisionDate": "2023-09-28",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-qwen-task",
+          "query": "Which positional encoding is used by Qwen?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "position_encoding": "rotary positional embedding"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    },
+    {
+      "caseId": "v2-phi3",
+      "split": "holdout",
+      "title": "Phi-3 Technical Report: A Highly Capable Language Model Locally on Your Phone",
+      "authors": [],
+      "category": "systems",
+      "source": {
+        "arxivId": "2404.14219",
+        "arxivVersion": "v1",
+        "absUrl": "https://arxiv.org/abs/2404.14219v1",
+        "pdfUrl": "https://arxiv.org/pdf/2404.14219v1",
+        "paperRevisionDate": "2024-04-22",
+        "repositoryUrl": null,
+        "repositoryCommitSha": null,
+        "repositoryCommitDate": null,
+        "paperSha256": null,
+        "paperSha256Status": "PENDING_ACQUISITION",
+        "artifactPolicy": "cache_only_no_redistribution",
+        "temporalAlignment": "UNKNOWN"
+      },
+      "tasks": [
+        {
+          "taskId": "v2-phi3-task",
+          "query": "What context-length capability is highlighted for Phi-3?",
+          "expectedStatus": "SUPPORTED",
+          "expectedAnswer": {
+            "context": "long context"
+          },
+          "expectedSourceClass": [
+            "paper"
+          ],
+          "expectedLocator": "paper evidence",
+          "annotationRationale": "Independently curated bounded proposition for the new V2 corpus."
+        }
+      ]
+    }
+  ]
+}

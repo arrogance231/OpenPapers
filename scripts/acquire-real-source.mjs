@@ -4,7 +4,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const dataset = JSON.parse(await readFile(join(root, 'evals/datasets/research-real-v1.json'), 'utf8'));
+const dataset = JSON.parse(await readFile(join(root, process.env.REAL_SOURCE_DATASET_FILE ?? 'evals/datasets/research-real-v1.json'), 'utf8'));
 const cacheRoot = join(root, '.cache', 'real-source');
 const maxBytes = 50 * 1024 * 1024;
 const split = process.argv.includes('--split=holdout') ? 'holdout' : process.argv.includes('--split=development') ? 'development' : null;
@@ -50,7 +50,7 @@ for (const item of cases) {
   }
   rows.push(row);
 }
-const output = join(root, 'evals', 'results', `real-source-acquisition-${split ?? 'all'}.json`);
+const output = join(root, 'evals', 'results', process.env.REAL_SOURCE_ACQUISITION_OUTPUT ?? `real-source-acquisition-${split ?? 'all'}.json`);
 await mkdir(dirname(output), { recursive: true });
 await writeFile(output, JSON.stringify({ schemaVersion: 'openpapers.real-source-acquisition.v1', dataset: dataset.version, split: split ?? 'all', metadataOnly, rows }, null, 2) + '\n');
 console.log(JSON.stringify({ output, dataset: dataset.version, split: split ?? 'all', metadataOnly, caseCount: rows.length, acquired: rows.filter(row => row.status === 'ACQUIRED').length, unavailable: rows.filter(row => row.status === 'UNAVAILABLE').length, skipped: rows.filter(row => row.status === 'SKIPPED').length }, null, 2));

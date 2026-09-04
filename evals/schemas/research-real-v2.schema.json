@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://openpapers.dev/schemas/research-real-v2.schema.json",
+  "title":"OpenPapers real-source research benchmark v2",
+  "type":"object",
+  "required":["version","status","annotationPolicy","splitPolicy","cases"],
+  "properties":{
+    "version":{"const":"research-real-v2"},
+    "status":{"const":"curated-real-source-metadata"},
+    "annotationPolicy":{"type":"string","minLength":1},
+    "splitPolicy":{"type":"object","required":["development","holdout","holdoutInfluencedTuning"],"properties":{"development":{"type":"string"},"holdout":{"type":"string"},"holdoutInfluencedTuning":{"const":false}}},
+    "cases":{"type":"array","minItems":20,"items":{"type":"object","required":["caseId","split","title","category","source","tasks"],"properties":{"caseId":{"type":"string"},"split":{"enum":["development","holdout"]},"title":{"type":"string"},"category":{"type":"string"},"source":{"type":"object","required":["arxivId","arxivVersion","absUrl","pdfUrl","paperRevisionDate","repositoryUrl","repositoryCommitSha","paperSha256Status","artifactPolicy","temporalAlignment"]},"tasks":{"type":"array","minItems":1}}}}
+  }
+}
