@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "openpapers.real-repository-metrics.v1",
+  "sourceResult": "evals/results/real-source-v2-development-baseline-33da3907ae45.json",
+  "dataset": "research-real-v2",
+  "split": "development",
+  "casesWithRepository": 6,
+  "metrics": {
+    "repositoryRetrievalSuccess": 1,
+    "pinnedCommitConsistency": 1,
+    "filesRead": 75,
+    "evidenceRecords": 214,
+    "manifestRecords": 75,
+    "candidateFileRecall": null,
+    "selectedFilePrecision": null,
+    "lineLocatorAccuracy": null,
+    "sourceClassAccuracy": null,
+    "parameterExtractionAccuracy": null
+  },
+  "limitations": [
+    "The V2 metadata corpus does not independently annotate expected evidence-bearing paths or line spans; gold-dependent file-selection, locator, source-class, and extraction accuracy are therefore NOT_MEASURED.",
+    "Commit consistency verifies evaluator provenance, not official-repository correctness."
+  ]
+}

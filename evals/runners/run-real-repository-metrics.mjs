@@ -1,0 +1,12 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
+const resultPath=process.argv[2]; if(!resultPath)throw new Error('usage: node run-real-repository-metrics.mjs <result-json>');
+const result=JSON.parse(await readFile(resultPath,'utf8')); const rows=result.rows.filter(row=>row.repositoryEvidence); const expected=rows.length;
+const success=rows.filter(row=>row.repositoryEvidence.failures?.length===0).length;
+const files=rows.reduce((sum,row)=>sum+(row.repositoryEvidence.filesRead??0),0); const evidence=rows.reduce((sum,row)=>sum+(row.repositoryEvidence.evidenceCount??0),0);
+const commitMatch=rows.filter(row=>row.repositoryEvidence.commitSha && row.repositoryEvidence.commitSha===row.repositoryEvidence.manifest?.[0]?.commitSha).length;
+const locatorRecords=rows.reduce((sum,row)=>sum+(row.repositoryEvidence.manifest?.length??0),0);
+const output={schemaVersion:'openpapers.real-repository-metrics.v1',sourceResult:resultPath,dataset:result.dataset,split:result.split,casesWithRepository:expected,metrics:{repositoryRetrievalSuccess:expected?success/expected:null,pinnedCommitConsistency:expected?commitMatch/expected:null,filesRead:files,evidenceRecords:evidence,manifestRecords:locatorRecords,candidateFileRecall:null,selectedFilePrecision:null,lineLocatorAccuracy:null,sourceClassAccuracy:null,parameterExtractionAccuracy:null},limitations:['The V2 metadata corpus does not independently annotate expected evidence-bearing paths or line spans; gold-dependent file-selection, locator, source-class, and extraction accuracy are therefore NOT_MEASURED.','Commit consistency verifies evaluator provenance, not official-repository correctness.']};
+const out=join(root,'evals/results',`real-repository-metrics-${result.commit.slice(0,12)}-${result.split}.json`);await writeFile(out,JSON.stringify(output,null,2)+'\n');console.log(JSON.stringify({output,metrics:output.metrics},null,2));
