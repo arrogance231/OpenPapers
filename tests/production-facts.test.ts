@@ -23,6 +23,13 @@ describe('production fact extraction', () => {
     expect(result.diagnostics.rejections.some(item => item.reason === 'REJECT_NEGATION')).toBe(true);
   });
 
+  it('treats negated updates as positive frozen-state evidence but rejects negated use', () => {
+    const frozen = extractResearchFacts({...document, sections:[{level:1,heading:'Our Method',page:4,text:'The base parameters are frozen and do not receive gradient updates.'}]});
+    expect(frozen.facts).toHaveLength(1);
+    expect(frozen.facts[0]?.value).toBe('base weights frozen');
+    expect(extractResearchFacts(document).diagnostics.rejections.some(item => item.reason === 'REJECT_NEGATION')).toBe(true);
+  });
+
   it('retains provenance and raw values on accepted facts', () => {
     const fact = extractResearchFacts(document).facts.find(item => item.value === 'Adam');
     expect(fact).toMatchObject({predicate:'optimization.optimizer', rawValue:'Adam', sourceId:document.url, extractionMethod:'v5.1-deterministic'});

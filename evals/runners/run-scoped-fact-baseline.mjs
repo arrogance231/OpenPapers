@@ -6,7 +6,8 @@ import { extractResearchFacts } from '../../dist/extraction/facts.js';
 import { aggregateScoped, scoreScopedPaper, validateScopedFactDataset } from '../metrics/scoped-facts.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const dataset = JSON.parse(readFileSync(join(root, 'evals/datasets/research-facts-v5-development.json'), 'utf8'));
+const datasetArg=process.argv.find(value=>value.startsWith('--dataset='))?.slice('--dataset='.length);
+const dataset=JSON.parse(readFileSync(join(root,datasetArg??'evals/datasets/research-facts-v5-development.json'),'utf8'));
 const validationErrors = validateScopedFactDataset(dataset);
 if (validationErrors.length) { console.error(JSON.stringify({ validationErrors }, null, 2)); process.exit(1); }
 if (process.argv.includes('--validate-only')) { console.log(JSON.stringify({ valid:true, papers:dataset.papers.length, goldFacts:dataset.papers.reduce((n,p)=>n+p.goldFacts.length,0) })); process.exit(0); }

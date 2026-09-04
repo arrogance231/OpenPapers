@@ -14,14 +14,14 @@ export function equivalentValue(a, b) {
   return left === right;
 }
 
+function sectionKey(value) { return String(value).replace(/^\d+(?:\.\d+)*\s*/,'').trim().toLowerCase(); }
+function sectionInScope(section, paper) { const key=sectionKey(section); return paper.scope.sections.some(name=>key===sectionKey(name) || key.includes(sectionKey(name))); }
+function subjectInScope(item, paper) { const compact=value=>String(value).toLowerCase().replace(/\s+/g,''); return !paper.scope.subjects?.length || !item.subject || paper.scope.subjects.some(subject=>compact(item.subject)===compact(subject)); }
 function family(predicate) { return predicate.split('.')[0]; }
-function sameScope(predicted, gold) {
-  return predicted.section === gold.section && predicted.predicate === gold.predicate;
-}
 
 export function validateScopedFactDataset(dataset) {
   const errors = [];
-  if (dataset.version !== 'research-facts-v5-development') errors.push('unexpected dataset version');
+  if (!['research-facts-v5-development','research-facts-v5-2-development'].includes(dataset.version)) errors.push('unexpected dataset version');
   if (dataset.completenessPolicy !== 'EXHAUSTIVE_WITHIN_SCOPE') errors.push('dataset is not exhaustive-within-scope');
   const ids = new Set();
   for (const paper of dataset.papers ?? []) {
@@ -54,28 +54,28 @@ export function scoreScopedPaper(paper, predicted) {
   const production = !Array.isArray(predicted);
   const predictedFacts = production ? predicted.facts : predicted;
   const gold = paper.goldFacts;
-  const candidates = (production ? predicted.candidates : predictedFacts).map(item => production ? { predicate:item.candidatePredicate, value:item.rawValue, section:item.section, locator:item.locator } : projectedCandidate(item));
-  const accepted = production ? predictedFacts.map(item => ({predicate:item.predicate, value:item.value, section:item.locator.section ?? '', locator:item.locator})) : candidates;
-  const inScope = candidates.filter(candidate => paper.scope.sections.includes(candidate.section) && paper.allowedPredicateFamilies.some(prefix => candidate.predicate === prefix || candidate.predicate.startsWith(`${prefix}.`)));
-  const acceptedInScope = accepted.filter(fact => paper.scope.sections.includes(fact.section) && paper.allowedPredicateFamilies.some(prefix => fact.predicate === prefix || fact.predicate.startsWith(`${prefix}.`)));
+  const candidates = (production ? predicted.candidates : predictedFacts).map(item => production ? { predicate:item.candidatePredicate, value:item.rawValue, section:item.section, locator:item.locator, subject:item.subjectHint } : projectedCandidate(item));
+  const accepted = production ? predictedFacts.map(item => ({predicate:item.predicate, value:item.value, section:item.locator.section ?? '', locator:item.locator, subject:item.subject})) : candidates;
+  const inScope = candidates.filter(candidate => sectionInScope(candidate.section,paper) && subjectInScope(candidate,paper) && paper.allowedPredicateFamilies.some(prefix => candidate.predicate === prefix || candidate.predicate.startsWith(`${prefix}.`)));
+  const acceptedInScope = accepted.filter(fact => sectionInScope(fact.section,paper) && subjectInScope(fact,paper) && paper.allowedPredicateFamilies.some(prefix => fact.predicate === prefix || fact.predicate.startsWith(`${prefix}.`)));
   const used = new Set();
   const matches = [];
-  for (const fact of acceptedInScope) {
-    const index = gold.findIndex((item, i) => !used.has(i) && item.section === fact.section && item.predicate === fact.predicate && equivalentValue(item.canonicalValue, fact.value));
-    if (index >= 0) { used.add(index); matches.push({candidate:fact, gold:gold[index], classification:'TP'}); }
-  }
   const duplicateEquivalent = [];
-  const seen = new Set();
-  for (const item of matches) { const key = `${item.gold.predicate}|${norm(item.gold.canonicalValue)}`; if (seen.has(key)) duplicateEquivalent.push(item); else seen.add(key); }
-  const tp = matches.length - duplicateEquivalent.length;
-  const fp = acceptedInScope.length - matches.length;
+  for (const fact of acceptedInScope) {
+    const same = (item) => (item.section === fact.section || sectionKey(item.section) === sectionKey(fact.section) || sectionKey(fact.section).includes(sectionKey(item.section))) && item.predicate === fact.predicate && equivalentValue(item.canonicalValue, fact.value);
+    const index = gold.findIndex((item, i) => !used.has(i) && same(item));
+    if (index >= 0) { used.add(index); matches.push({candidate:fact, gold:gold[index], classification:'TP'}); }
+    else if (gold.some(same)) duplicateEquivalent.push({candidate:fact, classification:'DUPLICATE_EQUIVALENT'});
+  }
+  const tp = matches.length;
+  const fp = acceptedInScope.length - matches.length - duplicateEquivalent.length;
   const fn = gold.length - tp;
   const outOfScope = candidates.length - inScope.length;
-  const candidateRecall = gold.length ? gold.filter(g => inScope.some(c => c.section === g.section && c.predicate === g.predicate)).length / gold.length : null;
+  const candidateRecall = gold.length ? gold.filter(g => inScope.some(c => (c.section === g.section || sectionKey(c.section) === sectionKey(g.section) || sectionKey(c.section).includes(sectionKey(g.section))) && c.predicate === g.predicate)).length / gold.length : null;
   const precision = tp + fp ? tp / (tp + fp) : (gold.length ? 0 : 1);
   const recall = tp + fn ? tp / (tp + fn) : 1;
   const rejectionReasons = production ? Object.fromEntries(predicted.diagnostics.rejections.reduce((counts, item) => counts.set(item.reason, (counts.get(item.reason) ?? 0) + 1), new Map())) : {};
-  return { paperId: paper.paperId, candidates: candidates.length, inScopeCandidates: inScope.length, candidateRecall, candidatesPerGold: gold.length ? candidates.length / gold.length : null, tp, fp, fn, outOfScope, duplicateEquivalent: duplicateEquivalent.length, rejectionReasons, precision, recall, f1: precision + recall ? 2 * precision * recall / (precision + recall) : 0, valueAccuracy: tp / (gold.length || 1), predicateAccuracy: tp / (gold.length || 1), roleAccuracy: null, scopeAccuracy: matches.length / (gold.length || 1), stageAccuracy: null, sourceAccuracy: null, locatorAccuracy: matches.length / (gold.length || 1), validatedFactDensityPer1000Tokens: acceptedInScope.length / Math.max(1, paper.sourceSections.reduce((n, s) => n + s.text.split(/\s+/).length, 0)) * 1000, matches, falsePositiveCategories: acceptedInScope.filter(c => !matches.some(m => m.candidate === c)).map(c => ({category:'unsupported_or_normalization_mismatch', predicate:c.predicate, section:c.section, value:c.value})), falseNegativeCategories: gold.filter((_, i) => !used.has(i)).map(g => ({factId:g.factId, category:'candidate_or_value_mismatch'}))};
+  return { paperId: paper.paperId, candidates: candidates.length, inScopeCandidates: inScope.length, candidateRecall, candidatesPerGold: gold.length ? candidates.length / gold.length : null, tp, fp, fn, outOfScope, duplicateEquivalent: duplicateEquivalent.length, rejectionReasons, precision, recall, f1: precision + recall ? 2 * precision * recall / (precision + recall) : 0, valueAccuracy: tp / (gold.length || 1), predicateAccuracy: tp / (gold.length || 1), roleAccuracy: null, scopeAccuracy: matches.length / (gold.length || 1), stageAccuracy: null, sourceAccuracy: null, locatorAccuracy: matches.length / (gold.length || 1), validatedFactDensityPer1000Tokens: acceptedInScope.length / Math.max(1, paper.sourceSections.reduce((n, s) => n + s.text.split(/\s+/).length, 0)) * 1000, matches, falsePositiveCategories: acceptedInScope.filter(c => !matches.some(m => m.candidate === c) && !duplicateEquivalent.some(m => m.candidate === c)).map(c => ({category:'unsupported_or_normalization_mismatch', predicate:c.predicate, section:c.section, value:c.value})), falseNegativeCategories: gold.filter((_, i) => !used.has(i)).map(g => ({factId:g.factId, category:'candidate_or_value_mismatch'}))};
 }
 
 export function aggregateScoped(rows) {

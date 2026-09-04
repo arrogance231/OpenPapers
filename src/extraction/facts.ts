@@ -46,6 +46,7 @@ const rules: CandidateRule[] = [
   {predicate:'optimization.optimizer',triggerKind:'optimizer',pattern:/\b(AdamW|Adam|SGD|Adafactor|Lion)\b/i,value:m=>m[1]!,scope:'optimization',stage:'training'},
   {predicate:'training.dataset',triggerKind:'dataset',pattern:/\b((?:WMT|WikiText|C4|The Pile|ImageNet)[^,.]*?)\s+dataset\b/i,value:m=>m[1]!.trim(),scope:'training',stage:'training'},
   {predicate:'architecture.depth',triggerKind:'depth',pattern:/\b([A-Z][A-Za-z0-9_-]*(?:BASE|LARGE)?)\s+has\s+(\d+)\s+layers?\b/i,value:m=>m[2]!,subject:m=>m[1],scope:'architecture',stage:'all'},
+  {predicate:'architecture.depth',triggerKind:'depth',pattern:/\b([A-Z][A-Za-z0-9_-]*)\s+(BASE|LARGE)\s*\(\s*L\s*=\s*(\d+)/i,value:m=>m[3]!,subject:m=>`${m[1]}${m[2]}`,scope:'architecture',stage:'all'},
   {predicate:'architecture.attention.algorithm',triggerKind:'attention',pattern:/\b(FlashAttention|PagedAttention|Multi-Head Attention)\b/i,value:m=>m[1]!,scope:'architecture',stage:'all'},
   {predicate:'training.precision',triggerKind:'precision',pattern:/\b(\d+\s*-\s*bit)\s+quantized\b/i,value:m=>m[1]!.replace(/\s+/g,''),scope:'training',stage:'finetuning'},
   {predicate:'optimization.preference_method',triggerKind:'preference_method',pattern:/\b(?:Direct Preference Optimization)\s*\((DPO)\)/i,value:m=>m[1]!,scope:'training',stage:'preference optimization'},
@@ -81,7 +82,7 @@ export function extractCandidateEvidence(document: ParsedDocument): CandidateEvi
 export function validateCandidateEvidence(candidate: CandidateEvidence): { reason: ValidationReason; fact?: ResearchFact } {
   const external = isExternal(candidate.section,candidate.rawText);
   if (external) return {reason:external};
-  if (isNegated(candidate.rawText)) return {reason:'REJECT_NEGATION'};
+  if (isNegated(candidate.rawText) && !(candidate.candidatePredicate === 'training.parameter_update' && /\bfrozen\b|\bfixed\b|does not receive gradient updates/i.test(candidate.rawText))) return {reason:'REJECT_NEGATION'};
   if (!candidate.rawValue.trim()) return {reason:'REJECT_NORMALIZATION'};
   const value: FactValue = candidate.candidatePredicate === 'architecture.depth' ? Number(candidate.rawValue) : candidate.rawValue;
   if (typeof value === 'number' && !Number.isInteger(value)) return {reason:'REJECT_NORMALIZATION'};
