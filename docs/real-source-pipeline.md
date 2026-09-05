@@ -24,3 +24,29 @@ This document records the production integration status for `research-real-v1`. 
 | MCP real-source transport | `reconstruct_research` exposes bounded paper/repository reconstruction and explicit UNKNOWN diagnostics | Deterministic boundary tests pass | COMPLETE for transport contract |
 
 The benchmark remains split into 13 development cases and 6 holdout cases. Development was frozen before holdout acquisition. Holdout artifacts were acquired and evaluated once; no tuning followed.
+
+The v5 architecture slice additionally introduced isolated production primitives, documented below from its own audit. Post-merge, this repository contains both the real-source evaluation program and the v5 production boundaries.
+## Implemented in the v5 production slice
+
+`src/research/real-pipeline.ts` provides a production-bound GitHub reader that:
+
+- accepts only a 40-character commit SHA;
+- traverses repository directories with file and byte limits;
+- excludes common generated, vendor, checkpoint, and dataset paths;
+- retrieves content using the exact requested revision;
+- emits raw value, normalized value, source class, supporting line, and one-based locator;
+- emits a replay manifest with SHA-256 content hash, size, commit, route, and timestamp;
+- preserves `UNKNOWN` for acquisition/parser failure;
+- emits `NOT_REPORTED` only after both sources are explicitly marked inspected.
+
+`ResearchService.readPinnedRepository` and `reconcilePaperAndRepositoryEvidence` expose these boundaries to production callers.
+
+## Verified scope
+
+- Full existing suite: 51 files, 187 tests passed.
+- TypeScript lint, architecture check, and build passed.
+- `npm audit --audit-level=high` passed with 0 vulnerabilities.
+- Package dry-run passed.
+- New pinned-reader tests passed (6 tests in `tests/real-pipeline.test.ts`).
+
+The v5 production slice was developed without access to the real-source dataset, acquisition manifest, real paper corpus, real repository cases, holdout, or one-shot holdout checkpoint; no holdout was inspected or used for tuning. The merged repository now carries both the v5 production boundaries and the real-source evaluation program.

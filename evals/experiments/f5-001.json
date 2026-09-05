@@ -1,0 +1,10 @@
+{
+  "id":"F5-001",
+  "kind":"measurement-only-baseline",
+  "hypothesis":"The existing section-level deterministic extractor is not a trustworthy fact-level validator; an exhaustive scoped benchmark must expose its recovery and overproduction separately.",
+  "change":"Added independent six-paper scoped gold, schema validation, deterministic equivalence policy, TP/FP/FN/out-of-scope scoring, per-paper diagnostics, and diagnostic LOPO. Production extraction and query intent were unchanged.",
+  "baseline":{"commit":"f9d37d9113b5060d2bd982ae68c846324d68290c","precision":0,"recall":0,"f1":0,"candidateCount":3,"candidateRecallMean":0.5,"fabrication":"not applicable to fact-only runner"},
+  "lopo":{"precision":0,"recall":0,"f1":0},
+  "decision":"MEASUREMENT ACCEPTED; NO VALIDATOR TUNING. The result is a calibration baseline, not a quality claim. Do not create a final holdout yet.",
+  "holdoutUsedForTuning":false
+}

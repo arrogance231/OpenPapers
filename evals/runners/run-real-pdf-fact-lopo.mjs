@@ -1,0 +1,11 @@
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+const root=join(dirname(fileURLToPath(import.meta.url)),'../..');
+const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+const baseline=JSON.parse(readFileSync(join(root,`evals/results/v5-real-pdf-fact-baseline-${commit.slice(0,12)}.json`),'utf8'));
+const rows=baseline.perPaper.filter(row=>row.parseSuccess).map(row=>({heldOutPaperId:row.paperId,parseSuccess:true,candidateRecall:row.candidateRecall,precision:row.precision,recall:row.recall,f1:row.f1,tp:row.tp,fp:row.fp,fn:row.fn}));
+const mean=k=>rows.length?rows.reduce((n,row)=>n+(row[k]??0),0)/rows.length:null;
+const result={schemaVersion:'openpapers.real-pdf-fact-lopo.v1',benchmark:'research-facts-v5-2-development',commit,timestamp:new Date().toISOString(),method:'leave-one-paper-out diagnostic over actual parsed PDFs; extractor has no learned paper-specific parameters',mean:{candidateRecall:mean('candidateRecall'),precision:mean('precision'),recall:mean('recall'),f1:mean('f1')},perPaper:rows,holdout:{created:false,usedForTuning:false}};
+const output=join(root,`evals/results/v5-real-pdf-fact-lopo-${commit.slice(0,12)}.json`);mkdirSync(dirname(output),{recursive:true});writeFileSync(output,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({output,mean:result.mean},null,2));

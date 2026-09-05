@@ -1,0 +1,285 @@
+{
+  "schemaVersion": "openpapers.scoped-fact-result.v1",
+  "benchmark": "research-facts-v5-development",
+  "commit": "f9d37d9113b5060d2bd982ae68c846324d68290c",
+  "timestamp": "2026-09-04T11:57:58.341Z",
+  "workingTreeDirty": false,
+  "methodology": {
+    "completenessPolicy": "EXHAUSTIVE_WITHIN_SCOPE",
+    "duplicatePolicy": "CANONICAL_WITH_MULTIPLE_LOCATORS",
+    "fuzzyEquivalence": false,
+    "sourceDerivedGold": false,
+    "parser": "bounded source-section fixtures",
+    "validatorLayer": "current deterministic PaperFact extraction; no V5 tuning"
+  },
+  "metrics": {
+    "papers": 6,
+    "goldFacts": 7,
+    "candidateCount": 3,
+    "tp": 0,
+    "fp": 3,
+    "fn": 7,
+    "outOfScope": 0,
+    "duplicateEquivalent": 0,
+    "precision": 0,
+    "recall": 0,
+    "f1": 0,
+    "meanCandidateRecall": 0.5,
+    "meanCandidatesPerGold": 0.4166666666666667,
+    "meanValidatedDensityPer1000Tokens": 18.9484126984127
+  },
+  "familyMetrics": {
+    "training": {
+      "goldFacts": 3,
+      "tp": 0,
+      "fp": 0,
+      "fn": 3,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "optimization": {
+      "goldFacts": 2,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "architecture": {
+      "goldFacts": 2,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    }
+  },
+  "perPaper": [
+    {
+      "paperId": "1706.03762",
+      "candidates": 1,
+      "inScopeCandidates": 1,
+      "candidateRecall": 1,
+      "candidatesPerGold": 0.5,
+      "tp": 0,
+      "fp": 1,
+      "fn": 2,
+      "outOfScope": 0,
+      "duplicateEquivalent": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0,
+      "valueAccuracy": 0,
+      "predicateAccuracy": 0,
+      "roleAccuracy": null,
+      "scopeAccuracy": 0,
+      "stageAccuracy": null,
+      "sourceAccuracy": null,
+      "locatorAccuracy": 0,
+      "validatedFactDensityPer1000Tokens": 17.857142857142858,
+      "matches": [],
+      "falsePositiveCategories": [
+        {
+          "category": "unsupported_or_normalization_mismatch",
+          "predicate": "training",
+          "section": "Training",
+          "value": "We trained our models on the standard WMT 2014 English-German dataset consisting of about 4.5 million sentence pairs. We used batches of approximately 25,000 source tokens and 25,000 target tokens. We used the Adam optimizer with beta1 = 0.9, beta2 = 0.98 and epsilon = 10^-9. We varied the learning rate over the course of training."
+        }
+      ],
+      "falseNegativeCategories": [
+        {
+          "factId": "1706-training-data",
+          "category": "candidate_or_value_mismatch"
+        },
+        {
+          "factId": "1706-optimizer",
+          "category": "candidate_or_value_mismatch"
+        }
+      ]
+    },
+    {
+      "paperId": "1810.04805",
+      "candidates": 0,
+      "inScopeCandidates": 0,
+      "candidateRecall": 0,
+      "candidatesPerGold": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "outOfScope": 0,
+      "duplicateEquivalent": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0,
+      "valueAccuracy": 0,
+      "predicateAccuracy": 0,
+      "roleAccuracy": null,
+      "scopeAccuracy": 0,
+      "stageAccuracy": null,
+      "sourceAccuracy": null,
+      "locatorAccuracy": 0,
+      "validatedFactDensityPer1000Tokens": 0,
+      "matches": [],
+      "falsePositiveCategories": [],
+      "falseNegativeCategories": [
+        {
+          "factId": "1810-base-layers",
+          "category": "candidate_or_value_mismatch"
+        }
+      ]
+    },
+    {
+      "paperId": "2106.09685",
+      "candidates": 1,
+      "inScopeCandidates": 1,
+      "candidateRecall": 1,
+      "candidatesPerGold": 1,
+      "tp": 0,
+      "fp": 1,
+      "fn": 1,
+      "outOfScope": 0,
+      "duplicateEquivalent": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0,
+      "valueAccuracy": 0,
+      "predicateAccuracy": 0,
+      "roleAccuracy": null,
+      "scopeAccuracy": 0,
+      "stageAccuracy": null,
+      "sourceAccuracy": null,
+      "locatorAccuracy": 0,
+      "validatedFactDensityPer1000Tokens": 33.333333333333336,
+      "matches": [],
+      "falsePositiveCategories": [
+        {
+          "category": "unsupported_or_normalization_mismatch",
+          "predicate": "architecture",
+          "section": "Our Method",
+          "value": "During training, W0 is frozen and does not receive gradient updates, while A and B contain trainable parameters. We apply LoRA to the weight matrices in the Transformer self-attention modules."
+        }
+      ],
+      "falseNegativeCategories": [
+        {
+          "factId": "2106-frozen-base",
+          "category": "candidate_or_value_mismatch"
+        }
+      ]
+    },
+    {
+      "paperId": "2205.14135",
+      "candidates": 0,
+      "inScopeCandidates": 0,
+      "candidateRecall": 0,
+      "candidatesPerGold": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "outOfScope": 0,
+      "duplicateEquivalent": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0,
+      "valueAccuracy": 0,
+      "predicateAccuracy": 0,
+      "roleAccuracy": null,
+      "scopeAccuracy": 0,
+      "stageAccuracy": null,
+      "sourceAccuracy": null,
+      "locatorAccuracy": 0,
+      "validatedFactDensityPer1000Tokens": 0,
+      "matches": [],
+      "falsePositiveCategories": [],
+      "falseNegativeCategories": [
+        {
+          "factId": "2205-tiling",
+          "category": "candidate_or_value_mismatch"
+        }
+      ]
+    },
+    {
+      "paperId": "2305.14314",
+      "candidates": 1,
+      "inScopeCandidates": 1,
+      "candidateRecall": 1,
+      "candidatesPerGold": 1,
+      "tp": 0,
+      "fp": 1,
+      "fn": 1,
+      "outOfScope": 0,
+      "duplicateEquivalent": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0,
+      "valueAccuracy": 0,
+      "predicateAccuracy": 0,
+      "roleAccuracy": null,
+      "scopeAccuracy": 0,
+      "stageAccuracy": null,
+      "sourceAccuracy": null,
+      "locatorAccuracy": 0,
+      "validatedFactDensityPer1000Tokens": 62.5,
+      "matches": [],
+      "falsePositiveCategories": [
+        {
+          "category": "unsupported_or_normalization_mismatch",
+          "predicate": "training",
+          "section": "QLORA Finetuning",
+          "value": "QLORA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters (LoRA)."
+        }
+      ],
+      "falseNegativeCategories": [
+        {
+          "factId": "2305-4bit-frozen",
+          "category": "candidate_or_value_mismatch"
+        }
+      ]
+    },
+    {
+      "paperId": "2305.18290",
+      "candidates": 0,
+      "inScopeCandidates": 0,
+      "candidateRecall": 0,
+      "candidatesPerGold": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "outOfScope": 0,
+      "duplicateEquivalent": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0,
+      "valueAccuracy": 0,
+      "predicateAccuracy": 0,
+      "roleAccuracy": null,
+      "scopeAccuracy": 0,
+      "stageAccuracy": null,
+      "sourceAccuracy": null,
+      "locatorAccuracy": 0,
+      "validatedFactDensityPer1000Tokens": 0,
+      "matches": [],
+      "falsePositiveCategories": [],
+      "falseNegativeCategories": [
+        {
+          "factId": "2305-dpo",
+          "category": "candidate_or_value_mismatch"
+        }
+      ]
+    }
+  ],
+  "errorDecomposition": {
+    "falsePositiveCategories": {
+      "unsupported_or_normalization_mismatch": 3
+    },
+    "falseNegativeCategories": {
+      "candidate_or_value_mismatch": 7
+    }
+  },
+  "holdout": {
+    "created": false,
+    "usedForTuning": false
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id":"DSR-001",
+  "hypothesis":"Generic PyMuPDF block ordering, heading-level recovery, and parser-section scope selection will reduce structure-induced OUT_OF_SCOPE classifications without lowering fact precision.",
+  "failureStage":"heading_recovery_and_section_assignment",
+  "affectedPapers":["1706.03762","1810.04805","2106.09685","2205.14135","2305.14314","2305.18290"],
+  "change":"Experimental block-level parser heading rewrite plus hierarchical scoped-section selection; no paper identifiers or gold values entered production code.",
+  "before":{"source":"v5.2 real-PDF checkpoint","candidateRecall":0.5833,"precision":1,"recall":0.5714,"f1":0.7273,"outOfScope":161},
+  "after":{"source":"uncommitted experiment artifact v5-real-pdf-fact-baseline-ec8398bafb41.json","candidateRecall":0.4167,"precision":0.6,"recall":0.4286,"f1":0.5,"outOfScope":159},
+  "decision":"REJECT_AND_REVERT",
+  "reason":"Combined change regressed candidate recall, fact recall, F1, and precision. It was not accepted as production behavior.",
+  "holdoutUsedForTuning":false
+}
