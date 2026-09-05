@@ -58,3 +58,12 @@ Latest verification: Compose configuration/build/start passed; all three service
 - [x] Changelog is updated for the current unreleased baseline.
 - [x] Version metadata is consistent between `package.json` and `package-lock.json` (`0.1.0`, Apache-2.0, Node.js >=22.5).
 - [x] Git working tree is clean after the release checklist update and commit.
+
+## 1.0.0 release verification (2026-09-05)
+
+Re-run against the merged release candidate at commit `972a15f7268b50d0fa8b308841257cdecb24728d`:
+
+- [x] `npm run check` (TypeScript check, architecture rules, production build, Vitest): 62 test files, 217 tests passed.
+- [x] Release evaluations recorded in `evals/results/*-972a15f7268b*.json`; summary in `CHANGELOG.md`. Retrieval ranking matches the accepted R-001 state exactly; the holdout split was not used for tuning.
+- [x] Runtime gates re-verified with Docker Compose: all three services healthy; GROBID `/api/isalive` returned `true`; MCP initialize, `tools/list` (37 tools), adversarial search/lookup, and create/list collection read-after-write passed; the 30-run benchmark completed with HTTP 200 responses. Medians: initialize 8.01 ms, `tools/list` 8.81 ms, `tools/call` 6.92 ms.
+- [x] Version metadata consistent between `package.json` and `package-lock.json` (`1.0.0`, Apache-2.0, Node.js >=22.5).

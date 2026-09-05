@@ -129,12 +129,12 @@ See [the installation guide](docs/installation.md) for deployment choices and [t
 
 ## MCP tools
 
-OpenPapers registers 36 bounded tools. The inventory below matches the current server registration:
+OpenPapers registers 37 bounded tools. The inventory below matches the current server registration:
 
 - **Retrieval**: `search_papers`, `get_paper`, `get_bibtex`, `research_method`, `research_topic`
 - **Graphs**: `get_references`, `get_citations`, `get_related_papers`, `resolve_author`
 - **Documents and extraction**: `read_paper`, `search_within_paper`, `extract_paper_facts`, `extract_paper_claims`, `extract_training_parameters`
-- **Verification and reproducibility**: `extract_training_recipe`, `extract_training_recipe_from_url`, `build_research_report`, `compare_paper_to_code`, `compare_papers`, `compare_methods`, `verify_claim`
+- **Verification and reproducibility**: `extract_training_recipe`, `extract_training_recipe_from_url`, `build_research_report`, `compare_paper_to_code`, `compare_papers`, `compare_methods`, `verify_claim`, `reconstruct_research`
 - **Developer ecosystem**: `find_implementations`, `find_models`, `find_datasets`, `find_repository_configs`, `get_repository_config`
 - **Research library**: `create_collection`, `list_collections`, `add_paper_to_collection`, `remove_paper_from_collection`, `delete_collection`, `export_research_pack`, `import_research_pack`, `refresh_collection`, `refresh_paper`, `vector_search`
 
@@ -197,7 +197,7 @@ The documentation index groups guides by task and audience:
 
 ## Project status and roadmap
 
-Version `0.1.0` is the current package baseline. The project prioritizes provenance and citation verification before automatic citation output.
+Version `1.0.0` is the current release baseline. The project prioritizes provenance and citation verification before automatic citation output.
 
 The [changelog](CHANGELOG.md) records completed work. The [roadmap](docs/roadmap.md) describes citation metadata, source-aware citation output, and deferred retrieval improvements.
 
