@@ -199,6 +199,8 @@ The documentation index groups guides by task and audience:
 
 Version `1.0.0` is the current release baseline. The project prioritizes provenance and citation verification before automatic citation output.
 
+Quality is gated by a five-level test program (static, offline integration, spawned-process end-to-end, live-provider evaluation, container runtime) with a claims matrix mapping every public claim to recorded evidence; see [the test plan](docs/testing.md). Reliability claims are scoped by [known limitations](docs/limitations.md): live search is measured — exact-title Recall@10 1.0 and identifier resolution 1.0 over the recorded 30-case run, with fuzzy discovery at 0.5 — not guaranteed.
+
 The [changelog](CHANGELOG.md) records completed work. The [roadmap](docs/roadmap.md) describes citation metadata, source-aware citation output, and deferred retrieval improvements.
 
 ## License and acknowledgements

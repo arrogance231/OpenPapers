@@ -4,7 +4,7 @@ import { ResearchService } from '../src/research/service.js';
 import { makeWork } from './helpers.js';
 
 const arxivWork = makeWork({ title: 'LoRA: Low-Rank Adaptation of Large Language Models', arxivId: '2106.09685', doi: '10.48550/arxiv.2106.09685' });
-const crossrefWork = makeWork({ title: 'Direct Preference Optimization: Your Language Model is Secretly a Reward Model', doi: '10.48550/arxiv.2305.18290' });
+
 
 function serviceWith(overrides: { arxiv?: any; crossref?: any }): ResearchService {
   const arxiv = { search: async () => [], searchById: async () => undefined, ...overrides.arxiv };
@@ -30,13 +30,26 @@ describe('identifier-shaped query probing', () => {
     expect(calls).toBe(2);
   });
 
-  it('probes DOI strings and URLs through Crossref and ranks the target first', async () => {
+  it('probes non-arXiv DOI strings through Crossref and ranks the target first', async () => {
     let probedDoi: string | undefined;
+    const crossrefWork = makeWork({ title: 'A Curated Non-ArXiv Work', doi: '10.1000/curated-paper' });
     const service = serviceWith({ crossref: { getByDoi: async (doi: string) => { probedDoi = doi; return crossrefWork; } } });
-    const response = await service.search('https://doi.org/10.48550/arXiv.2305.18290', 10);
-    expect(probeDoiNormalized(probedDoi)).toBe('10.48550/arxiv.2305.18290');
+    const response = await service.search('https://doi.org/10.1000/curated-paper', 10);
+    expect((probedDoi ?? '').toLowerCase()).toBe('10.1000/curated-paper');
     expect(response.data[0]?.paperId).toBe(crossrefWork.paperId);
     expect(response.transparency.providerFailures ?? []).toEqual([]);
+  });
+
+  it('routes arXiv-minted DOIs (10.48550/arXiv.*) to the arXiv probe, not Crossref', async () => {
+    let arxivProbe: string | undefined; let crossrefProbed = false;
+    const service = serviceWith({
+      arxiv: { searchById: async (id: string) => { arxivProbe = id; return [arxivWork]; } },
+      crossref: { getByDoi: async () => { crossrefProbed = true; return undefined; } },
+    });
+    const response = await service.search('https://doi.org/10.48550/arXiv.2106.09685', 10);
+    expect(arxivProbe).toBe('2106.09685');
+    expect(crossrefProbed).toBe(false);
+    expect(response.data[0]?.paperId).toBe(arxivWork.paperId);
   });
 
   it('surfaces probe failures transparently without breaking the search', async () => {
@@ -54,4 +67,3 @@ describe('identifier-shaped query probing', () => {
   });
 });
 
-function probeDoiNormalized(value: string | undefined): string { return (value ?? '').toLowerCase(); }
