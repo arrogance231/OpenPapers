@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Documented the first research deployment: OpenPapers acts as OpenGrad's first-level research server, providing just-in-time bounded scholarly retrieval instead of speculative bulk paper downloads.
+
 - Added explicit ordered SQLite migrations with legacy upgrade coverage.
 - Added shared storage contracts and an injected Postgres query boundary.
 - Added a bounded paper-style HTML fixture covering parsing, extraction, claims, parameters, recipes, and persistence.

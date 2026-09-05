@@ -30,6 +30,14 @@ OpenPapers combines scholarly and developer sources through replaceable provider
 - Manages collections, portable ResearchPacks, refresh operations, and vector retrieval
 - Serves MCP over stdio or stateless Streamable HTTP
 
+## Research deployment: first-level server for OpenGrad
+
+OpenPapers serves as the first-level research server for [OpenGrad](https://github.com/arrogance231/OpenGrad), a provenance-first empirical study of tool-use post-training in small open-weight language models.
+
+OpenGrad deliberately does not pre-download a fixed paper corpus: which papers matter only becomes clear once dataset materialization, training, and evaluation are underway. Instead of speculative bulk acquisition, OpenGrad queries OpenPapers on demand for search, bounded retrieval, and fact or training-parameter extraction, then records each result's source identity, revision, and locator in its verified bibliography before the evidence is used.
+
+This keeps the OpenGrad repository small, avoids downloading papers that may never be needed, and still satisfies OpenGrad's provenance rules: every claim traces to a primary source with an explicit locator and uncertainty status. OpenGrad remains fully reproducible without OpenPapers; see [OpenGrad's boundary documentation](https://github.com/arrogance231/OpenGrad/blob/master/docs/research/OPENPAPERS.md).
+
 ## Supported sources
 
 OpenPapers uses each provider for a defined part of the research workflow:
