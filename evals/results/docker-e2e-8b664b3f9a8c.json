@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "openpapers.docker-e2e.v1",
+  "kind": "runtime-docker-e2e",
+  "commit": "8b664b3f9a8cd0de71655b79e4e6ec681eb3522f",
+  "timestamp": "2026-09-05T09:01:41.608Z",
+  "fixtureMode": true,
+  "steps": [
+    {
+      "name": "compose up --build --wait",
+      "status": "PASS",
+      "detail": "#18 resolving provenance for metadata file | #18 DONE 0.0s | "
+    },
+    {
+      "name": "endpoint reachable",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp initialize + tools/list",
+      "status": "PASS",
+      "detail": "37 tools, server 1.0.0"
+    },
+    {
+      "name": "tools/call search_papers (fixture providers)",
+      "status": "PASS",
+      "detail": "top work work_c1653fea9d14fa2b"
+    },
+    {
+      "name": "persistence: create_collection",
+      "status": "PASS",
+      "detail": "collection-c386d64b558b4b45e3f31a63"
+    },
+    {
+      "name": "persistence: restart app container",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "persistence: collection survives restart",
+      "status": "PASS"
+    },
+    {
+      "name": "GROBID isalive",
+      "status": "PASS"
+    },
+    {
+      "name": "adversarial MCP smoke",
+      "status": "PASS",
+      "detail": "{\"tools\":37,\"search_results\":1,\"evidence_records\":1,\"canonical_found_in_title_search\":true,\"provider_failures\":[],\"sources_searched\":[\"arxiv\",\"crossref\",\"openalex\",\"semantic_scholar\"]} | "
+    },
+    {
+      "name": "30-run MCP benchmark",
+      "status": "PASS",
+      "detail": "{\"name\":\"tools/list\",\"requests\":10,\"statuses\":[200],\"min_ms\":11.85,\"median_ms\":13.17,\"p95_ms\":15.7,\"max_ms\":15.7} | {\"name\":\"tools/call\",\"requests\":10,\"statuses\":[200],\"min_ms\":7.21,\"median_ms\":12.68,"
+    },
+    {
+      "name": "benchmark medians",
+      "status": "PASS",
+      "detail": "initialize median 24.29ms, tools/list median 13.17ms, tools/call median 12.68ms"
+    },
+    {
+      "name": "compose down -v",
+      "status": "PASS"
+    }
+  ],
+  "passed": true
+}
